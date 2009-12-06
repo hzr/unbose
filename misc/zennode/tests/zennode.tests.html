@@ -1,0 +1,105 @@
+<!doctype>
+<link href="qunit.css" rel="stylesheet">
+<script src="qunit.js"></script>
+<script src="../src/zennode.js"></script>
+<script src="../src/json2.js"></script>
+<script>
+
+
+function zen(s) { 
+
+    var data = parse_zencode(s);
+    var nodes = build_nodes(data);
+
+
+
+    var div = document.createElement('div');
+    div.appendChild(nodes);
+    return div.innerHTML.toLowerCase();
+
+}
+
+window.onload = function() {
+
+
+//return
+//module("Nodebuilder");
+
+module("Zencode");
+
+test("Basic tests", function() {
+    equals(zen("a"), "<a></a>");
+    equals(zen("a.b"), '<a class="b"></a>');
+    equals(zen("a#q"), '<a id="q"></a>');
+    equals(zen("a#q.x"), '<a id="q" class="x"></a>');
+    equals(zen("a#q.x.y.z"), '<a id="q" class="x y z"></a>');
+//alert(zen("a#q.x.y.z"))
+});
+
+
+test("Siblings", function() {
+    equals(zen("a+b"), "<a></a><b></b>");
+    equals(zen("a.x+b"), '<a class="x"></a><b></b>');
+    equals(zen("a#q.x+b"), '<a id="q" class="x"></a><b></b>');
+    equals(zen("a#q.x.y.z+b#p.l.m.n"), '<a id="q" class="x y z"></a><b id="p" class="l m n"></b>');
+});
+
+
+test("Parent > Child", function() {
+    equals(zen("a>b"), "<a><b></b></a>");
+    equals(zen("a>b>c"), "<a><b><c></c></b></a>");
+    equals(zen("a.x>b"), '<a class="x"><b></b></a>');
+    equals(zen("a#q.x>b"), '<a id="q" class="x"><b></b></a>');
+    equals(zen("a#q.x.y.z>b#p.l.m.n"), '<a id="q" class="x y z"><b id="p" class="l m n"></b></a>');
+    equals(zen("a>b+c"), "<a><b></b><c></c></a>");
+    equals(zen("a>b+c>d"), "<a><b></b><c><d></d></c></a>");
+    equals(zen("a>b+c>d+e>f"), "<a><b></b><c><d></d><e><f></f></e></c></a>");
+});
+
+test("Multiplication", function() {
+    equals(zen("a*2"), "<a></a><a></a>");
+    equals(zen("a*2+b*2"), "<a></a><a></a><b></b><b></b>");
+    equals(zen("a*2>b*2"), "<a><b></b><b></b></a><a><b></b><b></b></a>");
+    equals(zen("a>b*2"), "<a><b></b><b></b></a>");
+    equals(zen("a#q.x>b#q.x*2"), '<a id="q" class="x"><b id="q" class="x"></b><b id="q" class="x"></b></a>');
+    
+
+});
+
+
+test("Properties", function() {
+    equals(zen("a x=y"), "<a x=\"y\"></a>");
+    equals(zen("a x=y m=l"), "<a x=\"y\" m=\"l\"></a>");
+    equals(zen("a#foo x=y m=l"), "<a id=\"foo\" x=\"y\" m=\"l\"></a>");
+    equals(zen("a.foo x=y m=l"), "<a class=\"foo\" x=\"y\" m=\"l\"></a>");
+    equals(zen("a#foo.bar.mu x=y m=l"), "<a id=\"foo\" class=\"bar mu\" x=\"y\" m=\"l\"></a>");
+    equals(zen("a x=y+b"), "<a x=\"y\"></a><b></b>");
+    equals(zen("a x=y+b x=y"), "<a x=\"y\"></a><b x=\"y\"></b>");
+    equals(zen("a x=y>b"), "<a x=\"y\"><b></b></a>");
+    equals(zen("a x=y>b x=y"), "<a x=\"y\"><b x=\"y\"></b></a>");
+    equals(zen("a x=y>b x=y+c x=y"), "<a x=\"y\"><b x=\"y\"></b><c x=\"y\"></c></a>");
+});
+
+
+
+/*
+
+
+*/
+
+
+
+
+
+
+}
+</script>
+
+
+<body>
+  <h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+</body>
+</html>
