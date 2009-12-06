@@ -1,0 +1,52 @@
+<!doctype html>
+<style>
+textarea {
+    width: 80%;
+    height: 10em;
+}
+input {
+    width: 80%;
+}
+
+</style>
+
+<script src="zennode.js"></script>
+<script>
+// Helper function for making an html string
+function zen(s) {
+    var data = parse_zencode(s);
+    var nodes = build_nodes(data);
+    var div = document.createElement('div');
+    div.appendChild(nodes);
+    return div.innerHTML;
+}
+
+function doParse(selector) {
+    try {
+        document.getElementById("output").textContent = zen(selector);
+    } catch(e) {
+        document.getElementById("output").textContent = "asdf"
+    }
+}
+
+</script>
+<title>ZenNode testbed</title>
+<h1>ZenNode testbed</h1>
+<p>
+JS implementation of "zen coding" from the
+<a href="http://www.emacswiki.org/emacs/ZenCoding#toc10">emacs lisp
+zen coding module</a>. Enter a selector to see the resulting markup.
+<p>
+Some selectors to try:
+a, div#myid.myclass1.myclass2, div#myid>h1.child+p>span,
+p>(h1+span)+(h1+strong), ol>li.item*5
+
+<p>
+  <label>Selector:<br>
+  <input onkeyup="doParse(this.value)" type="text" id="input" value="a">
+  </label>
+<br>
+<label>
+html<br>
+<textarea id="output">&lt;a/&gt;</textarea>
+</label>
