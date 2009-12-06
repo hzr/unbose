@@ -29,7 +29,7 @@ function parse_expr(str) {
     if (ret.length==2) { // something with children can't have children
         if (children.length) {
             ret.push(children);
-        }    
+        }
     }
 
     // fixme double digits
@@ -59,7 +59,7 @@ function get_multiplier(str) {
     var ret = 1;
     if (str.length && str[0]=="*") {
         str.shift();
-        ret = parseInt(str.shift(), 10);        
+        ret = parseInt(str.shift(), 10);
     }
     return ret;
 }
@@ -115,7 +115,7 @@ function parse_props(str) {
             var name = consume_name(str);
             str.shift(); // fixme. make sure is always "="
             var value = consume_name(str);
-            props[name] = value;            
+            props[name] = value;
         }
         else {
             str.unshift(chr);
