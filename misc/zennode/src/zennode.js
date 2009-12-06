@@ -7,37 +7,52 @@ function parse_zencode(str) {
     var ret = [];
     var n=10;
     while (str.length && --n) {
-        ret = ret.concat((parse_tag(str)));
+        ret = ret.concat((parse_expr(str)));
     }
     return ret;
 }
 
-function parse_tag(str, ret) {
-    var name = consume_name(str);
-    var props = parse_props(str);
-    var multiplier = get_multiplier(str);
-    var children = parse_children(str);
-    var siblings = parse_siblings(str);
-    var current = [name, props];
+function parse_expr(str) {
+    var ret;
+    if (str[0] == "(") {
+        str.shift();
+        ret = parse_expr(str);
+        str.shift(); // fixme Make sure it's ")"
+    } else {
+        ret = parse_tag(str);
+    }
 
-    if (children.length) {
-        current.push(children);
+    var multiplier = get_multiplier(str);
+    var siblings = parse_siblings(str);
+    var children = parse_children(str);
+
+    if (ret.length==2) { // something with children can't have children
+        if (children.length) {
+            ret.push(children);
+        }    
     }
 
     // fixme double digits
     if (multiplier > 1) {
         while (--multiplier) {
-            siblings.unshift(current);
+            siblings.unshift(ret);
         }
     }
 
     if (siblings.length) {
-        siblings.unshift(current);
+        siblings.unshift(ret);
         return siblings;
     }
     else {
-        return current;
+        return ret;
     }
+}
+
+function parse_tag(str) {
+    var name = consume_name(str);
+    var props = parse_props(str);
+    var current = [name, props];
+    return current;
 }
 
 function get_multiplier(str) {
@@ -54,7 +69,7 @@ function parse_siblings(str) {
 
     while (str.length && str[0] == "+") {
         str.shift();
-        ret.push(parse_tag(str));
+        ret.push(parse_expr(str));
     }
     return ret;
 }
@@ -63,7 +78,7 @@ function parse_children(str) {
     var ret = [];
     if (str.length && str[0] == ">") {
         str.shift();
-        ret = parse_tag(str);
+        ret = parse_expr(str);
     }
     return ret;
 }
@@ -108,16 +123,14 @@ function parse_props(str) {
         }
 
     }
-
     return props;
 }
 
-
 function build_nodes(data) {
-  var index = 0;
+    var index = 0;
     var elem = document.createDocumentFragment();
     if (typeof data[index] === "string") {
-        elem = document.createElement(data[index]); // heh
+        elem = document.createElement(data[index]);
         index++;
         if (typeof data[index] === "object") {
             var props = data[index++];
@@ -143,43 +156,4 @@ function build_nodes(data) {
         elem = elem.firstChild;
     }
     return elem;
-
-
 }
-
-// old version in case the new turns out broken
-function build_nodes2(data) {
-    alert("aaa " +JSON.stringify(data))
-    var elem = document.createDocumentFragment();
-    if (typeof data[0] === "string") {
-        alert("NAIE" + data[0])
-        elem = document.createElement(data.shift());
-        if (typeof data[0] === "object") {
-            var props = data.shift();
-            for (key in props) {
-                elem.setAttribute(key, props[key]);
-            }
-        }
-    }
-    
-    var cur;
-    
-    while (cur=data.shift()) {
-        if (typeof cur === "string") {
-            elem.appendChild(document.createTextNode(cur));
-        }
-        else {
-            elem.appendChild(build_nodes(cur));
-        }
-    }
-    
-    // alert("aaa " +(elem.childNodes.length))
-    // flatten unneeded documentfragments
-    if (elem instanceof DocumentFragment && elem.childNodes.length==1) {
-        elem = elem.firstChild;
-    }
-    
-    
-    return elem;
-}
-
