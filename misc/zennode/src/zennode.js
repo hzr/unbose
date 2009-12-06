@@ -1,5 +1,10 @@
 /**
  * zennode. js version of zencode
+ * 
+ * Issues.
+ * some fixmes
+ * Dots not allowed in props. should be for imgs I guess
+ * 
  */
 
 function parse_zencode(str) {
