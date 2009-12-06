@@ -1,6 +1,8 @@
 
 
 operations = {
+    unbose: true, // typeof helper
+
     /**
      * Add a class to the element, or to all elements in the set
      */
@@ -25,12 +27,21 @@ operations = {
     filter: function(fun, context) {
         return this.elements.filter(fun, context || this);
     },
-    
+
+    find: function(selector) {
+        // fixme
+        return new unbose(selector, this.element);
+    },
+
     /**
      * Returns an unbose object wrapping the first element in the set.
      */
     first: function() {
         return this.elements[0];
+    },
+
+    getText: function() {
+        return this.element.textContent;
     },
 
     forEach: function(fun, context) {
@@ -110,11 +121,11 @@ operations = {
     show: function() {
         //todo
     },
-  
+
     text: function(newText) {
         if (newText === undefined) {
-         return 123123;   
-        } 
+            return this.getText();
+        }
         else {
             return this.setText(newText);
         }
@@ -134,4 +145,37 @@ operations = {
         //todo
     }
 
+};
+
+
+/**
+ * Main entrypoint
+ *
+ * Subject can be string selector, array (presumed to be of elements),
+ * element, unbose object.
+ */
+function unbose(subject, context) {
+    this.elements = [];
+    this.element = {};
+
+    //alert(subject + " " + subject.constructor)
+
+    if (typeof subject == "string") {
+        var elems = (context || document).querySelectorAll(subject);
+        for (var n=0, e; e=elems[n]; n++) {
+            this.elements.push(e);
+        }
+
+    }
+    else if (subject.nodeType) {
+        this.elements = [subject];
+    }
+    else if (subject.unbose) {
+        this.elements = subject.elements;
+    }
+    this.length = this.elements.length;
+    this.element = this.elements[0];
+
 }
+
+unbose.prototype = operations;
