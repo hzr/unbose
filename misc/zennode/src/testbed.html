@@ -25,7 +25,7 @@ function doParse(selector) {
     try {
         document.getElementById("output").textContent = zen(selector);
     } catch(e) {
-        document.getElementById("output").textContent = "asdf"
+        document.getElementById("output").textContent = "Malformed selector"
     }
 }
 
