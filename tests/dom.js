@@ -26,3 +26,22 @@ test("hasClass()", function() {
     ok(!subject.hasClass("baar"));
     ok(!subject.hasClass("bara"));
 });
+
+test("addClass()", function() {
+    var ele = document.createElement("div");
+    var subject = unbose(ele);
+
+    subject.addClass("foo");
+    ok(subject.hasClass("foo"));
+
+    subject.addClass("bar");
+    ok(subject.hasClass("foo"));
+    ok(subject.hasClass("bar"));
+
+    subject.addClass("baz-meh");
+    ok(subject.hasClass("foo"));
+    ok(subject.hasClass("bar"));
+    ok(subject.hasClass("baz-meh"));
+});
+
+

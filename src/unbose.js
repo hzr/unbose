@@ -7,7 +7,13 @@ operations = {
      * Add a class to the element, or to all elements in the set
      */
     addClass: function(cls) {
-        //todo
+        this.elements.forEach(function(ele) {
+            var classes = ele.className.split(/\s+/);
+            if (classes.indexOf(cls) == -1) {
+                classes.push(cls);
+                ele.className = classes.join(" ");
+            }
+        });
     },
 
     /**
