@@ -53,9 +53,9 @@ operations = {
      * Check if element has class cls
      */
     hasClass: function(cls) {
-        var re = new RegExp("(?:^|\s+)" + cls + "(?:$|\s+)", "gi");
         var hasClassFun = function(ele) {
-            return ele.className.match(re);
+            var classes = ele.className.split(/\s+/);
+            return classes.indexOf(cls) > -1;
         };
         return this.elements.some(hasClassFun);
     },
