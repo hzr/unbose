@@ -4,23 +4,23 @@
 module("Selectors");
 
 test("Basic tests", function() {
-    var subject = new unbose("#qunit-header");
+    var subject = unbose("#qunit-header");
     equals(subject.length, 1);
 
-    subject = new unbose("*");
+    subject = unbose("*");
     equals(subject.length, 12);
 
     equals(subject.element.nodeName.toLowerCase(),"html");
 
-    subject = new unbose(document);
+    subject = unbose(document);
     equals(subject.length, 1);
 
 });
 
 
 test("Find method", function() {
-    var subject = new unbose("#qunit-header");
-    subject = new unbose(document.body);
+    var subject = unbose("#qunit-header");
+    subject = unbose(document.body);
     equals(subject.length, 1);
 
 

@@ -155,6 +155,9 @@ operations = {
  * element, unbose object.
  */
 function unbose(subject, context) {
+    if (! (this instanceof unbose)) {
+        return new unbose(subject, context);
+    }
     this.elements = [];
     this.element = {};
 

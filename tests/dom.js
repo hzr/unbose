@@ -2,7 +2,7 @@
 module("DOM");
 
 test("Basic tests", function() {
-    var subject = new unbose("#qunit-header");
+    var subject = unbose("#qunit-header");
 
     equals(subject.text(), "unbose tests");
 
