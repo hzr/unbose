@@ -44,4 +44,28 @@ test("addClass()", function() {
     ok(subject.hasClass("baz-meh"));
 });
 
+test("delClass()", function() {
+    var ele = document.createElement("div");
+    ele.className = "foo bar baz meh";
+    var subject = unbose(ele);
+
+    subject.delClass("foo");
+    ok(!subject.hasClass("foo"));
+    ok(subject.hasClass("bar"));
+    ok(subject.hasClass("baz"));
+    ok(subject.hasClass("meh"));
+
+    subject.delClass("meh");
+    ok(!subject.hasClass("meh"));
+    ok(subject.hasClass("bar"));
+    ok(subject.hasClass("baz"));
+
+    subject.delClass("bar");
+    subject.delClass("baz");
+
+    equals(ele.className, "");
+
+
+});
+
 

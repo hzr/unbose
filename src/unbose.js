@@ -20,7 +20,15 @@ operations = {
      * Remove a class from the element, or all elements in the set
      */
     delClass: function(cls) {
-        //todo
+        this.elements.forEach(function(ele) {
+            var classes = ele.className.split(/\s+/);
+            var index = classes.indexOf(cls);
+            if (index != -1) {
+                classes.splice(index, 1);
+                ele.className = classes.join(" ");
+            }
+        });
+
     },
 
     /**
