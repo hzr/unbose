@@ -53,7 +53,11 @@ operations = {
      * Check if element has class cls
      */
     hasClass: function(cls) {
-        //todo
+        var re = new RegExp("(?:^|\s+)" + cls + "(?:$|\s+)", "gi");
+        var hasClassFun = function(ele) {
+            return ele.className.match(re);
+        };
+        return this.elements.some(hasClassFun);
     },
 
     /**
