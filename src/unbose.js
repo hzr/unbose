@@ -88,7 +88,7 @@ operations = {
      */
     hide: function() {
         this.elements.forEach(function(ele) {
-            ele.element.style.display = "none";
+            ele.style.display = "none";
         });
         return this;
     },
