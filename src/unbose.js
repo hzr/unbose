@@ -45,7 +45,7 @@ operations = {
 
     find: function(selector) {
         // fixme
-        return new unbose(selector, this.element);
+        return unbose(selector, this.element);
     },
 
     /**
@@ -185,7 +185,7 @@ operations = {
  */
 function unbose(subject, context) {
     if (! (this instanceof unbose)) {
-        return new unbose(subject, context);
+        return unbose(subject, context);
     }
     this.elements = [];
     this.element = {};
