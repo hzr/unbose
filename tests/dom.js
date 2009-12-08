@@ -42,6 +42,9 @@ test("addClass()", function() {
     ok(subject.hasClass("foo"));
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz-meh"));
+
+    equals(subject, subject.addClass("flabaten"));
+
 });
 
 test("delClass()", function() {
@@ -64,7 +67,8 @@ test("delClass()", function() {
     subject.delClass("baz");
 
     equals(ele.className, "");
-
+    ele.className = "asdf";
+    equals(subject, subject.delClass("asdf"));
 
 });
 
