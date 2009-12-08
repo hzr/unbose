@@ -68,4 +68,16 @@ test("delClass()", function() {
 
 });
 
+test("toggleClass()", function() {
+    var ele = document.createElement("div");
+    ele.className = "foo bar baz";
+    var subject = unbose(ele);
+
+    ok(subject.hasClass("bar"));
+    subject.toggleClass("bar");
+    ok(!subject.hasClass("bar"));
+    subject.toggleClass("bar");
+    ok(subject.hasClass("bar"));
+
+});
 

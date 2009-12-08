@@ -154,7 +154,17 @@ operations = {
      * Set cls if it's not set, if it's set, unset it.
      */
     toggleClass: function(cls) {
-        //todo
+        this.elements.forEach(function(ele) {
+            var classes = ele.className.split(/\s+/);
+            var index = classes.indexOf(cls);
+            if (index != -1) {
+                classes.splice(index, 1);
+            }
+            else {
+                classes.push(cls);
+            }
+            ele.className = classes.join(" ");
+        });
     },
 
     /**
