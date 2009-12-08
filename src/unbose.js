@@ -14,6 +14,7 @@ operations = {
                 ele.className = classes.join(" ");
             }
         });
+        return this;
     },
 
     /**
@@ -28,7 +29,7 @@ operations = {
                 ele.className = classes.join(" ");
             }
         });
-
+        return this;
     },
 
     /**
