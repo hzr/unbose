@@ -185,7 +185,7 @@ operations = {
  */
 function unbose(subject, context) {
     if (! (this instanceof unbose)) {
-        return unbose(subject, context);
+        return new unbose(subject, context);
     }
     this.elements = [];
     this.element = {};
