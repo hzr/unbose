@@ -17,6 +17,15 @@ operations = {
         return this;
     },
 
+    attr: function(key, val) {
+        if (val===undefined) {
+            return this.getAttr(key);
+        } else {
+            this.setAttr(key, val);
+            return this;
+        }
+    },
+
     /**
      * Remove a class from the element, or all elements in the set
      */
@@ -39,6 +48,13 @@ operations = {
         return this.elements[0].element;
     },
 
+    empty: function(index) {
+        this.element.forEach(function(ele){
+            while(ele.firstChild(ele.removeChild(ele.firstChild)));
+        });
+        return this;
+    },
+
     filter: function(fun, context) {
         return this.elements.filter(fun, context || this);
     },
@@ -52,7 +68,11 @@ operations = {
      * Returns an unbose object wrapping the first element in the set.
      */
     first: function() {
-        return this.elements[0];
+        return unbose(this.elements[0]);
+    },
+
+    getAttr: function(key) {
+        return this.element.getAttribute(key) || this.element["key"];
     },
 
     getText: function() {
@@ -111,8 +131,19 @@ operations = {
         return this.elements[index];
     },
 
+    parent: function() {
+        return this.element.parentNode || null;
+    },
+
     prev: function() {
         //todo
+    },
+
+    setAttr: function(key, val) {
+        this.elements.forEach(function(ele) {
+            ele.setAttribute(key, val);
+        });
+        return this;
     },
 
     setStyle: function(name, value) {
