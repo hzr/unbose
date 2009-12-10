@@ -14,11 +14,9 @@ test("attr -> getAttr", function() {
     ele.setAttribute("meh", "bleh");
     var subject = unbose(ele);
     equals(subject.getAttr("foo"), "bar");
-    equals(subject.getAttr("mehh"), "bleh");
+    equals(subject.getAttr("meh"), "bleh");
     equals(subject.attr("foo"), "bar");
-    equals(subject.attr("mehh"), "bleh");
-
-
+    equals(subject.attr("meh"), "bleh");
 });
 
 

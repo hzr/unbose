@@ -72,7 +72,7 @@ operations = {
     },
 
     getAttr: function(key) {
-        return this.element.getAttribute(key) || this.element["key"];
+        return this.element.getAttribute(key) || this.element[key];
     },
 
     getText: function() {
