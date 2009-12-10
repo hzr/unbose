@@ -8,10 +8,8 @@ operations = {
      */
     addClass: function(cls) {
         this.elements.forEach(function(ele) {
-            var classes = ele.className.split(/\s+/);
-            if (classes.indexOf(cls) == -1) {
-                classes.push(cls);
-                ele.className = classes.join(" ");
+            if (!unbose(ele).hasClass(cls)) {
+                ele.className = ele.className + " " + cls;
             }
         });
         return this;
@@ -31,11 +29,8 @@ operations = {
      */
     delClass: function(cls) {
         this.elements.forEach(function(ele) {
-            var classes = ele.className.split(/\s+/);
-            var index = classes.indexOf(cls);
-            if (index != -1) {
-                classes.splice(index, 1);
-                ele.className = classes.join(" ");
+            if (unbose(ele).hasClass(cls)) {
+                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
             }
         });
         return this;
@@ -87,11 +82,9 @@ operations = {
      * Check if element has class cls
      */
     hasClass: function(cls) {
-        var hasClassFun = function(ele) {
-            var classes = ele.className.split(/\s+/);
-            return classes.indexOf(cls) > -1;
-        };
-        return this.elements.some(hasClassFun);
+        return this.elements.some(function(ele) {
+            return (" " + ele.className + " ").indexOf(" " + cls + " ") != -1;
+        });
     },
 
     /**

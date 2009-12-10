@@ -78,7 +78,8 @@ test("delClass()", function() {
     subject.delClass("bar");
     subject.delClass("baz");
 
-    equals(ele.className, "");
+    ok(!subject.hasClass("bar"));
+    ok(!subject.hasClass("baz"));
     ele.className = "asdf";
     equals(subject, subject.delClass("asdf"));
 
