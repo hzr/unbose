@@ -97,3 +97,24 @@ test("toggleClass()", function() {
 
 });
 
+
+// should move to a core test suite I guess
+test("elem()", function() {
+    var ele = document.createElement("div");
+    document.body.appendChild(ele);
+    var subject = unbose(ele);
+
+    equals(ele, subject.elem(0));
+    var h2s = unbose("h2");
+    equals(h2s.length, 2);
+    equals(h2s.elem(0), document.getElementsByTagName("h2")[0]);
+    equals(h2s.elem(1), document.getElementsByTagName("h2")[1]);
+});
+
+test("parent()", function() {
+    var ele = document.createElement("div");
+    document.body.appendChild(ele);
+    var subject = unbose(ele);
+    equals(subject.parent().elem(0), document.body);
+    document.body.removeChild(ele);
+});

@@ -45,7 +45,7 @@ operations = {
      * Return the html element at index
      */
     elem: function(index) {
-        return this.elements[0].element;
+        return this.elements[index];
     },
 
     empty: function(index) {
@@ -120,6 +120,10 @@ operations = {
         return this.elements[this.element.length=1];
     },
 
+    name: function() {
+        return this.element.nodeName;
+    },
+
     next: function() {
         //todo
     },
@@ -128,11 +132,11 @@ operations = {
      * Returns the nth element in the set
      */
     nth: function(index) {
-        return this.elements[index];
+        return unbose(this.elements[index]);
     },
 
     parent: function() {
-        return this.element.parentNode || null;
+        return unbose(this.element.parentNode || null);
     },
 
     prev: function() {
