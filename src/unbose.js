@@ -1,3 +1,33 @@
+/**
+ * Class: unbose
+ *
+ * Subject can be string selector, array (presumed to be of elements),
+ * element, unbose object.
+ */
+function unbose(subject, context) {
+    if (! (this instanceof unbose)) {
+        return new unbose(subject, context);
+    }
+    this.elements = [];
+    this.element = {};
+
+    if (typeof subject == "string") {
+        var elems = (context || document).querySelectorAll(subject);
+        for (var n=0, e; e=elems[n]; n++) {
+            this.elements.push(e);
+        }
+
+    }
+    else if (subject.nodeType) {
+        this.elements = [subject];
+    }
+    else if (subject.unbose) {
+        this.elements = subject.elements;
+    }
+    this.length = this.elements.length;
+    this.element = this.elements[0];
+
+}
 
 
 operations = {
@@ -105,6 +135,20 @@ operations = {
         return this.elements.filter(fun, context || this);
     },
 
+    /**
+     * Method: find
+     *
+     *   Find decendents of the set of objects that match a selector
+     *
+     * Parameters:
+     *
+     *   selector - Selector used to find matching elements
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     */
     find: function(selector) {
         return unbose(selector, this.element);
     },
@@ -323,39 +367,5 @@ operations = {
     }
 
 };
-
-
-/**
- * Main entrypoint
- *
- * Subject can be string selector, array (presumed to be of elements),
- * element, unbose object.
- */
-function unbose(subject, context) {
-    if (! (this instanceof unbose)) {
-        return new unbose(subject, context);
-    }
-    this.elements = [];
-    this.element = {};
-
-    //alert(subject + " " + subject.constructor)
-
-    if (typeof subject == "string") {
-        var elems = (context || document).querySelectorAll(subject);
-        for (var n=0, e; e=elems[n]; n++) {
-            this.elements.push(e);
-        }
-
-    }
-    else if (subject.nodeType) {
-        this.elements = [subject];
-    }
-    else if (subject.unbose) {
-        this.elements = subject.elements;
-    }
-    this.length = this.elements.length;
-    this.element = this.elements[0];
-
-}
 
 unbose.prototype = operations;
