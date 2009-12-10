@@ -35,3 +35,9 @@ style:
     width()
 
 
+
+To build docs install naturaldocs and call it as follows:
+
+naturaldocs -r -ro -i src/ -o html docs/ -p /tmp/unbosedocs
+
+The /tmp/unbosedocs must exist
