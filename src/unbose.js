@@ -5,6 +5,7 @@ operations = {
 
     /**
      * Method: addClass
+     *
      * Add a class to the element, or to all elements in the set
      *
      * Parameters:
@@ -15,7 +16,7 @@ operations = {
      *
      *   The unbose object
      *
-     * See Also:
+     * See also:
      *
      *   <delClass>, <hasClass>, <toggleClass>
      *
@@ -39,7 +40,22 @@ operations = {
     },
 
     /**
-     * Remove a class from the element, or all elements in the set
+     * Method: delClass
+     *
+     * Removes a class from the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - The class name to delete as a string.
+     *
+     * Returns:
+     *
+     *   The unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <toggleClass>
+     *
      */
     delClass: function(cls) {
         this.elements.forEach(function(ele) {
@@ -51,13 +67,34 @@ operations = {
     },
 
     /**
-     * Return the html element at index
+     * Method: elem
+     *
+     * Gets an HTMLElement from the unbose object.
+     *
+     * Parameters:
+     *
+     *   index - The index of the element in the set
+     *
+     * Returns:
+     *
+     *   An HTMLElement
+     *
      */
     elem: function(index) {
         return this.elements[index];
     },
 
-    empty: function(index) {
+    /**
+     * Method: empty
+     *
+     *   Remove all children of the element, or of all elements in the set.
+     *
+     * Returns:
+     *
+     *   The unbose object
+     *
+     */
+    empty: function() {
         this.element.forEach(function(ele){
             while(ele.firstChild(ele.removeChild(ele.firstChild)));
         });
@@ -73,20 +110,75 @@ operations = {
     },
 
     /**
-     * Returns an unbose object wrapping the first element in the set.
+     * Method: first
+     *
+     *   Returns the unbose object for the first element in the unbose set
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     * See also:
+     *
+     * <last>, <nth>
+     *
      */
     first: function() {
         return unbose(this.elements[0]);
     },
 
-    getAttr: function(key) {
-        return this.element.getAttribute(key) || this.element[key];
+    /**
+     * Method: getAttr
+     *
+     * Get the value of an attribute
+     *
+     * Parameters:
+     *
+     *   name - Name of the property to get
+     *
+     * Returns:
+     *
+     *  The value of the attribute. If attribute does not exist, returns
+     *  undefined.
+     *
+     */
+    getAttr: function(name) {
+        return this.element.getAttribute(name) || this.element[name];
     },
 
+
+    /**
+     * Method: getText
+     *
+     * Get the text content of the first element of the set
+     *
+     * Returns:
+     *
+     *   A string. If the element has no text content, an empty string.
+     *
+     * Todo:
+     *
+     */
     getText: function() {
-        return this.element.textContent;
+        return this.element.textContent || "";
     },
 
+    /**
+     * Method: forEach
+     *
+     * Call a function for all elements in the unbose set
+     *
+     * Parameters:
+     *
+     *   function - The function to call
+     *   context - (optional) context, the value of "this" for the function
+     *             calls
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     */
     forEach: function(fun, context) {
         this.elements.forEach(fun, context || this);
         return this;
@@ -135,7 +227,22 @@ operations = {
     },
 
     /**
-     * Returns the nth element in the set
+     * Method: nth
+     *
+     * Returns the unbose object for the nth element in the unbose set
+     *
+     * Parameters:
+     *
+     *   index - index in the list
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     * See also:
+     *
+     * <first>, <last>
+     *
      */
     nth: function(index) {
         return unbose(this.elements[index]);
