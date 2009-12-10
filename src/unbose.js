@@ -4,7 +4,21 @@ operations = {
     unbose: true, // typeof helper
 
     /**
+     * Method: addClass
      * Add a class to the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - The class name to add as a string.
+     *
+     * Returns:
+     *
+     *   The unbose object
+     *
+     * See Also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
      */
     addClass: function(cls) {
         this.elements.forEach(function(ele) {
