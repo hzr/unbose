@@ -60,7 +60,6 @@ operations = {
     },
 
     find: function(selector) {
-        // fixme
         return unbose(selector, this.element);
     },
 
