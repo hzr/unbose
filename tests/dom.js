@@ -8,6 +8,20 @@ test("text()", function() {
 
 });
 
+test("attr -> getAttr", function() {
+    var ele = document.createElement("div");
+    ele.foo = "bar";
+    ele.setAttribute("meh", "bleh");
+    var subject = unbose(ele);
+    equals(subject.getAttr("foo"), "bar");
+    equals(subject.getAttr("mehh"), "bleh");
+    equals(subject.attr("foo"), "bar");
+    equals(subject.attr("mehh"), "bleh");
+
+
+});
+
+
 test("hasClass()", function() {
     var ele = document.createElement("div");
     ele.className = "test";
