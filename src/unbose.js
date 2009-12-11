@@ -60,6 +60,26 @@ operations = {
         return this;
     },
 
+    /**
+     * Method: attr
+     *
+     * Set or get an attribute value. If value is given, set it. Of not,
+     * just return current value.
+     *
+     * Parameters:
+     *
+     *   key - Attribute to get or set
+     *   val - (optional) Value to set to
+     *
+     * Returns:
+     *
+     *   The unbose object or an attribute
+     *
+     * See also:
+     *
+     *   <getAttr>, <setAttr>
+     *
+     */
     attr: function(key, val) {
         if (val===undefined) {
             return this.getAttr(key);
@@ -172,6 +192,31 @@ operations = {
     },
 
     /**
+     * Method: forEach
+     *
+     * Call a function for all elements in the unbose set
+     *
+     * Parameters:
+     *
+     *   function - The function to call
+     *   context - (optional) context, the value of "this" for the function
+     *             calls
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     * Todo:
+     *
+     *   Should we pass ele or unbose object to args?
+     */
+    forEach: function(fun, context) {
+        this.elements.forEach(fun, context || this);
+        return this;
+    },
+
+
+    /**
      * Method: getAttr
      *
      * Get the value of an attribute
@@ -185,11 +230,17 @@ operations = {
      *  The value of the attribute. If attribute does not exist, returns
      *  undefined.
      *
+     * Example:
+     *
+     * Set the src of an image
+     * (example)
+     * unbose("#logo").attr("src", "logo.png");
+     * (end)
+     *
      */
     getAttr: function(name) {
         return this.element.getAttribute(name) || this.element[name];
     },
-
 
     /**
      * Method: getText
@@ -205,27 +256,6 @@ operations = {
      */
     getText: function() {
         return this.element.textContent || "";
-    },
-
-    /**
-     * Method: forEach
-     *
-     * Call a function for all elements in the unbose set
-     *
-     * Parameters:
-     *
-     *   function - The function to call
-     *   context - (optional) context, the value of "this" for the function
-     *             calls
-     *
-     * Returns:
-     *
-     *   An unbose object
-     *
-     */
-    forEach: function(fun, context) {
-        this.elements.forEach(fun, context || this);
-        return this;
     },
 
     /**
@@ -245,8 +275,15 @@ operations = {
     },
 
     /**
+     * Method: hide
+     *
      * Hides the element or set of elements by setting the "display"
      * style property to none.
+     *
+     * Returns:
+     *
+     *   The unbose object
+     *
      */
     hide: function() {
         this.elements.forEach(function(ele) {
@@ -282,6 +319,13 @@ operations = {
      * Returns:
      *
      *   An unbose object
+     *
+     * Example:
+     *
+     * Get the second h1 tag in the document:
+     * (example)
+     * unbose("h1").nth(1);
+     * (end)
      *
      * See also:
      *
@@ -333,6 +377,26 @@ operations = {
         //todo
     },
 
+
+    /**
+     * Method: text
+     *
+     * If argument is given, set text content of elements. If not, return
+     * text content instead. See <setText> and <getText>
+     *
+     * Parameters:
+     *
+     *   newText - (optional) new string
+     *
+     * Returns:
+     *
+     *   An unbose object or a string
+     *
+     * See also:
+     *
+     * <getText>, <setText>
+     *
+     */
     text: function(newText) {
         if (newText === undefined) {
             return this.getText();
