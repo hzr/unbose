@@ -30,7 +30,7 @@ function unbose(subject, context) {
 }
 
 
-operations = {
+var instance_methods = {
     unbose: true, // typeof helper
 
     /**
@@ -511,4 +511,19 @@ operations = {
 
 };
 
-unbose.prototype = operations;
+var static_methods = {
+    /**
+     * Todo:
+     *
+     *   Arbitrary number of args
+     */
+    list: function(whatever) {
+        var ret = [];
+        for (var n=0, l=whatever.length; n<l; n++) {
+            ret.push(whatever[n]);
+        }
+    }
+};
+
+instance_methods.prototype = static_methods;
+unbose.prototype = instance_methods;
