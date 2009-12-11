@@ -60,7 +60,7 @@ var instance_methods = {
     },
 
     /**
-     * Method: appendTemplate
+     * Method: appendTpl
      *
      * Append elements from a template to all elements
      *
@@ -73,11 +73,31 @@ var instance_methods = {
      *   The unbose object or an attribute
      *
      */
-     appendTemplate: function (tpl) {
-         var newEle = this.eleFromTpl(tpl);
+     appendTpl: function (tpl) {
+         var newEle = unbose.eleFromTpl(tpl);
          this.elements.forEach(function(ele) {
-             ele.appendChild(newEle.clone(true));
+             ele.appendChild(newEle.cloneNode(true));
          });
+     },
+
+    /**
+     *
+     * Method: appendZen
+     *
+     * Append elements from a zencoding string
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The unbose object or an attribute
+     *
+     */
+     appendZen: function (zen) {
+         var tpl = unbose.tplFromZen(zen);
+         this.appendTpl(tpl);
      },
 
     /**
@@ -577,9 +597,8 @@ unbose.list = function(whatever) {
     }
 };
 
-unbose.eleFromZen = function(zen) {
-    return this.eleFromTpl(parse_zencode(zen));
-
+unbose.tplFromZen = function(zen) {
+    return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
 
@@ -705,6 +724,12 @@ unbose.eleFromZen = function(zen) {
         }
         return props;
     }
+
+
+};
+
+unbose.eleFromZen = function(zen) {
+    return this.eleFromTpl(this.tplFromZen(zen));
 };
 
 unbose.prototype = instance_methods;
