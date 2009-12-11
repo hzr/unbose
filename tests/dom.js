@@ -123,7 +123,7 @@ test("parent()", function() {
 test("eleFromTpl", function() {
     var tpl = ["div", {id: "testid", class: "testclass"},
         ["h1", "title1"],
-        ["p", "paragraph", ["a", {"href": "#testlink"}]],
+        ["p", "paragraph", ["a", {"href": "testlink"}]],
         ["h1", "title2"]
     ];
 
@@ -132,9 +132,22 @@ test("eleFromTpl", function() {
     ele = unbose(ele);
     ok(ele);
     equals(ele.length, 1);
-    equals(ele.find("a").attr("href"), "#testlink");
+    equals(ele.find("a").attr("href"), "testlink");
     equals(ele.find("h1").length, 2);
     equals(ele.find("h1").nth(0).text(), "title1");
     equals(ele.find("h1").nth(1).text(), "title2");
+    equals(ele.find("div>p>a").length, 1);
+});
+
+test("eleFromZen", function() {
+    var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
+
+    var ele = unbose.eleFromZen(zen);
+    ok(ele, "Elem generated");
+    ele = unbose(ele);
+    ok(ele, "Unbose wraps zen elem");
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "testlink");
+    equals(ele.find("h1").length, 2);
     equals(ele.find("div>p>a").length, 1);
 });
