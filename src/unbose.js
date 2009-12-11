@@ -89,6 +89,32 @@ operations = {
         }
     },
 
+
+    /**
+     * Method: click
+     *
+     * Adds a click event.
+     * Shorthand for on("click", callback);
+     *
+     * Parameters:
+     *
+     *   callback - The class name to delete as a string.
+     *   capturing - Use capturing.
+     *
+     * Returns:
+     *
+     *   The unbose object
+     *
+     * See also:
+     *
+     *   <on>
+     *
+     */
+    click: function(callback, capturing) {
+        this.on("click", callback, capturing);
+    },
+
+
     /**
      * Method: delClass
      *
@@ -334,6 +360,59 @@ operations = {
      */
     nth: function(index) {
         return unbose(this.elements[index]);
+    },
+
+
+    /**
+     * Method: on
+     *
+     * Add an event listener to the set of elements.
+     *
+     * Parameters:
+     *
+     *   name - Name of the event
+     *   callback - Function called when event occurs
+     *   capture - Use capturing
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     */
+    on: function(name, callback, capture) {
+        capture = capture || false;
+        this.elements.forEach(function(ele) {
+            ele.addEventListener(name, callback, capture);
+        });
+    },
+
+    /**
+     * Method: once
+     *
+     * Add an event listener to the set of elements that will be called once
+     * and then removed.
+     *
+     * Parameters:
+     *
+     *   name - Name of the event
+     *   callback - Function called when event occurs
+     *   capture - Use capturing
+     *
+     * Returns:
+     *
+     *   An unbose object
+     *
+     */
+    once: function(name, callback, capture) {
+        capture = capture || false;
+        var cancelCb = function(evt) {
+            evt.target.removeEventListener(name, arguments.callee, capture);
+            callback(evt);
+        };
+
+        this.elements.forEach(function(ele) {
+            ele.addEventListener(evt, cancelCb, capture);
+        });
     },
 
     parent: function() {
