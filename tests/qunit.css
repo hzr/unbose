@@ -29,6 +29,7 @@ ol#qunit-tests li li{
 	border-bottom:none;
 	margin:0.5em;
 	background-color:#fff;
+        xxlist-style-position: inside;
 }
 
 ol#qunit-tests li li.pass{

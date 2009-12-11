@@ -119,3 +119,22 @@ test("parent()", function() {
     equals(subject.parent().elem(0), document.body);
     document.body.removeChild(ele);
 });
+
+test("eleFromTpl", function() {
+    var tpl = ["div", {id: "testid", class: "testclass"},
+        ["h1", "title1"],
+        ["p", "paragraph", ["a", {"href": "#testlink"}]],
+        ["h1", "title2"]
+    ];
+
+    var ele = unbose.eleFromTpl(tpl);
+    ok(ele);
+    ele = unbose(ele);
+    ok(ele);
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "#testlink");
+    equals(ele.find("h1").length, 2);
+    equals(ele.find("h1").nth(0).text(), "title1");
+    equals(ele.find("h1").nth(1).text(), "title2");
+    equals(ele.find("div>p>a").length, 1);
+});

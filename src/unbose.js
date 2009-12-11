@@ -26,7 +26,6 @@ function unbose(subject, context) {
     }
     this.length = this.elements.length;
     this.element = this.elements[0];
-
 }
 
 
@@ -59,6 +58,27 @@ var instance_methods = {
         });
         return this;
     },
+
+    /**
+     * Method: appendTemplate
+     *
+     * Append elements from a template to all elements
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The unbose object or an attribute
+     *
+     */
+     appendTemplate: function (tpl) {
+         var newEle = this.eleFromTpl(tpl);
+         this.elements.forEach(function(ele) {
+             ele.appendChild(newEle.clone(true));
+         });
+     },
 
     /**
      * Method: attr
@@ -511,19 +531,52 @@ var instance_methods = {
 
 };
 
-var static_methods = {
-    /**
-     * Todo:
-     *
-     *   Arbitrary number of args
-     */
-    list: function(whatever) {
-        var ret = [];
-        for (var n=0, l=whatever.length; n<l; n++) {
-            ret.push(whatever[n]);
+
+// static methods:
+unbose.eleFromTpl = function(tpl) {
+    var index = 0;
+    var elem = document.createDocumentFragment();
+    if (typeof tpl[index] === "string") {
+        elem = document.createElement(tpl[index]);
+        index++;
+        if (typeof tpl[index] === "object") {
+            var props = tpl[index++];
+            for (key in props) {
+                elem.setAttribute(key, props[key]);
+            }
         }
+    }
+
+    var cur;
+    // fixme: what if data has something falsey?
+    while (cur=(tpl[index++])) {
+        if (typeof cur === "string") {
+            elem.appendChild(document.createTextNode(cur));
+        }
+        else {
+            elem.appendChild(this.eleFromTpl(cur));
+        }
+    }
+
+    // flatten unneeded documentfragments
+    if (elem instanceof DocumentFragment && elem.childNodes.length==1) {
+        elem = elem.firstChild;
+    }
+    return elem;
+};
+
+/**
+ * Todo:
+ *
+ *   Arbitrary number of args
+ */
+unbose.list = function(whatever) {
+    var ret = [];
+    for (var n=0, l=whatever.length; n<l; n++) {
+        ret.push(whatever[n]);
     }
 };
 
-instance_methods.prototype = static_methods;
+
+
 unbose.prototype = instance_methods;
