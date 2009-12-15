@@ -612,13 +612,12 @@ var instance_methods = {
 
 };
 
-
 // static methods:
 unbose.eleFromTpl = function(tpl) {
     var index = 0;
     var elem = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
-        elem = document.createElement(tpl[index]);
+        elem = createElementWithAttrs(tpl[index]);
         index++;
         if (typeof tpl[index] === "object") {
             var props = tpl[index++];
@@ -644,6 +643,20 @@ unbose.eleFromTpl = function(tpl) {
         elem = elem.firstChild;
     }
     return elem;
+
+    function createElementWithAttrs(text) {
+        var parts = text.match(/([\w#\.]\w*)/g);
+        var ele = document.createElement(parts[0]);
+        for (var i = 1, part; part = parts[i]; i++) {
+            if (part[0] == ".") {
+                ele.className += " " + part.slice(1);
+            }
+            else {
+                ele.id = part.slice(1);
+            }
+        }
+        return ele;
+    }
 };
 
 /**

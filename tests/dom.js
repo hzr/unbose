@@ -132,7 +132,8 @@ test("eleFromTpl", function() {
     var tpl = ["div", {id: "testid", "class": "testclass"},
         ["h1", "title1"],
         ["p", "paragraph", ["a", {"href": "testlink"}]],
-        ["h1", "title2"]
+        ["h1#id.class1.class2", "title2"],
+        ["span#id", {id: "id2"}]
     ];
 
     var ele = unbose.eleFromTpl(tpl);
@@ -145,6 +146,9 @@ test("eleFromTpl", function() {
     equals(ele.find("h1").nth(0).text(), "title1");
     equals(ele.find("h1").nth(1).text(), "title2");
     equals(ele.find("div>p>a").length, 1);
+    equals(ele.find("h1").nth(1).attr("id"), "id");
+    equals(ele.find("span").attr("id"), "id2");
+    ok(ele.find("h1").nth(1).hasClass("class1"));
 });
 
 test("eleFromZen", function() {
