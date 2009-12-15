@@ -509,7 +509,7 @@ var instance_methods = {
 
     setStyle: function(name, value) {
         // fixme: check style name map
-        this.forEach(function(item) {item.element.style[name] = value;});
+        this.forEach(function(ele) { ele.element.style[name] = value; });
         return this;
     },
 
@@ -517,12 +517,12 @@ var instance_methods = {
      * Set the text content of the element or set of elements
      */
     setText: function(newText) {
-        this.forEach(function(item) {item.element.textContent = newText;});
+        this.forEach(function(ele) { ele.element.textContent = newText; });
         return this;
     },
 
     setVal: function(key, val) {
-        this.forEach(function(item) {item.element.setAttribute(key, val);});
+        this.forEach(function(ele) { ele.element.setAttribute(key, val); });
         return this;
     },
 
@@ -554,7 +554,7 @@ var instance_methods = {
      *     *
      */
     style: function(attr, value) {
-        if (value == undefined){
+        if (value === undefined){
             return this.getStyle(attr);
         }
         else {
@@ -641,7 +641,7 @@ Unbose.eleFromTpl = function(tpl) {
 
     var cur;
     // fixme: what if data has something falsey?
-    while (cur=(tpl[index++])) {
+    while (cur = (tpl[index++])) {
         if (typeof cur === "string") {
             elem.appendChild(document.createTextNode(cur));
         }
@@ -657,11 +657,12 @@ Unbose.eleFromTpl = function(tpl) {
     return elem;
 
     function createElementWithAttrs(text) {
-        var parts = text.match(/([\w#\.]\w*)/g);
-        var ele = document.createElement(parts[0]);
-        for (var i = 1, part; part = parts[i]; i++) {
+        var parts = text.match(/([\w#\.]\w*)/g); // FIXME: this one is wrong, fails e.g. for "div#id.class..#.."
+        var ele = document.createElement(parts.shift());
+        var part;
+        while (part = parts.shift()) {
             if (part[0] == ".") {
-                ele.className += " " + part.slice(1);
+                Unbose(ele).addClass(part.slice(1));
             }
             else {
                 ele.id = part.slice(1);
