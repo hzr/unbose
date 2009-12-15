@@ -20,7 +20,7 @@ function unbose(subject, context) {
     else if (subject.nodeType) {
         this.elements = [subject];
     }
-    else if (subject.unbose) {
+    else if (subject.toString() == "[object Unbose]") {
         this.elements = subject.elements;
     }
     else if (subject instanceof Array) {
@@ -32,8 +32,6 @@ function unbose(subject, context) {
 
 
 var instance_methods = {
-    unbose: true, // typeof helper
-
     toString: function() {
         return "[object Unbose]";
     },
