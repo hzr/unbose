@@ -308,6 +308,28 @@ var instance_methods = {
         return this.element.getAttribute(name) || this.element[name];
     },
 
+
+
+    /**
+     * Method: getStyle
+     *
+     * Get the style value of the first element of the set
+     *
+     * Parameters:
+     *
+     *   attr - The name of the style attribute
+     *
+     * Fixme:
+     *
+     *   This should use getComputedStyle I guess?
+     *   Should it get from first or all? If all, how?
+     *
+     */
+    getStyle: function(attr) {
+        return this.element.style[attr];
+    },
+
+
     /**
      * Method: getText
      *
@@ -494,6 +516,35 @@ var instance_methods = {
      */
     show: function() {
         //todo
+    },
+
+
+    /**
+     * Method: style
+     *
+     * Set or get a style attribute.
+     *
+     * Parameters:
+     *
+     *   attr - Name of style attribute
+     *   value - (optional) new value of style attribute
+     *
+     * Returns:
+     *
+     *   An unbose object or a string
+     *
+     * See also:
+     *
+     * <setStyle>, <getStyle>
+     *     *
+     */
+    style: function(attr, value) {
+        if (value == undefined){
+            return this.getStyle(attr);
+        }
+        else {
+            return this.setStyle(attr, value);
+        }
     },
 
 
