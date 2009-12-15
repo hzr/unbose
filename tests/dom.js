@@ -19,6 +19,11 @@ test("attr -> getAttr", function() {
     equals(subject.attr("meh"), "bleh");
 });
 
+test("empty()", function() {
+    var ele = Unbose.eleFromZen("body>i+p+div>i+i+span");
+    Unbose(ele).empty();
+    equals(ele.innerHTML, "");
+});
 
 test("hasClass()", function() {
     var ele = document.createElement("div");

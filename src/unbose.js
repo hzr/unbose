@@ -127,7 +127,8 @@ var instance_methods = {
     attr: function(key, val) {
         if (val === undefined) {
             return this.getAttr(key);
-        } else {
+        }
+        else {
             this.setAttr(key, val);
             return this;
         }
@@ -225,8 +226,8 @@ var instance_methods = {
      *
      */
     empty: function() {
-        this.element.forEach(function(ele){
-            while (ele.firstChild(ele.removeChild(ele.firstChild)));
+        this.elements.forEach(function(ele) {
+            while (ele.firstChild) { ele.removeChild(ele.firstChild) };
         });
         return this;
     },
