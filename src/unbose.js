@@ -1,12 +1,12 @@
 /**
- * Class: unbose
+ * Class: Unbose
  *
  * Subject can be string selector, array (presumed to be of elements),
- * element, unbose object.
+ * element, Unbose object.
  */
-function unbose(subject, context) {
-    if (! (this instanceof unbose)) {
-        return new unbose(subject, context);
+function Unbose(subject, context) {
+    if (! (this instanceof Unbose)) {
+        return new Unbose(subject, context);
     }
     this.elements = [];
     this.element = {};
@@ -47,7 +47,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object
+     *   The Unbose object
      *
      * See also:
      *
@@ -56,7 +56,7 @@ var instance_methods = {
      */
     addClass: function(cls) {
         this.elements.forEach(function(ele) {
-            if (!unbose(ele).hasClass(cls)) {
+            if (!Unbose(ele).hasClass(cls)) {
                 ele.className = ele.className + " " + cls;
             }
         });
@@ -74,11 +74,11 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object or an attribute
+     *   The Unbose object or an attribute
      *
      */
      appendTpl: function (tpl) {
-         var newEle = unbose.eleFromTpl(tpl);
+         var newEle = Unbose.eleFromTpl(tpl);
          this.elements.forEach(function(ele) {
              ele.appendChild(newEle.cloneNode(true));
          });
@@ -96,11 +96,11 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object or an attribute
+     *   The Unbose object or an attribute
      *
      */
      appendZen: function (zen) {
-         var tpl = unbose.tplFromZen(zen);
+         var tpl = Unbose.tplFromZen(zen);
          this.appendTpl(tpl);
      },
 
@@ -117,7 +117,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object or an attribute
+     *   The Unbose object or an attribute
      *
      * See also:
      *
@@ -147,7 +147,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object
+     *   The Unbose object
      *
      * See also:
      *
@@ -170,7 +170,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object
+     *   The Unbose object
      *
      * See also:
      *
@@ -179,7 +179,7 @@ var instance_methods = {
      */
     delClass: function(cls) {
         this.elements.forEach(function(ele) {
-            if (unbose(ele).hasClass(cls)) {
+            if (Unbose(ele).hasClass(cls)) {
                 ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
             }
         });
@@ -189,7 +189,7 @@ var instance_methods = {
     /**
      * Method: elem
      *
-     * Gets an HTMLElement from the unbose object, or an array of all
+     * Gets an HTMLElement from the Unbose object, or an array of all
      * HTMLElements in the collection.
      *
      * Parameters:
@@ -221,7 +221,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object
+     *   The Unbose object
      *
      */
     empty: function() {
@@ -246,21 +246,21 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      */
     find: function(selector) {
-        return unbose(selector, this.element);
+        return Unbose(selector, this.element);
     },
 
     /**
      * Method: first
      *
-     *   Returns the unbose object for the first element in the unbose set
+     *   Returns the Unbose object for the first element in the Unbose set
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -268,13 +268,13 @@ var instance_methods = {
      *
      */
     first: function() {
-        return unbose(this.elements[0]);
+        return Unbose(this.elements[0]);
     },
 
     /**
      * Method: forEach
      *
-     * Call a function for all elements in the unbose set
+     * Call a function for all elements in the Unbose set
      *
      * Parameters:
      *
@@ -284,11 +284,11 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      * Todo:
      *
-     *   Should we pass ele or unbose object to args?
+     *   Should we pass ele or Unbose object to args?
      */
     forEach: function(fun, context) {
         this.elements.forEach(fun, context || this);
@@ -314,7 +314,7 @@ var instance_methods = {
      *
      * Set the src of an image
      * (example)
-     * unbose("#logo").attr("src", "logo.png");
+     * Unbose("#logo").attr("src", "logo.png");
      * (end)
      *
      */
@@ -384,7 +384,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The unbose object
+     *   The Unbose object
      *
      */
     hide: function() {
@@ -412,7 +412,7 @@ var instance_methods = {
     /**
      * Method: nth
      *
-     * Returns the unbose object for the nth element in the unbose set
+     * Returns the Unbose object for the nth element in the Unbose set
      *
      * Parameters:
      *
@@ -420,13 +420,13 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      * Example:
      *
      * Get the second h1 tag in the document:
      * (example)
-     * unbose("h1").nth(1);
+     * Unbose("h1").nth(1);
      * (end)
      *
      * See also:
@@ -435,7 +435,7 @@ var instance_methods = {
      *
      */
     nth: function(index) {
-        return unbose(this.elements[index]);
+        return Unbose(this.elements[index]);
     },
 
 
@@ -452,7 +452,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      */
     on: function(name, callback, capture) {
@@ -476,7 +476,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object
+     *   An Unbose object
      *
      */
     once: function(name, callback, capture) {
@@ -492,7 +492,7 @@ var instance_methods = {
     },
 
     parent: function() {
-        return unbose(this.element.parentNode || null);
+        return Unbose(this.element.parentNode || null);
     },
 
     prev: function() {
@@ -545,7 +545,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object or a string
+     *   An Unbose object or a string
      *
      * See also:
      *
@@ -574,7 +574,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   An unbose object or a string
+     *   An Unbose object or a string
      *
      * See also:
      *
@@ -627,12 +627,12 @@ var instance_methods = {
                 }
             } while (child = child.nextSibling);
         });
-        return unbose(siblings);
+        return Unbose(siblings);
     }
 };
 
 // static methods:
-unbose.eleFromTpl = function(tpl) {
+Unbose.eleFromTpl = function(tpl) {
     var index = 0;
     var elem = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
@@ -683,14 +683,14 @@ unbose.eleFromTpl = function(tpl) {
  *
  *   Arbitrary number of args
  */
-unbose.list = function(whatever) {
+Unbose.list = function(whatever) {
     var ret = [];
     for (var n=0, l=whatever.length; n<l; n++) {
         ret.push(whatever[n]);
     }
 };
 
-unbose.tplFromZen = function(zen) {
+Unbose.tplFromZen = function(zen) {
     return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
@@ -821,9 +821,9 @@ unbose.tplFromZen = function(zen) {
 
 };
 
-unbose.eleFromZen = function(zen) {
+Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
 
-unbose.prototype = instance_methods;
+Unbose.prototype = instance_methods;
 

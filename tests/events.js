@@ -6,12 +6,12 @@ test("click", function() {
     expect(2);
 
     var ele = document.createElement("div");
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
     subject.click(function(evt) { ok(evt); });
     simulateClick(ele);
 
     var ele2 = document.createElement("div");
-    var subject2 = unbose(ele2);
+    var subject2 = Unbose(ele2);
     subject2.on("click", function(evt) { ok(evt); });
     simulateClick(ele2);
 });

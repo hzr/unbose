@@ -2,7 +2,7 @@
 module("Attributes");
 
 test("text()", function() {
-    var subject = unbose("#qunit-header");
+    var subject = Unbose("#qunit-header");
 
     equals(subject.text(), "unbose tests");
 
@@ -12,7 +12,7 @@ test("attr -> getAttr", function() {
     var ele = document.createElement("div");
     ele.foo = "bar";
     ele.setAttribute("meh", "bleh");
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
     equals(subject.getAttr("foo"), "bar");
     equals(subject.getAttr("meh"), "bleh");
     equals(subject.attr("foo"), "bar");
@@ -23,7 +23,7 @@ test("attr -> getAttr", function() {
 test("hasClass()", function() {
     var ele = document.createElement("div");
     ele.className = "test";
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
 
     ok(subject.hasClass("test"));
     ok(!subject.hasClass("testt"));
@@ -41,7 +41,7 @@ test("hasClass()", function() {
 
 test("addClass()", function() {
     var ele = document.createElement("div");
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
 
     subject.addClass("foo");
     ok(subject.hasClass("foo"));
@@ -62,7 +62,7 @@ test("addClass()", function() {
 test("delClass()", function() {
     var ele = document.createElement("div");
     ele.className = "foo bar baz meh";
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
 
     subject.delClass("foo");
     ok(!subject.hasClass("foo"));
@@ -88,7 +88,7 @@ test("delClass()", function() {
 test("toggleClass()", function() {
     var ele = document.createElement("div");
     ele.className = "foo bar baz";
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
 
     ok(subject.hasClass("bar"));
     subject.toggleClass("bar");
@@ -103,17 +103,17 @@ test("toggleClass()", function() {
 test("elem(n)", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
 
     equals(ele, subject.elem(0));
-    var h2s = unbose("h2");
+    var h2s = Unbose("h2");
     equals(h2s.length, 2);
     equals(h2s.elem(0), document.getElementsByTagName("h2")[0]);
     equals(h2s.elem(1), document.getElementsByTagName("h2")[1]);
 });
 
 test("elem()", function() {
-    var h2s = unbose("h2").elem();
+    var h2s = Unbose("h2").elem();
     expect(3);
     ok(h2s);
     ok(h2s.constructor == Array);
@@ -123,16 +123,16 @@ test("elem()", function() {
 test("parent()", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
-    var subject = unbose(ele);
+    var subject = Unbose(ele);
     equals(subject.parent().elem(0), document.body);
     document.body.removeChild(ele);
 });
 
 test("siblings()", function() {
-    var ele = unbose.eleFromZen("body>i+p+div>i+i+span");
-    var subject = unbose(ele).find("p");
+    var ele = Unbose.eleFromZen("body>i+p+div>i+i+span");
+    var subject = Unbose(ele).find("p");
     equals(subject.siblings().length, 2);
-    subject = unbose(ele).find("i");
+    subject = Unbose(ele).find("i");
     equals(subject.siblings().length, 6);
 });
 
@@ -144,9 +144,9 @@ test("eleFromTpl", function() {
         ["span#id", {id: "id2"}]
     ];
 
-    var ele = unbose.eleFromTpl(tpl);
+    var ele = Unbose.eleFromTpl(tpl);
     ok(ele);
-    ele = unbose(ele);
+    ele = Unbose(ele);
     ok(ele);
     equals(ele.length, 1);
     equals(ele.find("a").attr("href"), "testlink");
@@ -162,9 +162,9 @@ test("eleFromTpl", function() {
 
 test("eleFromZen", function() {
     var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
-    var ele = unbose.eleFromZen(zen);
+    var ele = Unbose.eleFromZen(zen);
     ok(ele, "Elem generated");
-    ele = unbose(ele);
+    ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
     equals(ele.length, 1);
     equals(ele.find("a").attr("href"), "testlink");
@@ -180,7 +180,7 @@ test("appendTpl", function() {
         ["h1", "title2"]
     ];
 
-    var ele = unbose(document.createElement("div"));
+    var ele = Unbose(document.createElement("div"));
 
     ok(ele);
     ele.appendTpl(tpl);
@@ -197,9 +197,9 @@ test("appendTpl", function() {
 
 test("appendZen", function() {
     var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
-    var ele = unbose(document.createElement("div"));
+    var ele = Unbose(document.createElement("div"));
     ok(ele, "Elem generated");
-    ele = unbose(ele);
+    ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
     ele.appendZen(zen);
     equals(ele.length, 1);

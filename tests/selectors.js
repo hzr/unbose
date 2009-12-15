@@ -4,23 +4,23 @@
 module("Selectors");
 
 test("Basic tests", function() {
-    var subject = unbose("#qunit-header");
+    var subject = Unbose("#qunit-header");
     equals(subject.length, 1);
 
-    subject = unbose("*");
+    subject = Unbose("*");
     equals(subject.length, 14);
 
     equals(subject.element.nodeName.toLowerCase(),"html");
 
-    subject = unbose(document);
+    subject = Unbose(document);
     equals(subject.length, 1);
 
 });
 
 
 test("Find method", function() {
-    var subject = unbose("#qunit-header");
-    subject = unbose(document.body);
+    var subject = Unbose("#qunit-header");
+    subject = Unbose(document.body);
     equals(subject.length, 1);
 
     var headers = subject.find("h1");
@@ -34,7 +34,7 @@ test("Find method", function() {
     h1.textContent = "test";
     elem.appendChild(h1);
 
-    subject = unbose(elem);
+    subject = Unbose(elem);
     equals(subject.find("h1").length, 1);
     equals(subject.find("h1").text(), "test");
 
