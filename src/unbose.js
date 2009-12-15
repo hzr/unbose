@@ -185,7 +185,8 @@ var instance_methods = {
     /**
      * Method: elem
      *
-     * Gets an HTMLElement from the unbose object.
+     * Gets an HTMLElement from the unbose object, or an array of all
+     * HTMLElements in the collection.
      *
      * Parameters:
      *
@@ -195,9 +196,18 @@ var instance_methods = {
      *
      *   An HTMLElement
      *
+     * Fixme:
+     *
+     *   Should the retval with no args be the array or a copy of it?
+     *
      */
     elem: function(index) {
-        return this.elements[index];
+        if (index === undefined) {
+            return this.elements;
+        }
+        else {
+            return this.elements[index];
+        }
     },
 
     /**
