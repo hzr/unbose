@@ -128,6 +128,14 @@ test("parent()", function() {
     document.body.removeChild(ele);
 });
 
+test("siblings()", function() {
+    var ele = unbose.eleFromZen("body>i+p+div>i+i+span");
+    var subject = unbose(ele).find("p");
+    equals(subject.siblings().length, 2);
+    subject = unbose(ele).find("i");
+    equals(subject.siblings().length, 6);
+});
+
 test("eleFromTpl", function() {
     var tpl = ["div", {id: "testid", "class": "testclass"},
         ["h1", "title1"],
@@ -149,6 +157,7 @@ test("eleFromTpl", function() {
     equals(ele.find("h1").nth(1).attr("id"), "id");
     equals(ele.find("span").attr("id"), "id2");
     ok(ele.find("h1").nth(1).hasClass("class1"));
+
 });
 
 test("eleFromZen", function() {

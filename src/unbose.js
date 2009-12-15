@@ -16,7 +16,6 @@ function unbose(subject, context) {
         for (var n=0, e; e=elems[n]; n++) {
             this.elements.push(e);
         }
-
     }
     else if (subject.nodeType) {
         this.elements = [subject];
@@ -31,6 +30,10 @@ function unbose(subject, context) {
 
 var instance_methods = {
     unbose: true, // typeof helper
+
+    toString: function() {
+        return "[object Unbose]";
+    },
 
     /**
      * Method: addClass
@@ -608,8 +611,23 @@ var instance_methods = {
      */
     width: function() {
         //todo
-    }
+    },
 
+    /**
+     * Return the element(s) siblings
+     */
+    siblings: function() {
+        var siblings = [];
+        this.elements.forEach(function(element) {
+            var child = element.parentNode.firstChild;
+            do {
+                if (child != element && child.nodeType == 1) {
+                    siblings.push(child);
+                }
+            } while (child = child.nextSibling);
+        });
+        return unbose(siblings);
+    }
 };
 
 // static methods:
@@ -807,3 +825,4 @@ unbose.eleFromZen = function(zen) {
 };
 
 unbose.prototype = instance_methods;
+
