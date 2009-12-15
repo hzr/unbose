@@ -23,6 +23,9 @@ function unbose(subject, context) {
     else if (subject.unbose) {
         this.elements = subject.elements;
     }
+    else if (subject instanceof Array) {
+        this.elements = subject;
+    }
     this.length = this.elements.length;
     this.element = this.elements[0];
 }
@@ -397,7 +400,7 @@ var instance_methods = {
      * Returns the last element in the set.
      */
     last: function() {
-        return this.elements[this.element.length=1];
+        return this.elements[this.element.length-1];
     },
 
     name: function() {
