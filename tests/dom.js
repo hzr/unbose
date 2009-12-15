@@ -165,6 +165,19 @@ test("eleFromTpl", function() {
 
 });
 
+
+test("eleFromTpl class/id parsing", function() {
+    var tpl = ["div#foo.bar#baz"];
+    var ele = Unbose.eleFromTpl(tpl);
+    ok(ele);
+    ele = Unbose(ele);
+    ok(ele);
+    equals(ele.length, 1);
+    equals(ele.id, "baz");
+    equals(ele.className, "bar");
+
+});
+
 test("eleFromZen", function() {
     var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
     var ele = Unbose.eleFromZen(zen);
