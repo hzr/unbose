@@ -226,7 +226,7 @@ var instance_methods = {
      */
     empty: function() {
         this.element.forEach(function(ele){
-            while(ele.firstChild(ele.removeChild(ele.firstChild)));
+            while (ele.firstChild(ele.removeChild(ele.firstChild)));
         });
         return this;
     },
@@ -595,15 +595,7 @@ var instance_methods = {
      */
     toggleClass: function(cls) {
         this.elements.forEach(function(ele) {
-            var classes = ele.className.split(/\s+/);
-            var index = classes.indexOf(cls);
-            if (index != -1) {
-                classes.splice(index, 1);
-            }
-            else {
-                classes.push(cls);
-            }
-            ele.className = classes.join(" ");
+            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
         });
     },
 
