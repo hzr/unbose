@@ -482,12 +482,17 @@ var instance_methods = {
     },
 
     name: function() {
-        return this.element.nodeName;
+        return this.element.nodeName.toLowerCase();
     },
 
     next: function() {
-        //todo
-        return this;
+        var nexts = [];
+        this.elements.forEach(function(ele) {
+            if (ele.nextSibling && ele.nodeType == Node.ELEMENT_NODE) {
+                nexts.push(ele.nextSibling);
+            }
+        });
+        return Unbose(nexts);
     },
 
     /**
@@ -579,8 +584,13 @@ var instance_methods = {
     },
 
     prev: function() {
-        //todo
-        return this;
+        var prevs = [];
+        this.elements.forEach(function(ele) {
+            if (ele.previousSibling && ele.nodeType == Node.ELEMENT_NODE) {
+                prevs.push(ele.previousSibling);
+            }
+        });
+        return Unbose(prevs);
     },
 
     setAttr: function(key, val) {

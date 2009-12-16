@@ -25,6 +25,20 @@ test("empty()", function() {
     equals(ele.innerHTML, "");
 });
 
+test("prev()", function() {
+    var ele = Unbose.eleFromZen("body>div+span+div+span");
+    ele = Unbose(ele).find("span").prev();
+    equals(ele.nth(0).name(), "div");
+    equals(ele.length, 2);
+});
+
+test("next()", function() {
+    var ele = Unbose.eleFromZen("body>div+span+div+span");
+    ele = Unbose(ele).find("div").next();
+    equals(ele.nth(0).name(), "span");
+    equals(ele.length, 2);
+});
+
 test("hasClass()", function() {
     var ele = document.createElement("div");
     ele.className = "test";
