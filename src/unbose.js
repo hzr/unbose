@@ -64,6 +64,51 @@ var instance_methods = {
     },
 
     /**
+     * Method: append
+     *
+     * Append an element, an unbose object, a template or a zen string
+     *
+     * Parameters:
+     *
+     *   thing - Thing to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
+     *
+     */
+     append: function(thing) {
+         //todo
+     },
+
+
+
+    /**
+     * Method: appendElem
+     *
+     * Append an element to all elements. If there are multiple elements
+     * in the Unbose object, append clones.
+     *
+     * Parameters:
+     *
+     *   newEle - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendElem: function(newEle) {
+         this.elements.forEach(function(ele) {
+             ele.appendChild(newEle.cloneNode(true));
+         });
+     },
+
+    /**
      * Method: appendTpl
      *
      * Append elements from a template to all elements
@@ -74,13 +119,32 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The Unbose object or an attribute
+     *   The Unbose object
      *
      */
-     appendTpl: function (tpl) {
+     appendTpl: function(tpl) {
          var newEle = Unbose.eleFromTpl(tpl);
-         this.elements.forEach(function(ele) {
-             ele.appendChild(newEle.cloneNode(true));
+         this.appendElem(newEle);
+     },
+
+    /**
+     * Method: appendUnbose
+     *
+     * Append an element to all elements. If there are multiple elements
+     * in the Unbose object, append clones.
+     *
+     * Parameters:
+     *
+     *   ele - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendUnbose: function (ubobj) {
+         ubobj.elem().forEach(function(ele) {
+             this.appendElem(ele);
          });
      },
 
@@ -96,7 +160,7 @@ var instance_methods = {
      *
      * Returns:
      *
-     *   The Unbose object or an attribute
+     *   The Unbose object
      *
      */
      appendZen: function (zen) {
