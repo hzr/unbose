@@ -34,6 +34,7 @@ function Unbose(subject, context) {
             }
         } while (child = child.nextSibling);
     }
+
     this.length = this.elements.length;
     this.element = this.elements[0];
 }
@@ -91,6 +92,7 @@ var instance_methods = {
      */
      append: function(thing) {
          //todo
+         return this;
      },
 
 
@@ -114,6 +116,7 @@ var instance_methods = {
          this.elements.forEach(function(ele) {
              ele.appendChild(newEle.cloneNode(true));
          });
+         return this;
      },
 
     /**
@@ -133,6 +136,7 @@ var instance_methods = {
      appendTpl: function(tpl) {
          var newEle = Unbose.eleFromTpl(tpl);
          this.appendElem(newEle);
+         return this;
      },
 
     /**
@@ -154,6 +158,7 @@ var instance_methods = {
          ubobj.elem().forEach(function(ele) {
              this.appendElem(ele);
          });
+         return this;
      },
 
     /**
@@ -174,6 +179,7 @@ var instance_methods = {
      appendZen: function (zen) {
          var tpl = Unbose.tplFromZen(zen);
          this.appendTpl(tpl);
+         return this;
      },
 
     /**
@@ -229,6 +235,7 @@ var instance_methods = {
      */
     click: function(callback, capturing) {
         this.on("click", callback, capturing);
+         return this;
     },
 
 
@@ -299,7 +306,7 @@ var instance_methods = {
      */
     empty: function() {
         this.elements.forEach(function(ele) {
-            while (ele.firstChild) { ele.removeChild(ele.firstChild) };
+            while (ele.firstChild) { ele.removeChild(ele.firstChild); }
         });
         return this;
     },
@@ -480,6 +487,7 @@ var instance_methods = {
 
     next: function() {
         //todo
+        return this;
     },
 
     /**
@@ -530,9 +538,10 @@ var instance_methods = {
      */
     on: function(name, callback, capture) {
         capture = capture || false;
-        this.elements.forEach(function(ele) {
+            this.elements.forEach(function(ele) {
             ele.addEventListener(name, callback, capture);
         });
+        return this;
     },
 
     /**
@@ -562,6 +571,7 @@ var instance_methods = {
         this.elements.forEach(function(ele) {
             ele.addEventListener(evt, cancelCb, capture);
         });
+        return this;
     },
 
     parent: function() {
@@ -570,6 +580,7 @@ var instance_methods = {
 
     prev: function() {
         //todo
+        return this;
     },
 
     setAttr: function(key, val) {
@@ -603,6 +614,7 @@ var instance_methods = {
      */
     show: function() {
         //todo
+        return this;
     },
 
 
@@ -623,7 +635,7 @@ var instance_methods = {
      * See also:
      *
      * <setStyle>, <getStyle>
-     *     *
+     *
      */
     style: function(attr, value) {
         if (value === undefined){
@@ -670,6 +682,7 @@ var instance_methods = {
         this.elements.forEach(function(ele) {
             Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
         });
+        return this;
     },
 
     /**
@@ -677,6 +690,7 @@ var instance_methods = {
      */
     width: function() {
         //todo
+        return this;
     },
 
     /**
