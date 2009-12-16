@@ -20,7 +20,7 @@ function Unbose(subject, context) {
     else if (subject.nodeType) {
         this.elements = [subject];
     }
-    else if (subject.toString() == "[object Unbose]") {
+    else if (subject instanceof Unbose) {
         this.elements = subject.elements;
     }
     else if (subject instanceof Array) {
