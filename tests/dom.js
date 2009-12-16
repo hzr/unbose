@@ -162,9 +162,7 @@ test("eleFromTpl", function() {
     equals(ele.find("h1").nth(1).attr("id"), "id");
     equals(ele.find("span").attr("id"), "id2");
     ok(ele.find("h1").nth(1).hasClass("class1"));
-
 });
-
 
 test("eleFromTpl class/id parsing", function() {
     var tpl = ["div#foo.bar#baz"];
@@ -173,9 +171,8 @@ test("eleFromTpl class/id parsing", function() {
     ele = Unbose(ele);
     ok(ele);
     equals(ele.length, 1);
-    equals(ele.id, "baz");
-    equals(ele.className, "bar");
-
+    equals(ele.attr("id"), "baz");
+    ok(ele.hasClass("bar"));
 });
 
 test("eleFromZen", function() {

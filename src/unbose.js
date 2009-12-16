@@ -656,20 +656,22 @@ Unbose.eleFromTpl = function(tpl) {
     }
     return elem;
 
+
     function createElementWithAttrs(text) {
-        var parts = text.match(/([\w#\.]\w*)/g); // FIXME: this one is wrong, fails e.g. for "div#id.class..#.."
+        var parts = text.split(/([#\.])/);
         var ele = document.createElement(parts.shift());
-        var part;
-        while (part = parts.shift()) {
-            if (part[0] == ".") {
-                Unbose(ele).addClass(part.slice(1));
+        var type, value;
+        while ((type = parts.shift()) && (value = parts.shift())) {
+            if (type == ".") {
+                Unbose(ele).addClass(value);
             }
             else {
-                ele.id = part.slice(1);
+                ele.id = value;
             }
         }
         return ele;
     }
+
 };
 
 /**
