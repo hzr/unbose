@@ -12,9 +12,10 @@ test("Basic tests", function() {
 
     equals(subject.element.nodeName.toLowerCase(),"html");
 
-    subject = Unbose(document);
-    equals(subject.length, 1);
-
+    subject = document.createDocumentFragment();
+    subject.appendChild(document.createElement("div"));
+    subject.appendChild(document.createElement("div"));
+    equals(Unbose(subject).length, 2);
 });
 
 

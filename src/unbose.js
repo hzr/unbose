@@ -17,14 +17,22 @@ function Unbose(subject, context) {
             this.elements.push(e);
         }
     }
-    else if (subject.nodeType) {
-        this.elements = [subject];
-    }
     else if (subject instanceof Unbose) {
         this.elements = subject.elements;
     }
     else if (subject instanceof Array) {
         this.elements = subject;
+    }
+    else if (subject instanceof HTMLElement) {
+        this.elements = [subject];
+    }
+    else if (subject instanceof DocumentFragment) {
+        var child = subject.firstChild;
+        do {
+            if (child.nodeType == Node.ELEMENT_NODE) {
+                this.elements.push(child);
+            }
+        } while (child = child.nextSibling);
     }
     this.length = this.elements.length;
     this.element = this.elements[0];
@@ -679,7 +687,7 @@ var instance_methods = {
         this.elements.forEach(function(element) {
             var child = element.parentNode.firstChild;
             do {
-                if (child != element && child.nodeType == 1) {
+                if (child != element && child.nodeType == Node.ELEMENT_NODE) {
                     siblings.push(child);
                 }
             } while (child = child.nextSibling);
