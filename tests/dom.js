@@ -39,6 +39,13 @@ test("next()", function() {
     equals(ele.length, 2);
 });
 
+test("remove()", function() {
+    var ele = Unbose.eleFromZen("div>span");
+    ele = Unbose(ele).find("span");
+    ele.remove();
+    equals(ele.find("span").length, 0);
+});
+
 test("hasClass()", function() {
     var ele = document.createElement("div");
     ele.className = "test";

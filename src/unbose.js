@@ -478,7 +478,7 @@ var instance_methods = {
      * Returns the last element in the set.
      */
     last: function() {
-        return this.elements[this.element.length-1];
+        return this.elements[this.elements.length-1];
     },
 
     name: function() {
@@ -591,6 +591,13 @@ var instance_methods = {
             }
         });
         return Unbose(prevs);
+    },
+
+    remove: function() {
+        this.elements.forEach(function(ele) {
+            if (ele.parentNode) { ele.parentNode.removeChild(ele); }
+        });
+        return this;
     },
 
     setAttr: function(key, val) {
