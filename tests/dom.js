@@ -39,6 +39,12 @@ test("next()", function() {
     equals(ele.length, 2);
 });
 
+test("children()", function() {
+    var ele = Unbose.eleFromZen("body>div+span+div+span");
+    ele = Unbose(ele);
+    equals(ele.children().length, 4);
+});
+
 test("remove()", function() {
     var ele = Unbose.eleFromZen("div>span");
     ele = Unbose(ele).find("span");
@@ -152,6 +158,10 @@ test("parent()", function() {
     var subject = Unbose(ele);
     equals(subject.parent().elem(0), document.body);
     document.body.removeChild(ele);
+
+    ele = Unbose.eleFromZen("body>div+span+div+span");
+    ele = Unbose(ele).find("div");
+    equals(ele.parent().length, 1);
 });
 
 test("siblings()", function() {
@@ -159,7 +169,7 @@ test("siblings()", function() {
     var subject = Unbose(ele).find("p");
     equals(subject.siblings().length, 2);
     subject = Unbose(ele).find("i");
-    equals(subject.siblings().length, 6);
+    equals(subject.siblings().length, 5);
 });
 
 test("eleFromTpl", function() {

@@ -13,7 +13,7 @@ function Unbose(subject, context) {
 
     if (typeof subject == "string") {
         var elems = (context || document).querySelectorAll(subject);
-        for (var n=0, e; e=elems[n]; n++) {
+        for (var i = 0, e; e = elems[i]; i++) {
             this.elements.push(e);
         }
     }
@@ -39,8 +39,7 @@ function Unbose(subject, context) {
     this.element = this.elements[0];
 }
 
-
-var instance_methods = {
+Unbose.prototype = {
     toString: function() {
         return "[object Unbose]";
     },
@@ -441,7 +440,7 @@ var instance_methods = {
     /**
      * Method: forEach
      *
-     * Call a function for all elements in the Unbose set
+     *   Call a function for all elements in the Unbose set
      *
      * Parameters:
      *
@@ -462,6 +461,15 @@ var instance_methods = {
         return this;
     },
 
+    /**
+     * Method: name
+     *
+     *   Get the element name of the first element in the set
+     *
+     * Returns:
+     *
+     *   The name of the first element in the set
+     */
     name: function() {
         return this.element.nodeName.toLowerCase();
     },
@@ -469,7 +477,7 @@ var instance_methods = {
     /**
      * Method: parent
      *
-     *   Returns the Unbose object for the elements parents
+     *   Returns the elements parents
      *
      * Returns:
      *
@@ -477,17 +485,25 @@ var instance_methods = {
      *
      * See also:
      *
-     * <children>
+     *   <children>
      *
      */
     parent: function() {
-        return Unbose(this.element.parentNode || null);
+        var parents = [];
+        this.elements.forEach(function(ele) {
+            var parent = ele.parentNode;
+            if (parent && parents.indexOf(parent) == -1)
+            {
+                parents.push(parent);
+            }
+        });
+        return Unbose(parents);
     },
 
     /**
      * Method: children
      *
-     *   Returns the Unbose object for the elements children
+     *   Returns the elements children
      *
      * Returns:
      *
@@ -495,12 +511,47 @@ var instance_methods = {
      *
      * See also:
      *
-     * <parent>
+     *   <parent>
      *
      */
     children: function() {
-        // todo
-        return this;
+        var children = [];
+        this.elements.forEach(function(ele) {
+            var child = ele.firstChild;
+            do {
+                if (child && child.nodeType == Node.ELEMENT_NODE
+                    && children.indexOf(child) == -1)
+                {
+                    children.push(child);
+                }
+            } while (child = child.nextSibling);
+        });
+        return Unbose(children);
+    },
+
+    /**
+     * Method: siblings
+     *
+     *   Get the siblings of the elements in the set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    siblings: function() {
+        var siblings = [];
+        this.elements.forEach(function(ele) {
+            var child = ele.parentNode.firstChild;
+            do {
+                if (child != ele && child.nodeType == Node.ELEMENT_NODE
+                    && siblings.indexOf(child) == -1)
+                {
+                    siblings.push(child);
+                }
+            } while (child = child.nextSibling);
+        });
+        return Unbose(siblings);
     },
 
     /**
@@ -585,29 +636,6 @@ var instance_methods = {
             }
         });
         return Unbose(nexts);
-    },
-
-    /**
-     * Method: next
-     *
-     *  Get the siblings of the elements in the set
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    siblings: function() {
-        var siblings = [];
-        this.elements.forEach(function(element) {
-            var child = element.parentNode.firstChild;
-            do {
-                if (child != element && child.nodeType == Node.ELEMENT_NODE) {
-                    siblings.push(child);
-                }
-            } while (child = child.nextSibling);
-        });
-        return Unbose(siblings);
     },
 
     /**
@@ -895,7 +923,7 @@ Unbose.eleFromTpl = function(tpl) {
         index++;
         if (typeof tpl[index] === "object") {
             var props = tpl[index++];
-            for (key in props) {
+            for (var key in props) {
                 elem.setAttribute(key, props[key]);
             }
         }
@@ -913,7 +941,7 @@ Unbose.eleFromTpl = function(tpl) {
     }
 
     // flatten unneeded documentfragments
-    if (elem instanceof DocumentFragment && elem.childNodes.length==1) {
+    if (elem instanceof DocumentFragment && elem.childNodes.length == 1) {
         elem = elem.firstChild;
     }
     return elem;
@@ -933,7 +961,6 @@ Unbose.eleFromTpl = function(tpl) {
         }
         return ele;
     }
-
 };
 
 /**
@@ -943,8 +970,8 @@ Unbose.eleFromTpl = function(tpl) {
  */
 Unbose.list = function(whatever) {
     var ret = [];
-    for (var n=0, l=whatever.length; n<l; n++) {
-        ret.push(whatever[n]);
+    for (var i = 0, l = whatever.length; i < l; i++) {
+        ret.push(whatever[i]);
     }
 };
 
@@ -956,7 +983,7 @@ Unbose.tplFromZen = function(zen) {
     function parse_zencode(str) {
         str = str.split("");
         var ret = [];
-        var n=10;
+        var n = 10;
         while (str.length && --n) {
             ret = ret.concat((parse_expr(str)));
         }
@@ -969,7 +996,8 @@ Unbose.tplFromZen = function(zen) {
             str.shift();
             ret = parse_expr(str);
             str.shift(); // fixme Make sure it's ")"
-        } else {
+        }
+        else {
             ret = parse_tag(str);
         }
 
@@ -1052,9 +1080,10 @@ Unbose.tplFromZen = function(zen) {
             var chr = str.shift();
             if (chr == ".") {
                 var className = consume_name(str);
-                if ("class" in props) {
+                if (props["class"]) {
                     props["class"] = props["class"] + " " + className;
-                } else {
+                }
+                else {
                     props["class"] = className;
                 }
             }
@@ -1075,13 +1104,9 @@ Unbose.tplFromZen = function(zen) {
         }
         return props;
     }
-
-
 };
 
 Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
-
-Unbose.prototype = instance_methods;
 
