@@ -46,7 +46,22 @@ var instance_methods = {
     },
 
     /**
-     * Check if element has class cls
+     * Method: hasClass
+     *
+     * Check if the elements in the set has a specific class
+     *
+     * Parameters:
+     *
+     *   cls - The class name to check for
+     *
+     * Returns:
+     *
+     *   True if all the elements in the set has the class, false othwerwise
+     *
+     * See also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
@@ -109,7 +124,22 @@ var instance_methods = {
     },
 
     /**
-     * Set cls if it's not set, if it's set, unset it.
+     * Method: toggleClass
+     *
+     * Set class name if it's not set, unset it otherwise
+     *
+     * Parameters:
+     *
+     *   cls - The class name to toggle.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <delClass>
+     *
      */
     toggleClass: function(cls) {
         this.elements.forEach(function(ele) {
@@ -234,7 +264,7 @@ var instance_methods = {
      *
      * Parameters:
      *
-     *   key - Attribute to get or set
+     *   name - Attribute to get or set
      *   val - (optional) Value to set to
      *
      * Returns:
@@ -246,12 +276,12 @@ var instance_methods = {
      *   <getAttr>, <setAttr>
      *
      */
-    attr: function(key, val) {
+    attr: function(name, val) {
         if (val === undefined) {
-            return this.getAttr(key);
+            return this.getAttr(name);
         }
         else {
-            this.setAttr(key, val);
+            this.setAttr(name, val);
             return this;
         }
     },
@@ -263,7 +293,7 @@ var instance_methods = {
      *
      * Parameters:
      *
-     *   name - Name of the property to get
+     *   name - Name of the attribute to get
      *
      * Returns:
      *
@@ -282,9 +312,24 @@ var instance_methods = {
         return this.element.getAttribute(name) || this.element[name];
     },
 
-    setAttr: function(key, val) {
+    /**
+     * Method: setAttr
+     *
+     * Set the value of an attribute
+     *
+     * Parameters:
+     *
+     *   name - Name of the attribute to set
+     *   val - The value of the attribute
+     *
+     * Returns:
+     *
+     *  The Unbose object
+     *
+     */
+    setAttr: function(name, val) {
         this.elements.forEach(function(ele) {
-            ele.setAttribute(key, val);
+            ele.setAttribute(name, val);
         });
         return this;
     },
@@ -311,7 +356,7 @@ var instance_methods = {
      */
     click: function(callback, capturing) {
         this.on("click", callback, capturing);
-         return this;
+        return this;
     },
 
     /**
@@ -368,6 +413,9 @@ var instance_methods = {
         return this;
     },
 
+    /**
+     *
+     */
     filter: function(fun, context) {
         return this.elements.filter(fun, context || this);
     },
@@ -418,10 +466,38 @@ var instance_methods = {
         return this.element.nodeName.toLowerCase();
     },
 
+    /**
+     * Method: parent
+     *
+     *   Returns the Unbose object for the elements parents
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <children>
+     *
+     */
     parent: function() {
         return Unbose(this.element.parentNode || null);
     },
 
+    /**
+     * Method: children
+     *
+     *   Returns the Unbose object for the elements children
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <parent>
+     *
+     */
     children: function() {
         // todo
         return this;
@@ -430,7 +506,7 @@ var instance_methods = {
     /**
      * Method: first
      *
-     *   Returns the Unbose object for the first element in the Unbose set
+     *   Get the first element in the set
      *
      * Returns:
      *
@@ -446,12 +522,37 @@ var instance_methods = {
     },
 
     /**
-     * Returns the last element in the set.
+     * Method: last
+     *
+     *   Get the last element in the set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <first>, <nth>
+     *
      */
     last: function() {
         return this.elements[this.elements.length-1];
     },
 
+    /**
+     * Method: prev
+     *
+     *  Get the previous siblings of the elements in the set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <next>
+     *
+     */
     prev: function() {
         var prevs = [];
         this.elements.forEach(function(ele) {
@@ -462,6 +563,20 @@ var instance_methods = {
         return Unbose(prevs);
     },
 
+    /**
+     * Method: next
+     *
+     *  Get the next siblings of the elements in the set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <prev>
+     *
+     */
     next: function() {
         var nexts = [];
         this.elements.forEach(function(ele) {
@@ -473,7 +588,14 @@ var instance_methods = {
     },
 
     /**
-     * Return the element(s) siblings
+     * Method: next
+     *
+     *  Get the siblings of the elements in the set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
      */
     siblings: function() {
         var siblings = [];
@@ -562,6 +684,16 @@ var instance_methods = {
         return this;
     },
 
+    /**
+     * Method: remove
+     *
+     *   Remove this element
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
     remove: function() {
         this.elements.forEach(function(ele) {
             if (ele.parentNode) { ele.parentNode.removeChild(ele); }
@@ -606,23 +738,42 @@ var instance_methods = {
      *
      *   A string. If the element has no text content, an empty string.
      *
-     * Todo:
-     *
      */
     getText: function() {
         return this.element.textContent || "";
     },
 
     /**
-     * Set the text content of the element or set of elements
+     * Method: setText
+     *
+     * Set the text content of the set of elements
+     *
+     * Parameters:
+     *
+     *   text - The text to set
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
      */
-    setText: function(newText) {
-        this.forEach(function(ele) { ele.element.textContent = newText; });
+    setText: function(text) {
+        this.forEach(function(ele) { ele.element.textContent = text; });
         return this;
     },
 
-    setVal: function(key, val) {
-        this.forEach(function(ele) { ele.element.setAttribute(key, val); });
+    val: function(val) {
+        // todo
+        return this;
+    },
+
+    getVal: function() {
+        // todo
+        return this;
+    },
+
+    setVal: function(val) {
+        // todo
         return this;
     },
 
@@ -673,6 +824,12 @@ var instance_methods = {
         return this.element.style[attr];
     },
 
+    /**
+     * Method: setStyle
+     *
+     * Set the style value of the first element of the set
+     *
+     */
     setStyle: function(name, value) {
         // fixme: check style name map
         this.forEach(function(ele) { ele.element.style[name] = value; });
@@ -683,7 +840,7 @@ var instance_methods = {
      * Return the width of the element in pixels
      */
     width: function() {
-        //todo
+        // todo
         return this;
     },
 
@@ -691,7 +848,8 @@ var instance_methods = {
      * Returns the height of the element in pixels.
      */
     height: function() {
-        //todo
+        // todo
+        return this;
     },
 
     /**
@@ -713,7 +871,14 @@ var instance_methods = {
     },
 
     /**
+     * Method: show
+     *
      * Show an element by clearing its display style element.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
      */
     show: function() {
         //todo
