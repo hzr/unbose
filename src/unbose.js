@@ -46,6 +46,15 @@ var instance_methods = {
     },
 
     /**
+     * Check if element has class cls
+     */
+    hasClass: function(cls) {
+        return this.elements.some(function(ele) {
+            return ele.className.split(" ").indexOf(cls) != -1;
+        });
+    },
+
+    /**
      * Method: addClass
      *
      * Add a class to the element, or to all elements in the set
@@ -73,6 +82,43 @@ var instance_methods = {
     },
 
     /**
+     * Method: delClass
+     *
+     * Removes a class from the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - The class name to delete as a string.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <toggleClass>
+     *
+     */
+    delClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            if (Unbose(ele).hasClass(cls)) {
+                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
+            }
+        });
+        return this;
+    },
+
+    /**
+     * Set cls if it's not set, if it's set, unset it.
+     */
+    toggleClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
+        });
+        return this;
+    },
+
+    /**
      * Method: append
      *
      * Append an element, an unbose object, a template or a zen string
@@ -94,8 +140,6 @@ var instance_methods = {
          //todo
          return this;
      },
-
-
 
     /**
      * Method: appendElem
@@ -212,170 +256,6 @@ var instance_methods = {
         }
     },
 
-
-    /**
-     * Method: click
-     *
-     * Adds a click event.
-     * Shorthand for on("click", callback);
-     *
-     * Parameters:
-     *
-     *   callback - The class name to delete as a string.
-     *   capturing - Use capturing.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <on>
-     *
-     */
-    click: function(callback, capturing) {
-        this.on("click", callback, capturing);
-         return this;
-    },
-
-
-    /**
-     * Method: delClass
-     *
-     * Removes a class from the element, or to all elements in the set
-     *
-     * Parameters:
-     *
-     *   cls - The class name to delete as a string.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <addClass>, <hasClass>, <toggleClass>
-     *
-     */
-    delClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            if (Unbose(ele).hasClass(cls)) {
-                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
-            }
-        });
-        return this;
-    },
-
-    /**
-     * Method: elem
-     *
-     * Gets an HTMLElement from the Unbose object, or an array of all
-     * HTMLElements in the collection.
-     *
-     * Parameters:
-     *
-     *   index - The index of the element in the set
-     *
-     * Returns:
-     *
-     *   An HTMLElement
-     *
-     * Fixme:
-     *
-     *   Should the retval with no args be the array or a copy of it?
-     *
-     */
-    elem: function(index) {
-        if (index === undefined) {
-            return this.elements;
-        }
-        else {
-            return this.elements[index];
-        }
-    },
-
-    /**
-     * Method: empty
-     *
-     *   Remove all children of the element, or of all elements in the set.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-    empty: function() {
-        this.elements.forEach(function(ele) {
-            while (ele.firstChild) { ele.removeChild(ele.firstChild); }
-        });
-        return this;
-    },
-
-    filter: function(fun, context) {
-        return this.elements.filter(fun, context || this);
-    },
-
-    /**
-     * Method: find
-     *
-     *   Find decendents of the set of objects that match a selector
-     *
-     * Parameters:
-     *
-     *   selector - Selector used to find matching elements
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    find: function(selector) {
-        return Unbose(selector, this.element);
-    },
-
-    /**
-     * Method: first
-     *
-     *   Returns the Unbose object for the first element in the Unbose set
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * See also:
-     *
-     * <last>, <nth>
-     *
-     */
-    first: function() {
-        return Unbose(this.elements[0]);
-    },
-
-    /**
-     * Method: forEach
-     *
-     * Call a function for all elements in the Unbose set
-     *
-     * Parameters:
-     *
-     *   function - The function to call
-     *   context - (optional) context, the value of "this" for the function
-     *             calls
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * Todo:
-     *
-     *   Should we pass ele or Unbose object to args?
-     */
-    forEach: function(fun, context) {
-        this.elements.forEach(fun, context || this);
-        return this;
-    },
-
-
     /**
      * Method: getAttr
      *
@@ -402,128 +282,37 @@ var instance_methods = {
         return this.element.getAttribute(name) || this.element[name];
     },
 
-
-
-    /**
-     * Method: getStyle
-     *
-     * Get the style value of the first element of the set
-     *
-     * Parameters:
-     *
-     *   attr - The name of the style attribute
-     *
-     * Fixme:
-     *
-     *   This should use getComputedStyle I guess?
-     *   Should it get from first or all? If all, how?
-     *
-     */
-    getStyle: function(attr) {
-        return this.element.style[attr];
-    },
-
-
-    /**
-     * Method: getText
-     *
-     * Get the text content of the first element of the set
-     *
-     * Returns:
-     *
-     *   A string. If the element has no text content, an empty string.
-     *
-     * Todo:
-     *
-     */
-    getText: function() {
-        return this.element.textContent || "";
-    },
-
-    /**
-     * Check if element has class cls
-     */
-    hasClass: function(cls) {
-        return this.elements.some(function(ele) {
-            return ele.className.split(" ").indexOf(cls) != -1;
-        });
-    },
-
-    /**
-     * Returns the height of the element in pixels.
-     */
-    height: function() {
-        //todo
-    },
-
-    /**
-     * Method: hide
-     *
-     * Hides the element or set of elements by setting the "display"
-     * style property to none.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-    hide: function() {
+    setAttr: function(key, val) {
         this.elements.forEach(function(ele) {
-            ele.style.display = "none";
+            ele.setAttribute(key, val);
         });
         return this;
     },
 
     /**
-     * Returns the last element in the set.
-     */
-    last: function() {
-        return this.elements[this.elements.length-1];
-    },
-
-    name: function() {
-        return this.element.nodeName.toLowerCase();
-    },
-
-    next: function() {
-        var nexts = [];
-        this.elements.forEach(function(ele) {
-            if (ele.nextSibling && ele.nodeType == Node.ELEMENT_NODE) {
-                nexts.push(ele.nextSibling);
-            }
-        });
-        return Unbose(nexts);
-    },
-
-    /**
-     * Method: nth
+     * Method: click
      *
-     * Returns the Unbose object for the nth element in the Unbose set
+     * Adds a click event.
+     * Shorthand for on("click", callback);
      *
      * Parameters:
      *
-     *   index - index in the list
+     *   callback - The class name to delete as a string.
+     *   capturing - Use capturing.
      *
      * Returns:
      *
-     *   An Unbose object
-     *
-     * Example:
-     *
-     * Get the second h1 tag in the document:
-     * (example)
-     * Unbose("h1").nth(1);
-     * (end)
+     *   The Unbose object
      *
      * See also:
      *
-     * <first>, <last>
+     *   <on>
      *
      */
-    nth: function(index) {
-        return Unbose(this.elements[index]);
+    click: function(callback, capturing) {
+        this.on("click", callback, capturing);
+         return this;
     },
-
 
     /**
      * Method: on
@@ -579,8 +368,88 @@ var instance_methods = {
         return this;
     },
 
+    filter: function(fun, context) {
+        return this.elements.filter(fun, context || this);
+    },
+
+    /**
+     * Method: find
+     *
+     *   Find decendents of the set of objects that match a selector
+     *
+     * Parameters:
+     *
+     *   selector - Selector used to find matching elements
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    find: function(selector) {
+        return Unbose(selector, this.element);
+    },
+
+    /**
+     * Method: forEach
+     *
+     * Call a function for all elements in the Unbose set
+     *
+     * Parameters:
+     *
+     *   function - The function to call
+     *   context - (optional) context, the value of "this" for the function
+     *             calls
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * Todo:
+     *
+     *   Should we pass ele or Unbose object to args?
+     */
+    forEach: function(fun, context) {
+        this.elements.forEach(fun, context || this);
+        return this;
+    },
+
+    name: function() {
+        return this.element.nodeName.toLowerCase();
+    },
+
     parent: function() {
         return Unbose(this.element.parentNode || null);
+    },
+
+    children: function() {
+        // todo
+        return this;
+    },
+
+    /**
+     * Method: first
+     *
+     *   Returns the Unbose object for the first element in the Unbose set
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     * <last>, <nth>
+     *
+     */
+    first: function() {
+        return Unbose(this.elements[0]);
+    },
+
+    /**
+     * Returns the last element in the set.
+     */
+    last: function() {
+        return this.elements[this.elements.length-1];
     },
 
     prev: function() {
@@ -593,76 +462,112 @@ var instance_methods = {
         return Unbose(prevs);
     },
 
+    next: function() {
+        var nexts = [];
+        this.elements.forEach(function(ele) {
+            if (ele.nextSibling && ele.nodeType == Node.ELEMENT_NODE) {
+                nexts.push(ele.nextSibling);
+            }
+        });
+        return Unbose(nexts);
+    },
+
+    /**
+     * Return the element(s) siblings
+     */
+    siblings: function() {
+        var siblings = [];
+        this.elements.forEach(function(element) {
+            var child = element.parentNode.firstChild;
+            do {
+                if (child != element && child.nodeType == Node.ELEMENT_NODE) {
+                    siblings.push(child);
+                }
+            } while (child = child.nextSibling);
+        });
+        return Unbose(siblings);
+    },
+
+    /**
+     * Method: nth
+     *
+     * Returns the Unbose object for the nth element in the Unbose set
+     *
+     * Parameters:
+     *
+     *   index - index in the list
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * Example:
+     *
+     * Get the second h1 tag in the document:
+     * (example)
+     * Unbose("h1").nth(1);
+     * (end)
+     *
+     * See also:
+     *
+     * <first>, <last>
+     *
+     */
+    nth: function(index) {
+        return Unbose(this.elements[index]);
+    },
+
+    /**
+     * Method: elem
+     *
+     * Gets an HTMLElement from the Unbose object, or an array of all
+     * HTMLElements in the collection.
+     *
+     * Parameters:
+     *
+     *   index - The index of the element in the set
+     *
+     * Returns:
+     *
+     *   An HTMLElement
+     *
+     * Fixme:
+     *
+     *   Should the retval with no args be the array or a copy of it?
+     *
+     */
+    elem: function(index) {
+        if (index === undefined) {
+            return this.elements;
+        }
+        else {
+            return this.elements[index];
+        }
+    },
+
+    /**
+     * Method: empty
+     *
+     *   Remove all children of the element, or of all elements in the set.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    empty: function() {
+        this.elements.forEach(function(ele) {
+            while (ele.firstChild) { ele.removeChild(ele.firstChild); }
+        });
+        return this;
+    },
+
     remove: function() {
         this.elements.forEach(function(ele) {
             if (ele.parentNode) { ele.parentNode.removeChild(ele); }
         });
         return this;
     },
-
-    setAttr: function(key, val) {
-        this.elements.forEach(function(ele) {
-            ele.setAttribute(key, val);
-        });
-        return this;
-    },
-
-    setStyle: function(name, value) {
-        // fixme: check style name map
-        this.forEach(function(ele) { ele.element.style[name] = value; });
-        return this;
-    },
-
-    /**
-     * Set the text content of the element or set of elements
-     */
-    setText: function(newText) {
-        this.forEach(function(ele) { ele.element.textContent = newText; });
-        return this;
-    },
-
-    setVal: function(key, val) {
-        this.forEach(function(ele) { ele.element.setAttribute(key, val); });
-        return this;
-    },
-
-    /**
-     * Show an element by clearing its display style element.
-     */
-    show: function() {
-        //todo
-        return this;
-    },
-
-
-    /**
-     * Method: style
-     *
-     * Set or get a style attribute.
-     *
-     * Parameters:
-     *
-     *   attr - Name of style attribute
-     *   value - (optional) new value of style attribute
-     *
-     * Returns:
-     *
-     *   An Unbose object or a string
-     *
-     * See also:
-     *
-     * <setStyle>, <getStyle>
-     *
-     */
-    style: function(attr, value) {
-        if (value === undefined){
-            return this.getStyle(attr);
-        }
-        else {
-            return this.setStyle(attr, value);
-        }
-    },
-
 
     /**
      * Method: text
@@ -693,12 +598,84 @@ var instance_methods = {
     },
 
     /**
-     * Set cls if it's not set, if it's set, unset it.
+     * Method: getText
+     *
+     * Get the text content of the first element of the set
+     *
+     * Returns:
+     *
+     *   A string. If the element has no text content, an empty string.
+     *
+     * Todo:
+     *
      */
-    toggleClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
-        });
+    getText: function() {
+        return this.element.textContent || "";
+    },
+
+    /**
+     * Set the text content of the element or set of elements
+     */
+    setText: function(newText) {
+        this.forEach(function(ele) { ele.element.textContent = newText; });
+        return this;
+    },
+
+    setVal: function(key, val) {
+        this.forEach(function(ele) { ele.element.setAttribute(key, val); });
+        return this;
+    },
+
+    /**
+     * Method: style
+     *
+     * Set or get a style attribute.
+     *
+     * Parameters:
+     *
+     *   attr - Name of style attribute
+     *   value - (optional) new value of style attribute
+     *
+     * Returns:
+     *
+     *   An Unbose object or a string
+     *
+     * See also:
+     *
+     * <setStyle>, <getStyle>
+     *
+     */
+    style: function(attr, value) {
+        if (value === undefined){
+            return this.getStyle(attr);
+        }
+        else {
+            return this.setStyle(attr, value);
+        }
+    },
+
+    /**
+     * Method: getStyle
+     *
+     * Get the style value of the first element of the set
+     *
+     * Parameters:
+     *
+     *   attr - The name of the style attribute
+     *
+     * Fixme:
+     *
+     *   This should use getComputedStyle I guess?
+     *   Should it get from first or all? If all, how?
+     *
+     */
+    getStyle: function(attr) {
+        return this.element.style[attr];
+    },
+
+    setStyle: function(name, value) {
+        // fixme: check style name map
+        this.forEach(function(ele) { ele.element.style[name] = value; });
         return this;
     },
 
@@ -711,19 +688,36 @@ var instance_methods = {
     },
 
     /**
-     * Return the element(s) siblings
+     * Returns the height of the element in pixels.
      */
-    siblings: function() {
-        var siblings = [];
-        this.elements.forEach(function(element) {
-            var child = element.parentNode.firstChild;
-            do {
-                if (child != element && child.nodeType == Node.ELEMENT_NODE) {
-                    siblings.push(child);
-                }
-            } while (child = child.nextSibling);
+    height: function() {
+        //todo
+    },
+
+    /**
+     * Method: hide
+     *
+     * Hides the element or set of elements by setting the "display"
+     * style property to none.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    hide: function() {
+        this.elements.forEach(function(ele) {
+            ele.style.display = "none";
         });
-        return Unbose(siblings);
+        return this;
+    },
+
+    /**
+     * Show an element by clearing its display style element.
+     */
+    show: function() {
+        //todo
+        return this;
     }
 };
 
