@@ -8,7 +8,7 @@ test("Basic tests", function() {
     equals(subject.length, 1);
 
     subject = Unbose("*");
-    equals(subject.length, 14);
+    equals(subject.length, 15);
 
     equals(subject.element.nodeName.toLowerCase(),"html");
 
