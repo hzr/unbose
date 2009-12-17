@@ -422,7 +422,7 @@ Unbose.prototype = {
     /**
      * Method: find
      *
-     *   Find decendents of the set of objects that match a selector
+     * Find decendents of the set of objects that match a selector
      *
      * Parameters:
      *
@@ -440,7 +440,7 @@ Unbose.prototype = {
     /**
      * Method: forEach
      *
-     *   Call a function for all elements in the Unbose set
+     * Call a function for all elements in the Unbose set
      *
      * Parameters:
      *
@@ -464,7 +464,7 @@ Unbose.prototype = {
     /**
      * Method: name
      *
-     *   Get the element name of the first element in the set
+     * Get the element name of the first element in the set
      *
      * Returns:
      *
@@ -477,7 +477,7 @@ Unbose.prototype = {
     /**
      * Method: parent
      *
-     *   Returns the elements parents
+     * Returns the elements parents
      *
      * Returns:
      *
@@ -503,7 +503,7 @@ Unbose.prototype = {
     /**
      * Method: children
      *
-     *   Returns the elements children
+     * Returns the elements children
      *
      * Returns:
      *
@@ -533,7 +533,7 @@ Unbose.prototype = {
     /**
      * Method: siblings
      *
-     *   Get the siblings of the elements in the set
+     * Get the siblings of the elements in the set
      *
      * Returns:
      *
@@ -559,7 +559,7 @@ Unbose.prototype = {
     /**
      * Method: first
      *
-     *   Get the first element in the set
+     * Get the first element in the set
      *
      * Returns:
      *
@@ -577,7 +577,7 @@ Unbose.prototype = {
     /**
      * Method: last
      *
-     *   Get the last element in the set
+     * Get the last element in the set
      *
      * Returns:
      *
@@ -595,7 +595,7 @@ Unbose.prototype = {
     /**
      * Method: prev
      *
-     *  Get the previous siblings of the elements in the set
+     * Get the previous siblings of the elements in the set
      *
      * Returns:
      *
@@ -619,7 +619,7 @@ Unbose.prototype = {
     /**
      * Method: next
      *
-     *  Get the next siblings of the elements in the set
+     * Get the next siblings of the elements in the set
      *
      * Returns:
      *
@@ -704,7 +704,7 @@ Unbose.prototype = {
     /**
      * Method: empty
      *
-     *   Remove all children of the element, or of all elements in the set.
+     * Remove all children of the element, or of all elements in the set.
      *
      * Returns:
      *
@@ -721,7 +721,7 @@ Unbose.prototype = {
     /**
      * Method: remove
      *
-     *   Remove the set of elements
+     * Remove the set of elements
      *
      * Returns:
      *
@@ -766,7 +766,7 @@ Unbose.prototype = {
     /**
      * Method: getText
      *
-     *   Get the text content of the first element of the set
+     * Get the text content of the first element of the set
      *
      * Returns:
      *
@@ -780,7 +780,7 @@ Unbose.prototype = {
     /**
      * Method: setText
      *
-     *   Set the text content of the set of elements
+     * Set the text content of the set of elements
      *
      * Parameters:
      *
