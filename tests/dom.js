@@ -6,7 +6,7 @@ test("text()", function() {
 
     equals(subject.text(), "unbose tests");
 
-    subject.setText("Unbose tests");
+    subject.text("Unbose tests");
 
     equals(subject.text(), "Unbose tests");
 });

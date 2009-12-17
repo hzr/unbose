@@ -640,7 +640,22 @@ Unbose.prototype = {
         return Unbose(nexts);
     },
 
-    closest: function() {
+    /**
+     * Method: closest
+     *
+     * Finds the closest element, ancestor or descendant, that matches the expression.
+     *
+     * Parameters:
+     *
+     *   expr - The expression for which to search for
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    closest: function(expr) {
+        // todo
         return this;
     },
 
@@ -855,7 +870,7 @@ Unbose.prototype = {
      *
      */
     getStyle: function(attr) {
-        return this.element[0].style[attr];
+        return this.elements[0].style[attr];
     },
 
     /**
