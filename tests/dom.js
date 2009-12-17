@@ -6,6 +6,9 @@ test("text()", function() {
 
     equals(subject.text(), "unbose tests");
 
+    subject.setText("Unbose tests");
+
+    equals(subject.text(), "Unbose tests");
 });
 
 test("attr -> getAttr", function() {
@@ -88,7 +91,6 @@ test("addClass()", function() {
     ok(subject.hasClass("baz-meh"));
 
     equals(subject, subject.addClass("flabaten"));
-
 });
 
 test("delClass()", function() {
