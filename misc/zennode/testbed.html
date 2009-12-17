@@ -10,7 +10,7 @@ input {
 
 </style>
 
-<script src="../../../src/unbose.js"></script>
+<script src="../../src/unbose.js"></script>
 <script>
 // Helper function for making an html string
 function zen(s) {
@@ -20,9 +20,6 @@ function zen(s) {
 }
 
 function doParse(selector) {
-        document.getElementById("output").textContent = zen(selector);
-return
-
     try {
         document.getElementById("output").textContent = zen(selector);
     } catch(e) {
