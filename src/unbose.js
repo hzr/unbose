@@ -8,8 +8,8 @@ function Unbose(subject, context) {
     if (! (this instanceof Unbose)) {
         return new Unbose(subject, context);
     }
+
     this.elements = [];
-    this.element = {};
 
     if (typeof subject == "string") {
         var elems = (context || document).querySelectorAll(subject);
@@ -37,7 +37,6 @@ function Unbose(subject, context) {
     }
 
     this.length = this.elements.length;
-    this.element = this.elements[0];
 }
 
 Unbose.prototype = {
@@ -309,7 +308,7 @@ Unbose.prototype = {
      *
      */
     getAttr: function(name) {
-        return this.element.getAttribute(name) || this.element[name];
+        return this.elements[0].getAttribute(name) || this.elements[0][name];
     },
 
     /**
@@ -435,7 +434,7 @@ Unbose.prototype = {
      *
      */
     find: function(selector) {
-        return Unbose(selector, this.element);
+        return Unbose(selector, this.elements[0]);
     },
 
     /**
@@ -472,7 +471,7 @@ Unbose.prototype = {
      *   The name of the first element in the set
      */
     name: function() {
-        return this.element.nodeName.toLowerCase();
+        return this.elements[0].nodeName.toLowerCase();
     },
 
     /**
@@ -520,7 +519,7 @@ Unbose.prototype = {
         this.elements.forEach(function(ele) {
             var child = ele.firstChild;
             while (child) {
-                if (child && child.nodeType == Node.ELEMENT_NODE
+                if (child.nodeType == Node.ELEMENT_NODE
                     && children.indexOf(child) == -1)
                 {
                     children.push(child);
@@ -775,7 +774,7 @@ Unbose.prototype = {
      *
      */
     getText: function() {
-        return this.element.textContent || "";
+        return this.elements[0].textContent || "";
     },
 
     /**
@@ -856,7 +855,7 @@ Unbose.prototype = {
      *
      */
     getStyle: function(attr) {
-        return this.element.style[attr];
+        return this.element[0].style[attr];
     },
 
     /**
