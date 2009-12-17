@@ -10,18 +10,19 @@ input {
 
 </style>
 
-<script src="zennode.js"></script>
+<script src="../../../src/unbose.js"></script>
 <script>
 // Helper function for making an html string
 function zen(s) {
-    var data = parse_zencode(s);
-    var nodes = build_nodes(data);
-    var div = document.createElement('div');
-    div.appendChild(nodes);
-    return div.innerHTML;
+    var div = Unbose(document.createElement("div"));
+    div.appendZen(s)
+    return div.elem(0).innerHTML;
 }
 
 function doParse(selector) {
+        document.getElementById("output").textContent = zen(selector);
+return
+
     try {
         document.getElementById("output").textContent = zen(selector);
     } catch(e) {
