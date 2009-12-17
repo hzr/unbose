@@ -28,11 +28,12 @@ function Unbose(subject, context) {
     }
     else if (subject instanceof DocumentFragment) {
         var child = subject.firstChild;
-        do {
+        while(child) {
             if (child.nodeType == Node.ELEMENT_NODE) {
                 this.elements.push(child);
             }
-        } while (child = child.nextSibling);
+            child = child.nextSibling;
+        }
     }
 
     this.length = this.elements.length;
@@ -518,13 +519,14 @@ Unbose.prototype = {
         var children = [];
         this.elements.forEach(function(ele) {
             var child = ele.firstChild;
-            do {
+            while (child) {
                 if (child && child.nodeType == Node.ELEMENT_NODE
                     && children.indexOf(child) == -1)
                 {
                     children.push(child);
                 }
-            } while (child = child.nextSibling);
+                child = child.nextSibling;
+            }
         });
         return Unbose(children);
     },
@@ -543,13 +545,14 @@ Unbose.prototype = {
         var siblings = [];
         this.elements.forEach(function(ele) {
             var child = ele.parentNode.firstChild;
-            do {
+            while (child) {
                 if (child != ele && child.nodeType == Node.ELEMENT_NODE
                     && siblings.indexOf(child) == -1)
                 {
                     siblings.push(child);
                 }
-            } while (child = child.nextSibling);
+                child = child.nextSibling;
+            }
         });
         return Unbose(siblings);
     },
