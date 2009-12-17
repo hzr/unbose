@@ -28,7 +28,7 @@ function Unbose(subject, context) {
     }
     else if (subject instanceof DocumentFragment) {
         var child = subject.firstChild;
-        while(child) {
+        while (child) {
             if (child.nodeType == Node.ELEMENT_NODE) {
                 this.elements.push(child);
             }
@@ -641,6 +641,10 @@ Unbose.prototype = {
         return Unbose(nexts);
     },
 
+    closest: function() {
+        return this;
+    },
+
     /**
      * Method: nth
      *
@@ -718,7 +722,7 @@ Unbose.prototype = {
     /**
      * Method: remove
      *
-     *   Remove this element
+     *   Remove the set of elements
      *
      * Returns:
      *
@@ -763,7 +767,7 @@ Unbose.prototype = {
     /**
      * Method: getText
      *
-     * Get the text content of the first element of the set
+     *   Get the text content of the first element of the set
      *
      * Returns:
      *
@@ -777,7 +781,7 @@ Unbose.prototype = {
     /**
      * Method: setText
      *
-     * Set the text content of the set of elements
+     *   Set the text content of the set of elements
      *
      * Parameters:
      *
@@ -789,7 +793,7 @@ Unbose.prototype = {
      *
      */
     setText: function(text) {
-        this.forEach(function(ele) { ele.element.textContent = text; });
+        this.forEach(function(ele) { ele.textContent = text; });
         return this;
     },
 
