@@ -354,8 +354,7 @@ Unbose.prototype = {
      *
      */
     click: function(callback, capturing) {
-        this.on("click", callback, capturing);
-        return this;
+        return this.on("click", callback, capturing);
     },
 
     /**
