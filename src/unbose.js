@@ -463,7 +463,8 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The name of the first element in the set
+     *   The name of the first element in the set. Name will always be lower
+     *   case when returned
      */
     name: function() {
         return this.elements[0].nodeName.toLowerCase();
@@ -648,9 +649,12 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
+     * Todo:
+     *
+     *   Not implemented
+     *
      */
     closest: function(expr) {
-        // todo
         return this;
     },
 
@@ -737,6 +741,9 @@ Unbose.prototype = {
      *
      *   The Unbose object
      *
+     * Todo:
+     *
+     *   Support expression arg
      */
     remove: function() {
         this.elements.forEach(function(ele) {
@@ -806,18 +813,74 @@ Unbose.prototype = {
         return this;
     },
 
+    /**
+     * Method: val
+     *
+     * Set or get the value of the set of elements
+     *
+     * Parameters:
+     *
+     *   text - (optional) The text to set
+     *
+     * Returns:
+     *
+     *   The value of the Unbose object
+     *
+     * See also:
+     *
+     *   <getVal>, <setVal>
+     *
+     * Todo:
+     *
+     *   Not implemented
+     */
     val: function(val) {
-        // todo
         return this;
     },
 
+    /**
+     * Method: getVal
+     *
+     * get the value of the first element in the set
+     *
+     * Returns:
+     *
+     *   The value
+     *
+     * See also:
+     *
+     *   <val>, <setVal>
+     *
+     * Todo:
+     *
+     *   Not implemented
+     */
     getVal: function() {
-        // todo
         return this;
     },
 
+    /**
+     * Method: setVal
+     *
+     * Set the value of the set of elements
+     *
+     * Parameters:
+     *
+     *   text - The value to set
+     *
+     * Returns:
+     *
+     *   The value of the Unbose object
+     *
+     * See also:
+     *
+     *   <val>, <setVal>
+     *
+     * Todo:
+     *
+     *   Not implemented
+     */
     setVal: function(val) {
-        // todo
         return this;
     },
 
@@ -894,10 +957,16 @@ Unbose.prototype = {
     },
 
     /**
-     * Returns the height of the element in pixels.
+     * Method: height
+     *
+     * Get the height of the element, including borders and stuff
+     *
+     * Todo:
+     *
+     *   Not implemented
+     *
      */
     height: function() {
-        // todo
         return this;
     },
 
@@ -928,9 +997,12 @@ Unbose.prototype = {
      *
      *   The Unbose object
      *
+     * Todo:
+     *
+     *   Not implemented
+     *
      */
     show: function() {
-        //todo
         return this;
     }
 };
@@ -967,7 +1039,6 @@ Unbose.eleFromTpl = function(tpl) {
     }
     return elem;
 
-
     function createElementWithAttrs(text) {
         var parts = text.split(/([#\.])/);
         var ele = document.createElement(parts.shift());
@@ -996,11 +1067,18 @@ Unbose.list = function(whatever) {
     }
 };
 
+/**
+ * Static method: eleFromZen
+ *
+ * Converts a template array to an element (NOT to an unbose object atm)
+ */
 Unbose.tplFromZen = function(zen) {
     return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
 
+
+    // Main parsing entrypoint
     function parse_zencode(str) {
         str = str.split("");
         var ret = [];
@@ -1011,6 +1089,7 @@ Unbose.tplFromZen = function(zen) {
         return ret;
     }
 
+    // Expression is top level zen element. tag or parens
     function parse_expr(str) {
         var ret;
         if (str[0] == "(") {
@@ -1048,6 +1127,7 @@ Unbose.tplFromZen = function(zen) {
         }
     }
 
+    // Parses a tag, obviously..
     function parse_tag(str) {
         var name = consume_name(str);
         var props = parse_props(str);
@@ -1055,6 +1135,8 @@ Unbose.tplFromZen = function(zen) {
         return current;
     }
 
+    // Consume and return the multiplier if there is one
+    // fixme: doesn't handle double digits
     function get_multiplier(str) {
         var ret = 1;
         if (str.length && str[0]=="*") {
@@ -1064,6 +1146,7 @@ Unbose.tplFromZen = function(zen) {
         return ret;
     }
 
+    // Parse siblings
     function parse_siblings(str) {
         var ret = [];
 
@@ -1074,6 +1157,7 @@ Unbose.tplFromZen = function(zen) {
         return ret;
     }
 
+    // Parse children
     function parse_children(str) {
         var ret = [];
         if (str.length && str[0] == ">") {
@@ -1094,6 +1178,11 @@ Unbose.tplFromZen = function(zen) {
         return s;
     }
 
+    // consume IDs, classnames and properties
+    // fixme: the order is not significant at the moment
+    // which means . is always interpreted as class name. This means you
+    // can't do "img src=foo.png" as it thinks the src is foo and the class
+    // is png
     function parse_props(str) {
         var props = {};
 
@@ -1127,6 +1216,11 @@ Unbose.tplFromZen = function(zen) {
     }
 };
 
+/**
+ * Static method: eleFromZen
+ *
+ * Converts a zencode string to an element (NOT to an unbose object atm)
+ */
 Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
