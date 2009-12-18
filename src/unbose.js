@@ -404,11 +404,7 @@ Unbose.prototype = {
             evt.target.removeEventListener(name, arguments.callee, capture);
             callback(evt);
         };
-
-        this.elements.forEach(function(ele) {
-            ele.addEventListener(evt, cancelCb, capture);
-        });
-        return this;
+        return this.on(name, cancelCb, capture);
     },
 
     /**
