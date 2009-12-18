@@ -44,108 +44,6 @@ Unbose.prototype = {
         return "[object Unbose]";
     },
 
-    /**
-     * Method: hasClass
-     *
-     * Check if the elements in the set has a specific class
-     *
-     * Parameters:
-     *
-     *   cls - The class name to check for
-     *
-     * Returns:
-     *
-     *   True if all the elements in the set has the class, false othwerwise
-     *
-     * See also:
-     *
-     *   <delClass>, <hasClass>, <toggleClass>
-     *
-     */
-    hasClass: function(cls) {
-        return this.elements.some(function(ele) {
-            return ele.className.split(" ").indexOf(cls) != -1;
-        });
-    },
-
-    /**
-     * Method: addClass
-     *
-     * Add a class to the element, or to all elements in the set
-     *
-     * Parameters:
-     *
-     *   cls - The class name to add as a string.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <delClass>, <hasClass>, <toggleClass>
-     *
-     */
-    addClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            if (!Unbose(ele).hasClass(cls)) {
-                ele.className = ele.className + " " + cls;
-            }
-        });
-        return this;
-    },
-
-    /**
-     * Method: delClass
-     *
-     * Removes a class from the element, or to all elements in the set
-     *
-     * Parameters:
-     *
-     *   cls - The class name to delete as a string.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <addClass>, <hasClass>, <toggleClass>
-     *
-     */
-    delClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            if (Unbose(ele).hasClass(cls)) {
-                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
-            }
-        });
-        return this;
-    },
-
-    /**
-     * Method: toggleClass
-     *
-     * Set class name if it's not set, unset it otherwise
-     *
-     * Parameters:
-     *
-     *   cls - The class name to toggle.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <addClass>, <hasClass>, <delClass>
-     *
-     */
-    toggleClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
-        });
-        return this;
-    },
 
     /**
      * Method: append
@@ -884,6 +782,12 @@ Unbose.prototype = {
         return this;
     },
 
+
+    /**
+     * Group: style
+     *
+     */
+
     /**
      * Method: style
      *
@@ -967,6 +871,109 @@ Unbose.prototype = {
      *
      */
     height: function() {
+        return this;
+    },
+
+    /**
+     * Method: hasClass
+     *
+     * Check if the elements in the set has a specific class
+     *
+     * Parameters:
+     *
+     *   cls - The class name to check for
+     *
+     * Returns:
+     *
+     *   True if all the elements in the set has the class, false othwerwise
+     *
+     * See also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
+     */
+    hasClass: function(cls) {
+        return this.elements.some(function(ele) {
+            return ele.className.split(" ").indexOf(cls) != -1;
+        });
+    },
+
+    /**
+     * Method: addClass
+     *
+     * Add a class to the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - The class name to add as a string.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
+     */
+    addClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            if (!Unbose(ele).hasClass(cls)) {
+                ele.className = ele.className + " " + cls;
+            }
+        });
+        return this;
+    },
+
+    /**
+     * Method: delClass
+     *
+     * Removes a class from the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - The class name to delete as a string.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <toggleClass>
+     *
+     */
+    delClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            if (Unbose(ele).hasClass(cls)) {
+                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
+            }
+        });
+        return this;
+    },
+
+    /**
+     * Method: toggleClass
+     *
+     * Set class name if it's not set, unset it otherwise
+     *
+     * Parameters:
+     *
+     *   cls - The class name to toggle.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <delClass>
+     *
+     */
+    toggleClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
+        });
         return this;
     },
 
