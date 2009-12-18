@@ -46,190 +46,9 @@ Unbose.prototype = {
 
 
     /**
-     * Method: append
-     *
-     * Append an element, an unbose object, a template or a zen string
-     *
-     * Parameters:
-     *
-     *   thing - Thing to add
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
+     * Group: Events
      *
      */
-     append: function(thing) {
-         //todo
-         return this;
-     },
-
-    /**
-     * Method: appendElem
-     *
-     * Append an element to all elements. If there are multiple elements
-     * in the Unbose object, append clones.
-     *
-     * Parameters:
-     *
-     *   newEle - Element to add
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-     appendElem: function(newEle) {
-         this.elements.forEach(function(ele) {
-             ele.appendChild(newEle.cloneNode(true));
-         });
-         return this;
-     },
-
-    /**
-     * Method: appendTpl
-     *
-     * Append elements from a template to all elements
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-     appendTpl: function(tpl) {
-         var newEle = Unbose.eleFromTpl(tpl);
-         this.appendElem(newEle);
-         return this;
-     },
-
-    /**
-     * Method: appendUnbose
-     *
-     * Append an element to all elements. If there are multiple elements
-     * in the Unbose object, append clones.
-     *
-     * Parameters:
-     *
-     *   ele - Element to add
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-     appendUnbose: function (ubobj) {
-         ubobj.elem().forEach(function(ele) {
-             this.appendElem(ele);
-         });
-         return this;
-     },
-
-    /**
-     *
-     * Method: appendZen
-     *
-     * Append elements from a zencoding string
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     */
-     appendZen: function (zen) {
-         var tpl = Unbose.tplFromZen(zen);
-         this.appendTpl(tpl);
-         return this;
-     },
-
-    /**
-     * Method: attr
-     *
-     * Set or get an attribute value. If value is given, set it. Of not,
-     * just return current value.
-     *
-     * Parameters:
-     *
-     *   name - Attribute to get or set
-     *   val - (optional) Value to set to
-     *
-     * Returns:
-     *
-     *   The Unbose object or an attribute
-     *
-     * See also:
-     *
-     *   <getAttr>, <setAttr>
-     *
-     */
-    attr: function(name, val) {
-        if (val === undefined) {
-            return this.getAttr(name);
-        }
-        else {
-            this.setAttr(name, val);
-            return this;
-        }
-    },
-
-    /**
-     * Method: getAttr
-     *
-     * Get the value of an attribute
-     *
-     * Parameters:
-     *
-     *   name - Name of the attribute to get
-     *
-     * Returns:
-     *
-     *  The value of the attribute. If attribute does not exist, returns
-     *  undefined.
-     *
-     * Example:
-     *
-     * Set the src of an image
-     * (example)
-     * Unbose("#logo").attr("src", "logo.png");
-     * (end)
-     *
-     */
-    getAttr: function(name) {
-        return this.elements[0].getAttribute(name) || this.elements[0][name];
-    },
-
-    /**
-     * Method: setAttr
-     *
-     * Set the value of an attribute
-     *
-     * Parameters:
-     *
-     *   name - Name of the attribute to set
-     *   val - The value of the attribute
-     *
-     * Returns:
-     *
-     *  The Unbose object
-     *
-     */
-    setAttr: function(name, val) {
-        this.elements.forEach(function(ele) {
-            ele.setAttribute(name, val);
-        });
-        return this;
-    },
 
     /**
      * Method: click
@@ -311,6 +130,11 @@ Unbose.prototype = {
     filter: function(fun, context) {
         return this.elements.filter(fun, context || this);
     },
+
+
+    /**
+     * Group: Finding and traversing
+     */
 
     /**
      * Method: find
@@ -614,6 +438,199 @@ Unbose.prototype = {
     },
 
     /**
+     * Group: DOM
+     *
+     */
+
+
+    /**
+     * Method: append
+     *
+     * Append an element, an unbose object, a template or a zen string
+     *
+     * Parameters:
+     *
+     *   thing - Thing to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
+     *
+     */
+     append: function(thing) {
+         //todo
+         return this;
+     },
+
+    /**
+     * Method: appendElem
+     *
+     * Append an element to all elements. If there are multiple elements
+     * in the Unbose object, append clones.
+     *
+     * Parameters:
+     *
+     *   newEle - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendElem: function(newEle) {
+         this.elements.forEach(function(ele) {
+             ele.appendChild(newEle.cloneNode(true));
+         });
+         return this;
+     },
+
+    /**
+     * Method: appendTpl
+     *
+     * Append elements from a template to all elements
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendTpl: function(tpl) {
+         var newEle = Unbose.eleFromTpl(tpl);
+         this.appendElem(newEle);
+         return this;
+     },
+
+    /**
+     * Method: appendUnbose
+     *
+     * Append an element to all elements. If there are multiple elements
+     * in the Unbose object, append clones.
+     *
+     * Parameters:
+     *
+     *   ele - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendUnbose: function (ubobj) {
+         ubobj.elem().forEach(function(ele) {
+             this.appendElem(ele);
+         });
+         return this;
+     },
+
+    /**
+     *
+     * Method: appendZen
+     *
+     * Append elements from a zencoding string
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+     appendZen: function (zen) {
+         var tpl = Unbose.tplFromZen(zen);
+         this.appendTpl(tpl);
+         return this;
+     },
+
+    /**
+     * Method: attr
+     *
+     * Set or get an attribute value. If value is given, set it. Of not,
+     * just return current value.
+     *
+     * Parameters:
+     *
+     *   name - Attribute to get or set
+     *   val - (optional) Value to set to
+     *
+     * Returns:
+     *
+     *   The Unbose object or an attribute
+     *
+     * See also:
+     *
+     *   <getAttr>, <setAttr>
+     *
+     */
+    attr: function(name, val) {
+        if (val === undefined) {
+            return this.getAttr(name);
+        }
+        else {
+            this.setAttr(name, val);
+            return this;
+        }
+    },
+
+    /**
+     * Method: getAttr
+     *
+     * Get the value of an attribute
+     *
+     * Parameters:
+     *
+     *   name - Name of the attribute to get
+     *
+     * Returns:
+     *
+     *  The value of the attribute. If attribute does not exist, returns
+     *  undefined.
+     *
+     * Example:
+     *
+     * Set the src of an image
+     * (example)
+     * Unbose("#logo").attr("src", "logo.png");
+     * (end)
+     *
+     */
+    getAttr: function(name) {
+        return this.elements[0].getAttribute(name) || this.elements[0][name];
+    },
+
+    /**
+     * Method: setAttr
+     *
+     * Set the value of an attribute
+     *
+     * Parameters:
+     *
+     *   name - Name of the attribute to set
+     *   val - The value of the attribute
+     *
+     * Returns:
+     *
+     *  The Unbose object
+     *
+     */
+    setAttr: function(name, val) {
+        this.elements.forEach(function(ele) {
+            ele.setAttribute(name, val);
+        });
+        return this;
+    },
+
+
+    /**
      * Method: empty
      *
      * Remove all children of the element, or of all elements in the set.
@@ -784,7 +801,7 @@ Unbose.prototype = {
 
 
     /**
-     * Group: style
+     * Group: Style
      *
      */
 
