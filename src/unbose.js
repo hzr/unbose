@@ -865,12 +865,17 @@ Unbose.prototype = {
      *
      * Fixme:
      *
-     *   This should use getComputedStyle I guess?
      *   Should it get from first or all? If all, how?
+     *   What if not in dom? Fall back to .style?
+     *   Should there be any kind of normalization? colors are hex in
+     *   opera and rgb in chrome/ff
      *
      */
     getStyle: function(attr) {
-        return this.elements[0].style[attr];
+        var ele = this.elements[0];
+        return ele.ownerDocument.defaultView
+                                .getComputedStyle(ele, null)
+                                .getPropertyValue(attr);
     },
 
     /**
