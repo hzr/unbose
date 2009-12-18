@@ -1,9 +1,8 @@
 module("Events");
 
 
-
 test("click", function() {
-    expect(2);
+    expect(3);
 
     var ele = document.createElement("div");
     var subject = Unbose(ele);
@@ -12,7 +11,9 @@ test("click", function() {
 
     var ele2 = document.createElement("div");
     var subject2 = Unbose(ele2);
-    subject2.on("click", function(evt) { ok(evt); });
+    subject2.on("click", function(evt) { ok(evt);
+                                  equals(this, subject2.elem(0));
+                                });
     simulateClick(ele2);
 });
 

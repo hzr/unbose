@@ -376,7 +376,7 @@ Unbose.prototype = {
      */
     on: function(name, callback, capture) {
         capture = capture || false;
-            this.elements.forEach(function(ele) {
+        this.elements.forEach(function(ele) {
             ele.addEventListener(name, callback, capture);
         });
         return this;
