@@ -8,6 +8,6 @@ test("Hide", function() {
     var subject = Unbose(ele);
     ok(ele.style.display != "none");
     subject.hide();
-    equals(ele.style.display, "none");
+    equal(ele.style.display, "none");
 
 });

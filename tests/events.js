@@ -12,7 +12,7 @@ test("click", function() {
     var ele2 = document.createElement("div");
     var subject2 = Unbose(ele2);
     subject2.on("click", function(evt) { ok(evt);
-                                  equals(this, subject2.elem(0));
+                                  equal(this, subject2.elem(0));
                                 });
     simulateClick(ele2);
 });
