@@ -327,8 +327,9 @@ Unbose.prototype = {
     prev: function() {
         var prevs = [];
         this.elements.forEach(function(ele) {
-            if (ele.previousSibling && ele.nodeType == Node.ELEMENT_NODE) {
-                prevs.push(ele.previousSibling);
+            var prev = ele.previousSibling;
+            if (prev && prev.nodeType == Node.ELEMENT_NODE) {
+                prevs.push(prev);
             }
         });
         return Unbose(prevs);
@@ -351,8 +352,9 @@ Unbose.prototype = {
     next: function() {
         var nexts = [];
         this.elements.forEach(function(ele) {
-            if (ele.nextSibling && ele.nodeType == Node.ELEMENT_NODE) {
-                nexts.push(ele.nextSibling);
+            var next = ele.nextSibling;
+            if (next && next.nodeType == Node.ELEMENT_NODE) {
+                nexts.push(next);
             }
         });
         return Unbose(nexts);
