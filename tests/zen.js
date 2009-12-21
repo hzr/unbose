@@ -54,6 +54,7 @@ test("Multiplication", function() {
     equal(zen("a*2>b*2"), "<a><b></b><b></b></a><a><b></b><b></b></a>");
     equal(zen("a>b*2"), "<a><b></b><b></b></a>");
     equal(zen("a#q.x>b#q.x*2"), '<a id="q" class="x"><b id="q" class="x"></b><b id="q" class="x"></b></a>');
+    equal(zen("a*11"), "<a></a><a></a><a></a><a></a><a></a><a></a><a></a><a></a><a></a><a></a><a></a>");
 });
 
 test("Properties", function() {
@@ -68,6 +69,16 @@ test("Properties", function() {
     equal(zen("a x=y>b x=y"), "<a x=\"y\"><b x=\"y\"></b></a>");
     equal(zen("a x=y>b x=y+c x=y"), "<a x=\"y\"><b x=\"y\"></b><c x=\"y\"></c></a>");
 });
+
+test("Property orders", function() {
+    equal(zen("img src=foo.png"), '<img src="foo.png">');
+    equal(zen("img#bar src=foo.png"), '<img id="bar" src="foo.png">');
+    equal(zen("img.baz src=foo.png"), '<img class="baz"src="foo.png">');
+    equal(zen("img#bar.baz src=foo.png"), '<img id="bar" class="baz"src="foo.png">');
+    equal(zen("a#foo href=#internal"), '<a id="foo" href="#internal"></a>');
+});
+
+
 
 test("Parenthesis", function() {
     equal(zen("(a)"), "<a></a>");
