@@ -25,7 +25,6 @@ test("Basic tests", function() {
     equal(zen("a#q"), '<a id="q"></a>');
     equal(zen("a#q.x"), '<a id="q" class="x"></a>');
     equal(zen("a#q.x.y.z"), '<a id="q" class="x y z"></a>');
-//alert(zen("a#q.x.y.z"))
 });
 
 
@@ -73,8 +72,8 @@ test("Properties", function() {
 test("Property orders", function() {
     equal(zen("img src=foo.png"), '<img src="foo.png">');
     equal(zen("img#bar src=foo.png"), '<img id="bar" src="foo.png">');
-    equal(zen("img.baz src=foo.png"), '<img class="baz"src="foo.png">');
-    equal(zen("img#bar.baz src=foo.png"), '<img id="bar" class="baz"src="foo.png">');
+    equal(zen("img.baz src=foo.png"), '<img class="baz" src="foo.png">');
+    equal(zen("img#bar.baz src=foo.png"), '<img id="bar" class="baz" src="foo.png">');
     equal(zen("a#foo href=#internal"), '<a id="foo" href="#internal"></a>');
 });
 

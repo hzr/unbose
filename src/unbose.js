@@ -1204,6 +1204,14 @@ Unbose.tplFromZen = function(zen) {
         return s;
     }
 
+    function consume_value(str) {
+        var s = "";
+        while (str.length && str[0].match(/[a-zA-Z0-9-_#\.]/)) {
+            s += str.shift();
+        }
+        return s;
+    }
+
     // consume IDs, classnames and properties
     // fixme: the order is not significant at the moment
     // which means . is always interpreted as class name. This means you
@@ -1230,7 +1238,7 @@ Unbose.tplFromZen = function(zen) {
             else if(chr == " ") {
                 var name = consume_name(str);
                 str.shift(); // fixme. make sure is always "="
-                var value = consume_name(str);
+                var value = consume_value(str);
                 props[name] = value;
             }
             else {
