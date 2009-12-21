@@ -1136,7 +1136,6 @@ Unbose.tplFromZen = function(zen) {
             }
         }
 
-        // fixme double digits
         if (multiplier > 1) {
             while (--multiplier) {
                 siblings.unshift(ret);
@@ -1161,14 +1160,16 @@ Unbose.tplFromZen = function(zen) {
     }
 
     // Consume and return the multiplier if there is one
-    // fixme: doesn't handle double digits
     function get_multiplier(str) {
-        var ret = 1;
+        var strNum = "";
         if (str.length && str[0]=="*") {
             str.shift();
-            ret = parseInt(str.shift(), 10);
         }
-        return ret;
+
+        while(str.length && str[0].match(/\d/)) {
+            strNum += str.shift();
+        }
+        return parseInt(strNum, 10) || 1;
     }
 
     // Parse siblings
