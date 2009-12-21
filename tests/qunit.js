@@ -168,7 +168,7 @@ var QUnit = {
 
 					var li = document.createElement("li");
 					li.className = assertion.result ? "pass" : "fail";
-    				  li.appendChild(document.createTextNode(assertion.message || "(no message)"));
+					li.appendChild(document.createTextNode(assertion.message || "(no message)"));
 					ol.appendChild( li );
 
 					if ( assertion.result ) {
@@ -370,7 +370,6 @@ var QUnit = {
 	},
 	
 	// Logging callbacks
-	started: function() {},
 	done: function(failures, total) {},
 	log: function(result, message) {},
 	testStart: function(name) {},
@@ -495,7 +494,6 @@ addEvent(window, "load", function() {
 		config.ajaxSettings = window.jQuery.ajaxSettings;
 	}
 
-        QUnit.started();
 	QUnit.start();
 });
 
