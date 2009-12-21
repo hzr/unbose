@@ -747,12 +747,14 @@ Unbose.prototype = {
      *
      *   <getVal>, <setVal>
      *
-     * Todo:
-     *
-     *   Not implemented
      */
     val: function(val) {
-        return this;
+        if (val!==undefined) {
+            return this.setVal(val);
+        }
+        else {
+            return this.getVal();
+        }
     },
 
     /**
@@ -768,12 +770,9 @@ Unbose.prototype = {
      *
      *   <val>, <setVal>
      *
-     * Todo:
-     *
-     *   Not implemented
      */
     getVal: function() {
-        return this;
+        return this.elements[0].value;
     },
 
     /**
@@ -793,11 +792,11 @@ Unbose.prototype = {
      *
      *   <val>, <setVal>
      *
-     * Todo:
-     *
-     *   Not implemented
      */
     setVal: function(val) {
+        this.elements.forEach(function(ele) {
+            ele.value = val;
+        });
         return this;
     },
 

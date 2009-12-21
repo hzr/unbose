@@ -255,3 +255,12 @@ test("appendZen", function() {
     equal(ele.find("h1").length, 2);
     equal(ele.find("div>div>p>a").length, 1);
 });
+
+
+test("val()", function() {
+    var ele = Unbose.eleFromZen("div>form>input#text type=text value=foo");
+    var subject = Unbose(ele).find("input");
+    equal(subject.val(), "foo");
+    subject.val("bar");
+    equal(subject.val(), "bar");
+});
