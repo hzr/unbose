@@ -1130,25 +1130,15 @@ Unbose.tplFromZen = function(zen) {
         var siblings = parse_siblings(str);
         var children = parse_children(str);
 
-        if (ret.length==2) { // something with children can't have children
-            if (children.length) {
-                ret.push(children);
-            }
+        if (ret.length==2 && children.length) { // a set of sibligns can't have children
+            ret.push(children);
         }
 
-        if (multiplier > 1) {
-            while (--multiplier) {
-                siblings.unshift(ret);
-            }
-        }
-
-        if (siblings.length) {
+        while (multiplier--) {
             siblings.unshift(ret);
-            return siblings;
         }
-        else {
-            return ret;
-        }
+
+        return siblings.length ? siblings : ret;
     }
 
     // Parses a tag, obviously..
