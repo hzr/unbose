@@ -1203,10 +1203,6 @@ Unbose.tplFromZen = function(zen) {
     }
 
     // consume IDs, classnames and properties
-    // fixme: the order is not significant at the moment
-    // which means . is always interpreted as class name. This means you
-    // can't do "img src=foo.png" as it thinks the src is foo and the class
-    // is png
     function parse_props(str) {
         var props = {};
 
