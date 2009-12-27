@@ -1038,6 +1038,7 @@ Unbose.prototype = {
 
 // static methods:
 Unbose.eleFromTpl = function(tpl) {
+    opera.postError(tpl)
     var index = 0;
     var elem = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
