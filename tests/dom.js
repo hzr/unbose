@@ -117,6 +117,13 @@ test("delClass()", function() {
     ele.className = "asdf";
     equal(subject, subject.delClass("asdf"));
 
+    ele.className = "";
+    subject.addClass("foo bar baz");
+    subject.delClass("baz bar foo");
+    ok(!subject.hasClass("foo"));
+    ok(!subject.hasClass("bar"));
+    ok(!subject.hasClass("baz"));
+
 });
 
 test("toggleClass()", function() {

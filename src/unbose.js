@@ -962,10 +962,14 @@ Unbose.prototype = {
      *
      */
     delClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            if (Unbose(ele).hasClass(cls)) {
-                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
-            }
+        var classes = cls.split(/\s+/);
+        var elements = this.elements;
+        classes.forEach(function(cls) {
+            elements.forEach(function(ele) {
+                if (Unbose(ele).hasClass(cls)) {
+                    ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
+                }
+            });
         });
         return this;
     },
