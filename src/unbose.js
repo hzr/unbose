@@ -1038,7 +1038,6 @@ Unbose.prototype = {
 
 // static methods:
 Unbose.eleFromTpl = function(tpl) {
-    opera.postError(tpl)
     var index = 0;
     var elem = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
@@ -1199,6 +1198,20 @@ Unbose.tplFromZen = function(zen) {
         return s;
     }
 
+    /**
+     * Class names and IDs
+     */
+    function consume_class_or_id(str) {
+        var s = "";
+        while (str.length && str[0].match(/[a-zA-Z0-9-_]/)) {
+            s += str.shift();
+        }
+        return s;
+    }
+
+    /**
+     * Property values
+     */
     function consume_value(str) {
         var s = "";
         while (str.length && str[0].match(/[a-zA-Z0-9-_#\.]/)) {
@@ -1214,7 +1227,7 @@ Unbose.tplFromZen = function(zen) {
         while (str.length) {
             var chr = str.shift();
             if (chr == ".") {
-                var className = consume_name(str);
+                var className = consume_class_or_id(str);
                 if (props["class"]) {
                     props["class"] = props["class"] + " " + className;
                 }
@@ -1223,7 +1236,7 @@ Unbose.tplFromZen = function(zen) {
                 }
             }
             else if(chr == "#") {
-                var id = consume_name(str);
+                var id = consume_class_or_id(str);
                 props["id"] = id;
             }
             else if(chr == " ") {

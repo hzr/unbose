@@ -26,8 +26,8 @@ test("Basic tests", function() {
     equal(zen("a#q.x"), '<a id="q" class="x"></a>');
     equal(zen("a#q.x.y.z"), '<a id="q" class="x y z"></a>');
     equal(zen("a.class-with-dash"), '<a class="class-with-dash"></a>');
+    equal(zen("a#id-with-dash"), '<a id="id-with-dash"></a>');
 });
-
 
 test("Siblings", function() {
     equal(zen("a+b"), "<a></a><b></b>");
@@ -35,7 +35,6 @@ test("Siblings", function() {
     equal(zen("a#q.x+b"), '<a id="q" class="x"></a><b></b>');
     equal(zen("a#q.x.y.z+b#p.l.m.n"), '<a id="q" class="x y z"></a><b id="p" class="l m n"></b>');
 });
-
 
 test("Parent > Child", function() {
     equal(zen("a>b"), "<a><b></b></a>");
@@ -89,5 +88,4 @@ test("Parenthesis", function() {
     equal(zen("((a)*2)"), "<a></a><a></a>");
     equal(zen("(a>b)*2"), "<a><b></b></a><a><b></b></a>");
     equal(zen("(a+b)*2"), "<a></a><b></b><a></a><b></b>");
-
 });
