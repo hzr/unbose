@@ -29,11 +29,11 @@ test("empty()", function() {
 });
 
 test("prev()", function() {
-    var tpl = Unbose.eleFromZen("body>div+span+div+span+i+span");
+    var tpl = Unbose.eleFromZen("body>div+span+div+span+i#b.c+span");
     var ele = Unbose(tpl).find("span").prev();
     equal(ele.nth(0).name(), "div");
     equal(ele.length, 3);
-    ele = Unbose(tpl).find("span").prev("i");
+    ele = Unbose(tpl).find("span").prev("i#b.c");
     equal(ele.length, 1);
 });
 

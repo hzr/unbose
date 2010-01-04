@@ -170,7 +170,25 @@ Unbose.prototype = {
      *
      */
     matchesSelector: function(selector) {
-        return this.elements[0].nodeName.toLowerCase() == selector; // FIXME
+        var parts = selector.split(/([#\.])/);
+        var ele = this.elements[0];
+        var type, value;
+        if (parts.shift().toLowerCase() != ele.nodeName.toLowerCase()) {
+            return false;
+        }
+        while ((type = parts.shift()) && (value = parts.shift())) {
+            if (type == ".") {
+                if (!Unbose(ele).hasClass(value)) {
+                    return false;
+                }
+            }
+            else {
+                if (ele.id != value) {
+                    return false;
+                }
+            }
+        }
+        return true;
     },
 
     /**
