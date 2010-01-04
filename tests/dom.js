@@ -29,23 +29,28 @@ test("empty()", function() {
 });
 
 test("prev()", function() {
-    var ele = Unbose.eleFromZen("body>div+span+div+span");
-    ele = Unbose(ele).find("span").prev();
+    var tpl = Unbose.eleFromZen("body>div+span+div+span+i+span");
+    var ele = Unbose(tpl).find("span").prev();
     equal(ele.nth(0).name(), "div");
-    equal(ele.length, 2);
+    equal(ele.length, 3);
+    ele = Unbose(tpl).find("span").prev("i");
+    equal(ele.length, 1);
 });
 
 test("next()", function() {
-    var ele = Unbose.eleFromZen("body>div+span+div+span");
-    ele = Unbose(ele).find("div").next();
+    var tpl = Unbose.eleFromZen("body>div+span+div+span+div+i");
+    var ele = Unbose(tpl).find("div").next();
     equal(ele.nth(0).name(), "span");
-    equal(ele.length, 2);
+    equal(ele.length, 3);
+    ele = Unbose(tpl).find("div").next("i");
+    equal(ele.length, 1);
 });
 
 test("children()", function() {
     var ele = Unbose.eleFromZen("body>div+span+div+span");
     ele = Unbose(ele);
     equal(ele.children().length, 4);
+    equal(ele.children("span").length, 2);
 });
 
 test("remove()", function() {
@@ -179,6 +184,7 @@ test("siblings()", function() {
     equal(subject.siblings().length, 2);
     subject = Unbose(ele).find("i");
     equal(subject.siblings().length, 5);
+    equal(subject.siblings("i").length, 2);
 });
 
 test("eleFromTpl", function() {

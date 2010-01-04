@@ -155,6 +155,25 @@ Unbose.prototype = {
     },
 
     /**
+     * Method: matchesSelector
+     *
+     * Check if an element matches a selector. Only checks the first
+     * element in a set.
+     *
+     * Parameters:
+     *
+     *   selector - Selector to match the element against
+     *
+     * Returns:
+     *
+     *   True if the element matches the selector, false otherwise
+     *
+     */
+    matchesSelector: function(selector) {
+        return this.elements[0].nodeName.toLowerCase() == selector; // FIXME
+    },
+
+    /**
      * Method: forEach
      *
      * Call a function for all elements in the Unbose set
@@ -189,7 +208,7 @@ Unbose.prototype = {
      *   case when returned
      */
     name: function() {
-        return this.elements[0].nodeName.toLowerCase();
+        return this.elements[0] && this.elements[0].nodeName.toLowerCase();
     },
 
     /**
@@ -232,7 +251,7 @@ Unbose.prototype = {
      *   <parent>
      *
      */
-    children: function() {
+    children: function(expr) {
         var children = [];
         this.elements.forEach(function(ele) {
             var child = ele.firstChild;
@@ -245,6 +264,11 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
+        if (expr) {
+            children = children.filter(function(ele) {
+                return Unbose(ele).matchesSelector(expr);
+            });
+        }
         return Unbose(children);
     },
 
@@ -258,7 +282,7 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    siblings: function() {
+    siblings: function(expr) {
         var siblings = [];
         this.elements.forEach(function(ele) {
             var child = ele.parentNode.firstChild;
@@ -271,6 +295,11 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
+        if (expr) {
+            siblings = siblings.filter(function(ele) {
+                return Unbose(ele).matchesSelector(expr);
+            });
+        }
         return Unbose(siblings);
     },
 
@@ -319,12 +348,16 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
+     * Parameters:
+     *
+     *   expr - An expression
+     *
      * See also:
      *
      * <next>
      *
      */
-    prev: function() {
+    prev: function(expr) {
         var prevs = [];
         this.elements.forEach(function(ele) {
             var prev = ele.previousSibling;
@@ -332,6 +365,11 @@ Unbose.prototype = {
                 prevs.push(prev);
             }
         });
+        if (expr) {
+            prevs = prevs.filter(function(ele) {
+                return Unbose(ele).matchesSelector(expr);
+            });
+        }
         return Unbose(prevs);
     },
 
@@ -349,7 +387,7 @@ Unbose.prototype = {
      * <prev>
      *
      */
-    next: function() {
+    next: function(expr) {
         var nexts = [];
         this.elements.forEach(function(ele) {
             var next = ele.nextSibling;
@@ -357,6 +395,11 @@ Unbose.prototype = {
                 nexts.push(next);
             }
         });
+        if (expr) {
+            nexts = nexts.filter(function(ele) {
+                return Unbose(ele).matchesSelector(expr);
+            });
+        }
         return Unbose(nexts);
     },
 
@@ -963,14 +1006,13 @@ Unbose.prototype = {
      */
     delClass: function(cls) {
         var classes = cls.split(/\s+/);
-        var elements = this.elements;
         classes.forEach(function(cls) {
-            elements.forEach(function(ele) {
+            this.elements.forEach(function(ele) {
                 if (Unbose(ele).hasClass(cls)) {
                     ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
                 }
             });
-        });
+        }, this);
         return this;
     },
 
@@ -1134,7 +1176,7 @@ Unbose.tplFromZen = function(zen) {
         var siblings = parse_siblings(str);
         var children = parse_children(str);
 
-        if (ret.length==2 && children.length) { // a set of sibligns can't have children
+        if (ret.length == 2 && children.length) { // a set of sibligns can't have children
             ret.push(children);
         }
 
@@ -1156,7 +1198,7 @@ Unbose.tplFromZen = function(zen) {
     // Consume and return the multiplier if there is one
     function get_multiplier(str) {
         var strNum = "";
-        if (str.length && str[0]=="*") {
+        if (str.length && str[0] == "*") {
             str.shift();
         }
 
@@ -1228,12 +1270,9 @@ Unbose.tplFromZen = function(zen) {
             var chr = str.shift();
             if (chr == ".") {
                 var className = consume_class_or_id(str);
-                if (props["class"]) {
-                    props["class"] = props["class"] + " " + className;
-                }
-                else {
-                    props["class"] = className;
-                }
+                props["class"] = props["class"] ?
+                    props["class"] + " " + className :
+                    className;
             }
             else if(chr == "#") {
                 var id = consume_class_or_id(str);

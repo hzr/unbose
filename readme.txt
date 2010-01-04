@@ -12,7 +12,7 @@ x    val([newval])
 x    attr(name [, val]
 x    text([newtext])
 x    find(selector)
-    append(ele)
+x    append(ele)
     replace(ele)
 
 selection:
@@ -20,8 +20,8 @@ x    first()
 x    last()
 x    nth()
 x    elem()
-    next
-    perv
+x    next
+x    prev
 
 style:
 x   hide()
