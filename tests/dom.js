@@ -254,8 +254,6 @@ test("appendTpl", function() {
     equal(ele.find("div>div>p>a").length, 1);
 });
 
-
-
 test("appendZen", function() {
     var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
     var ele = Unbose(document.createElement("div"));
@@ -269,11 +267,28 @@ test("appendZen", function() {
     equal(ele.find("div>div>p>a").length, 1);
 });
 
-
 test("val()", function() {
     var ele = Unbose.eleFromZen("div>form>input#text type=text value=foo");
     var subject = Unbose(ele).find("input");
     equal(subject.val(), "foo");
     subject.val("bar");
     equal(subject.val(), "bar");
+});
+
+test("height()", function() {
+    var ele = document.createElement("div");
+    ele.style = "width: 100px; height: 120px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
+    document.body.appendChild(ele);
+    equal(Unbose(ele).height(), 120);
+    ele.style = "height: 100px;"; // Remove borders and padding
+    equal(Unbose(ele).height(), 100);
+});
+
+test("width()", function() {
+    var ele = document.createElement("div");
+    ele.style = "width: 120px; height: 100px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
+    document.body.appendChild(ele);
+    equal(Unbose(ele).width(), 120);
+    ele.style = "width: 100px;"; // Remove borders and padding
+    equal(Unbose(ele).width(), 100);
 });

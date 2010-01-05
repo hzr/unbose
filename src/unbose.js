@@ -946,25 +946,41 @@ Unbose.prototype = {
     },
 
     /**
-     * Return the width of the element in pixels
+     * Method: width
+     *
+     * Get the width of the element
+     *
+     * Returns:
+     *
+     *   The width of the element, without padding and borders, in pixels
+     *
      */
     width: function() {
-        // todo
-        return this;
+        var ele = this.elements[0];
+        var uele = Unbose(ele);
+        return ele.offsetWidth - parseInt(uele.getStyle("border-left-width"))
+                               - parseInt(uele.getStyle("border-right-width"))
+                               - parseInt(uele.getStyle("padding-left"))
+                               - parseInt(uele.getStyle("padding-right"));
     },
 
     /**
      * Method: height
      *
-     * Get the height of the element, including borders and stuff
+     * Get the height of the element
      *
-     * Todo:
+     * Returns:
      *
-     *   Not implemented
+     *   The height of the element, without padding and borders, in pixels
      *
      */
     height: function() {
-        return this;
+        var ele = this.elements[0];
+        var uele = Unbose(ele);
+        return ele.offsetHeight - parseInt(uele.getStyle("border-top-width"))
+                                - parseInt(uele.getStyle("border-bottom-width"))
+                                - parseInt(uele.getStyle("padding-top"))
+                                - parseInt(uele.getStyle("padding-bottom"));
     },
 
     /**
