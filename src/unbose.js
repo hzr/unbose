@@ -948,20 +948,34 @@ Unbose.prototype = {
     /**
      * Method: width
      *
-     * Get the width of the element
+     * Gets or sets the width of the element
+     *
+     * Parameters:
+     *
+     *   value - Sets the width of the element (optional)
      *
      * Returns:
      *
      *   The width of the element, without padding and borders, in pixels
      *
      */
-    width: function() {
+    width: function(value) {
         var ele = this.elements[0];
-        var uele = Unbose(ele);
-        return ele.offsetWidth - parseInt(uele.getStyle("border-left-width"))
-                               - parseInt(uele.getStyle("border-right-width"))
-                               - parseInt(uele.getStyle("padding-left"))
-                               - parseInt(uele.getStyle("padding-right"));
+        if (value === undefined) {
+            var uele = Unbose(ele);
+            return ele.offsetWidth - parseInt(uele.getStyle("border-left-width"))
+                                   - parseInt(uele.getStyle("border-right-width"))
+                                   - parseInt(uele.getStyle("padding-left"))
+                                   - parseInt(uele.getStyle("padding-right"));
+        }
+        else {
+            if (+value === parseInt(value)) {
+                ele.style.width = parseInt(value) + "px";
+            }
+            else {
+                ele.style.width = value;
+            }
+        }
     },
 
     /**
@@ -974,13 +988,23 @@ Unbose.prototype = {
      *   The height of the element, without padding and borders, in pixels
      *
      */
-    height: function() {
+    height: function(value) {
         var ele = this.elements[0];
-        var uele = Unbose(ele);
-        return ele.offsetHeight - parseInt(uele.getStyle("border-top-width"))
-                                - parseInt(uele.getStyle("border-bottom-width"))
-                                - parseInt(uele.getStyle("padding-top"))
-                                - parseInt(uele.getStyle("padding-bottom"));
+        if (value === undefined) {
+            var uele = Unbose(ele);
+            return ele.offsetHeight - parseInt(uele.getStyle("border-top-width"))
+                                    - parseInt(uele.getStyle("border-bottom-width"))
+                                    - parseInt(uele.getStyle("padding-top"))
+                                    - parseInt(uele.getStyle("padding-bottom"));
+        }
+        else {
+            if (+value === parseInt(value)) {
+                ele.style.height = parseInt(value) + "px";
+            }
+            else {
+                ele.style.height = value;
+            }
+        }
     },
 
     /**

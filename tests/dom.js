@@ -282,6 +282,8 @@ test("height()", function() {
     equal(Unbose(ele).height(), 120);
     ele.style = "height: 100px;"; // Remove borders and padding
     equal(Unbose(ele).height(), 100);
+    Unbose(ele).height(80);
+    equal(Unbose(ele).height(), 80);
 });
 
 test("width()", function() {
@@ -291,4 +293,6 @@ test("width()", function() {
     equal(Unbose(ele).width(), 120);
     ele.style = "width: 100px;"; // Remove borders and padding
     equal(Unbose(ele).width(), 100);
+    Unbose(ele).width(80);
+    equal(Unbose(ele).width(), 80);
 });

@@ -20,8 +20,8 @@ x    first()
 x    last()
 x    nth()
 x    elem()
-x    next
-x    prev
+x    next()
+x    prev()
 
 style:
 x   hide()
@@ -31,8 +31,8 @@ x    addClass(class, *)
 x    hasClass(class, *)
 x    delClass(class, *)
 x    toggleClass(oldclass, newclass)
-    height()
-    width()
+X    height()
+X    width()
 
 
 
