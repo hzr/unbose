@@ -169,6 +169,8 @@ Unbose.prototype = {
      *   True if the element matches the selector, false otherwise
      *
      */
+    // Note: this method is currently limited to filtering on element names,
+    // classes and IDs.
     matchesSelector: function(selector) {
         var parts = selector.split(/([#\.])/);
         var ele = this.elements[0];
@@ -260,6 +262,10 @@ Unbose.prototype = {
      *
      * Returns the elements children
      *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
      * Returns:
      *
      *   An Unbose object
@@ -269,7 +275,7 @@ Unbose.prototype = {
      *   <parent>
      *
      */
-    children: function(expr) {
+    children: function(filter) {
         var children = [];
         this.elements.forEach(function(ele) {
             var child = ele.firstChild;
@@ -282,9 +288,9 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        if (expr) {
+        if (filter) {
             children = children.filter(function(ele) {
-                return Unbose(ele).matchesSelector(expr);
+                return Unbose(ele).matchesSelector(filter);
             });
         }
         return Unbose(children);
@@ -295,12 +301,16 @@ Unbose.prototype = {
      *
      * Get the siblings of the elements in the set
      *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
      * Returns:
      *
      *   An Unbose object
      *
      */
-    siblings: function(expr) {
+    siblings: function(filter) {
         var siblings = [];
         this.elements.forEach(function(ele) {
             var child = ele.parentNode.firstChild;
@@ -313,9 +323,9 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        if (expr) {
+        if (filter) {
             siblings = siblings.filter(function(ele) {
-                return Unbose(ele).matchesSelector(expr);
+                return Unbose(ele).matchesSelector(filter);
             });
         }
         return Unbose(siblings);
@@ -368,14 +378,14 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   expr - An expression
+     *   filter - A selector that filters the results
      *
      * See also:
      *
      * <next>
      *
      */
-    prev: function(expr) {
+    prev: function(filter) {
         var prevs = [];
         this.elements.forEach(function(ele) {
             var prev = ele.previousSibling;
@@ -383,9 +393,9 @@ Unbose.prototype = {
                 prevs.push(prev);
             }
         });
-        if (expr) {
+        if (filter) {
             prevs = prevs.filter(function(ele) {
-                return Unbose(ele).matchesSelector(expr);
+                return Unbose(ele).matchesSelector(filter);
             });
         }
         return Unbose(prevs);
@@ -396,6 +406,10 @@ Unbose.prototype = {
      *
      * Get the next siblings of the elements in the set
      *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
      * Returns:
      *
      *   An Unbose object
@@ -405,7 +419,7 @@ Unbose.prototype = {
      * <prev>
      *
      */
-    next: function(expr) {
+    next: function(filter) {
         var nexts = [];
         this.elements.forEach(function(ele) {
             var next = ele.nextSibling;
@@ -413,9 +427,9 @@ Unbose.prototype = {
                 nexts.push(next);
             }
         });
-        if (expr) {
+        if (filter) {
             nexts = nexts.filter(function(ele) {
-                return Unbose(ele).matchesSelector(expr);
+                return Unbose(ele).matchesSelector(filter);
             });
         }
         return Unbose(nexts);
