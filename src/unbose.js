@@ -232,7 +232,11 @@ Unbose.prototype = {
     /**
      * Method: parent
      *
-     * Returns the elements parents
+     * Get the elements parents
+     *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
      *
      * Returns:
      *
@@ -243,7 +247,7 @@ Unbose.prototype = {
      *   <children>
      *
      */
-    parent: function() {
+    parent: function(filter) {
         var parents = [];
         this.elements.forEach(function(ele) {
             var parent = ele.parentNode;
@@ -252,13 +256,18 @@ Unbose.prototype = {
                 parents.push(parent);
             }
         });
+        if (filter) {
+            parents = parents.filter(function(ele) {
+                return Unbose(ele).matchesSelector(filter);
+            });
+        }
         return Unbose(parents);
     },
 
     /**
      * Method: children
      *
-     * Returns the elements children
+     * Get the elements children
      *
      * Parameters:
      *
