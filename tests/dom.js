@@ -100,7 +100,7 @@ test("addClass()", function() {
 
 test("delClass()", function() {
     var ele = document.createElement("div");
-    ele.className = "foo bar baz meh";
+    ele.className = "foo\rbar\nbaz\tmeh\vblah";
     var subject = Unbose(ele);
 
     subject.delClass("foo");

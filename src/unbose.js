@@ -91,9 +91,8 @@ Unbose.prototype = {
      *
      */
     on: function(name, callback, capture) {
-        capture = capture || false;
         this.elements.forEach(function(ele) {
-            ele.addEventListener(name, callback, capture);
+            ele.addEventListener(name, callback, capture || false);
         });
         return this;
     },
@@ -116,9 +115,8 @@ Unbose.prototype = {
      *
      */
     once: function(name, callback, capture) {
-        capture = capture || false;
         var cancelCb = function(evt) {
-            evt.target.removeEventListener(name, arguments.callee, capture);
+            evt.target.removeEventListener(name, arguments.callee, capture || false);
             callback(evt);
         };
         return this.on(name, cancelCb, capture);
@@ -1035,7 +1033,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            return ele.className.split(" ").indexOf(cls) != -1;
+            return ele.className.split(/\s+/).indexOf(cls) != -1;
         });
     },
 
@@ -1088,7 +1086,9 @@ Unbose.prototype = {
         var classes = cls.split(/\s+/);
         classes.forEach(function(cls) {
             this.elements.forEach(function(ele) {
-                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
+                ele.className = (" " + ele.className + " ")
+                                    .replace(/\s+/g, " ")
+                                    .replace(" " + cls + " ", " ");
             });
         }, this);
         return this;
