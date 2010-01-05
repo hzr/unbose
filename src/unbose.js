@@ -985,6 +985,10 @@ Unbose.prototype = {
      *
      * Get the height of the element
      *
+     * Parameters:
+     *
+     *   value - Sets the height of the element (optional)
+     *
      * Returns:
      *
      *   The height of the element, without padding and borders, in pixels
