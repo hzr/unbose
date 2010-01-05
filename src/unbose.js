@@ -963,18 +963,20 @@ Unbose.prototype = {
         var ele = this.elements[0];
         if (value === undefined) {
             var uele = Unbose(ele);
-            return ele.offsetWidth - parseInt(uele.getStyle("border-left-width"))
-                                   - parseInt(uele.getStyle("border-right-width"))
-                                   - parseInt(uele.getStyle("padding-left"))
-                                   - parseInt(uele.getStyle("padding-right"));
+            return ele.offsetWidth -
+                   parseInt(uele.getStyle("border-left-width")) -
+                   parseInt(uele.getStyle("border-right-width")) -
+                   parseInt(uele.getStyle("padding-left")) -
+                   parseInt(uele.getStyle("padding-right"));
         }
         else {
             if (+value === parseInt(value)) {
-                ele.style.width = parseInt(value) + "px";
+                value = Math.max(parseInt(value), 0) + "px";
             }
-            else {
-                ele.style.width = value;
+            else if (isNaN(parseInt(value)) || parseInt(value) < 0) {
+                value = 0;
             }
+            ele.style.width = value;
         }
     },
 
@@ -992,18 +994,20 @@ Unbose.prototype = {
         var ele = this.elements[0];
         if (value === undefined) {
             var uele = Unbose(ele);
-            return ele.offsetHeight - parseInt(uele.getStyle("border-top-width"))
-                                    - parseInt(uele.getStyle("border-bottom-width"))
-                                    - parseInt(uele.getStyle("padding-top"))
-                                    - parseInt(uele.getStyle("padding-bottom"));
+            return ele.offsetHeight -
+                   parseInt(uele.getStyle("border-top-width")) -
+                   parseInt(uele.getStyle("border-bottom-width")) -
+                   parseInt(uele.getStyle("padding-top")) -
+                   parseInt(uele.getStyle("padding-bottom"));
         }
         else {
             if (+value === parseInt(value)) {
-                ele.style.height = parseInt(value) + "px";
+                value = Math.max(parseInt(value), 0) + "px";
             }
-            else {
-                ele.style.height = value;
+            else if (isNaN(parseInt(value)) || parseInt(value) < 0) {
+                value = 0;
             }
+            ele.style.height = value;
         }
     },
 
@@ -1077,7 +1081,7 @@ Unbose.prototype = {
      *
      */
     delClass: function(cls) {
-        var classes = cls.split(" ");
+        var classes = cls.split(/\s+/);
         classes.forEach(function(cls) {
             this.elements.forEach(function(ele) {
                 ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");

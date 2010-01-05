@@ -284,6 +284,11 @@ test("height()", function() {
     equal(Unbose(ele).height(), 100);
     Unbose(ele).height(80);
     equal(Unbose(ele).height(), 80);
+    Unbose(ele).height("-1px");
+    equal(Unbose(ele).height(), 0);
+    Unbose(ele).height(80);
+    Unbose(ele).height("bogus");
+    equal(Unbose(ele).height(), 0);
 });
 
 test("width()", function() {
@@ -295,4 +300,9 @@ test("width()", function() {
     equal(Unbose(ele).width(), 100);
     Unbose(ele).width(80);
     equal(Unbose(ele).width(), 80);
+    Unbose(ele).width(-1);
+    equal(Unbose(ele).width(), 0);
+    Unbose(ele).width(80);
+    Unbose(ele).width("bogus");
+    equal(Unbose(ele).width(), 0);
 });
