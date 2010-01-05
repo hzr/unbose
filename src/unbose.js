@@ -1028,7 +1028,7 @@ Unbose.prototype = {
     addClass: function(cls) {
         this.elements.forEach(function(ele) {
             if (!Unbose(ele).hasClass(cls)) {
-                ele.className = ele.className + " " + cls;
+                ele.className += " " + cls;
             }
         });
         return this;
@@ -1053,12 +1053,10 @@ Unbose.prototype = {
      *
      */
     delClass: function(cls) {
-        var classes = cls.split(/\s+/);
+        var classes = cls.split(" ");
         classes.forEach(function(cls) {
             this.elements.forEach(function(ele) {
-                if (Unbose(ele).hasClass(cls)) {
-                    ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
-                }
+                ele.className = (" " + ele.className + " ").replace(" " + cls + " ", " ");
             });
         }, this);
         return this;
