@@ -69,14 +69,6 @@ test("Properties", function() {
     equal(zen("a x=y>b x=y+c x=y"), "<a x=\"y\"><b x=\"y\"></b><c x=\"y\"></c></a>");
 });
 
-test("Property orders", function() {
-    equal(zen("img src=foo.png"), '<img src="foo.png">');
-    equal(zen("img#bar src=foo.png"), '<img id="bar" src="foo.png">');
-    equal(zen("img.baz src=foo.png"), '<img class="baz" src="foo.png">');
-    equal(zen("img#bar.baz src=foo.png"), '<img id="bar" class="baz" src="foo.png">');
-    equal(zen("a#foo href=#internal"), '<a id="foo" href="#internal"></a>');
-});
-
 test("Parenthesis", function() {
     equal(zen("(a)"), "<a></a>");
     equal(zen("(a)+(b)"), "<a></a><b></b>");
