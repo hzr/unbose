@@ -24,13 +24,13 @@ x    next()
 x    prev()
 
 style:
-x   hide()
-    show()
-    style(name, value)
+x    hide()
+     show()
+x    style(name, value)
 x    addClass(class, *)
 x    hasClass(class, *)
 x    delClass(class, *)
-x    toggleClass(oldclass, newclass)
+x    toggleClass(class)
 X    height()
 X    width()
 

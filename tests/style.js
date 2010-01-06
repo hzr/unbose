@@ -3,13 +3,28 @@
 module("Style");
 
 
-test("Hide", function() {
+test("hide()", function() {
     var ele = document.createElement("div");
     var subject = Unbose(ele);
+    ele.position = "absolute";
+    ele.visibility = "hidden";
+    document.body.appendChild(ele);
     ok(ele.style.display != "none");
     subject.hide();
     equal(ele.style.display, "none");
+});
 
+test("show()", function() {
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    ele.position = "absolute";
+    ele.visibility = "hidden";
+    document.body.appendChild(ele);
+    equal(subject.style("display"), "block");
+    ele.style.display = "inline-block";
+    subject.hide();
+    subject.show();
+    equal(subject.style("display"), "inline-block");
 });
 
 test("getStyle", function() {

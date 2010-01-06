@@ -882,6 +882,33 @@ Unbose.prototype = {
         return this;
     },
 
+    /**
+     * Method: data
+     *
+     * Associate arbitrary data with this element. The value
+     * will be converted to a string
+     *
+     * Parameters:
+     *
+     *   name - The name to get or to set a value forEach
+     *   val - The value to setAttribute
+     *
+     * Returns:
+     *
+     *   If a value is set, it returns an Unbose object, otherwise,
+     *   it returns the value.
+     */
+    data: function(name, val) {
+        if (val === undefined) {
+            return this.elements[0].getAttribute("data-unbose-" + name);
+        }
+
+        this.elements.forEach(function(ele) {
+            ele.setAttribute("data-unbose-" + name, val);
+        });
+        return this;
+    },
+
 
     /**
      * Group: Style
@@ -1159,7 +1186,8 @@ Unbose.prototype = {
      */
     hide: function() {
         this.elements.forEach(function(ele) {
-            ele.style.display = "none";
+            Unbose(ele).data("olddisplay", Unbose(ele).style("display"))
+                       .style("display", "none");
         });
         return this;
     },
@@ -1179,6 +1207,9 @@ Unbose.prototype = {
      *
      */
     show: function() {
+        this.elements.forEach(function(ele) {
+            ele.style.display = Unbose(ele).data("olddisplay") || "";
+        });
         return this;
     }
 };
