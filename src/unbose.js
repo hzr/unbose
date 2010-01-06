@@ -943,7 +943,7 @@ Unbose.prototype = {
     /**
      * Method: setStyle
      *
-     * Set the style value for the elements in the set
+     * Set the style for the elements in the set
      *
      * Parameters:
      *
@@ -956,11 +956,11 @@ Unbose.prototype = {
      *
      */
     setStyle: function(prop, value) {
-        prop = prop.toLowerCase().replace(/-([a-z])/g, function(all, letter) {
+        prop = prop.replace(/-([a-z])/g, function(all, letter) {
             return letter.toUpperCase();
         });
 
-        if (prop.match(/float/)) {
+        if (prop == "float") {
             prop = "cssFloat";
         }
 
