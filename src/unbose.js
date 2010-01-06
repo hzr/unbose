@@ -115,8 +115,8 @@ Unbose.prototype = {
      *
      */
     once: function(name, callback, capture) {
-        var cancelCb = function(evt) {
-            evt.target.removeEventListener(name, arguments.callee, capture || false);
+        function cancelCb(evt) {
+            evt.target.removeEventListener(name, cancelCb, capture || false);
             callback(evt);
         };
         return this.on(name, cancelCb, capture);
@@ -198,7 +198,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   function - The function to call
+     *   func - The function to call
      *   context - (optional) context, the value of "this" for the function
      *             calls
      *
@@ -210,8 +210,8 @@ Unbose.prototype = {
      *
      *   Should we pass ele or Unbose object to args?
      */
-    forEach: function(fun, context) {
-        this.elements.forEach(fun, context || this);
+    forEach: function(func, context) {
+        this.elements.forEach(func, context || this);
         return this;
     },
 
@@ -479,7 +479,7 @@ Unbose.prototype = {
      *
      * Example:
      *
-     * Get the second h1 tag in the document:
+     * Get the second h1 element in the document:
      * (example)
      * Unbose("h1").nth(1);
      * (end)
@@ -513,19 +513,14 @@ Unbose.prototype = {
      *
      */
     elem: function(index) {
-        if (index === undefined) {
-            return this.elements;
-        }
-        else {
-            return this.elements[index];
-        }
+        return (index === undefined) ? this.elements : this.elements[index];
     },
+
 
     /**
      * Group: DOM
      *
      */
-
 
     /**
      * Method: append
@@ -656,13 +651,7 @@ Unbose.prototype = {
      *
      */
     attr: function(name, val) {
-        if (val === undefined) {
-            return this.getAttr(name);
-        }
-        else {
-            this.setAttr(name, val);
-            return this;
-        }
+        return (val === undefined) ? this.getAttr(name) : this.setAttr(name, val);
     },
 
     /**
@@ -771,12 +760,7 @@ Unbose.prototype = {
      *
      */
     text: function(newText) {
-        if (newText === undefined) {
-            return this.getText();
-        }
-        else {
-            return this.setText(newText);
-        }
+        return (newText === undefined) ? this.getText() : this.setText(newText);
     },
 
     /**
@@ -831,12 +815,7 @@ Unbose.prototype = {
      *
      */
     val: function(val) {
-        if (val!==undefined) {
-            return this.setVal(val);
-        }
-        else {
-            return this.getVal();
-        }
+        return (val === undefined) ? this.getVal() : this.setVal(val);
     },
 
     /**
@@ -886,7 +865,7 @@ Unbose.prototype = {
      * Method: data
      *
      * Associate arbitrary data with this element. The value
-     * will be converted to a string
+     * will be converted to a string.
      *
      * Parameters:
      *
@@ -935,12 +914,7 @@ Unbose.prototype = {
      *
      */
     style: function(attr, value) {
-        if (value === undefined){
-            return this.getStyle(attr);
-        }
-        else {
-            return this.setStyle(attr, value);
-        }
+        return (value === undefined) ? this.getStyle(attr) : this.setStyle(attr, value);
     },
 
     /**

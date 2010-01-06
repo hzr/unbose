@@ -25,14 +25,14 @@ x    prev()
 
 style:
 x    hide()
-     show()
+x    show()
 x    style(name, value)
 x    addClass(class, *)
 x    hasClass(class, *)
 x    delClass(class, *)
 x    toggleClass(class)
-X    height()
-X    width()
+x    height()
+x    width()
 
 
 
