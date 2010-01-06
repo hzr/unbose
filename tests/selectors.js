@@ -7,10 +7,10 @@ test("Basic tests", function() {
     var subject = Unbose("#qunit-header");
     equals(subject.length, 1);
 
-    subject = Unbose("*");
-    equals(subject.length, 14);
+    subject = Unbose("#dummy *");
+    equals(subject.length, 2);
 
-    equal(subject.elements[0].nodeName.toLowerCase(),"html");
+    equals(Unbose("*").elements[0].nodeName.toLowerCase(),"html");
 
     subject = document.createDocumentFragment();
     subject.appendChild(document.createElement("div"));
