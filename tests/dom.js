@@ -277,32 +277,32 @@ test("val()", function() {
 
 test("height()", function() {
     var ele = document.createElement("div");
-    ele.style = "width: 100px; height: 120px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
+    ele.style.cssText = "width: 100px; height: 120px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
     document.body.appendChild(ele);
     equal(Unbose(ele).height(), 120);
-    ele.style = "height: 100px;"; // Remove borders and padding
+    ele.style.height = "100px"; // Remove borders and padding
     equal(Unbose(ele).height(), 100);
     Unbose(ele).height(80);
     equal(Unbose(ele).height(), 80);
     Unbose(ele).height("-1px");
     equal(Unbose(ele).height(), 0);
     Unbose(ele).height(80);
-    Unbose(ele).height("bogus");
-    equal(Unbose(ele).height(), 0);
+    Unbose(ele).height("bogus"); // should not set anything
+    equal(Unbose(ele).height(), 80);
 });
 
 test("width()", function() {
     var ele = document.createElement("div");
-    ele.style = "width: 120px; height: 100px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
+    ele.style.cssText = "width: 120px; height: 100px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
     document.body.appendChild(ele);
     equal(Unbose(ele).width(), 120);
-    ele.style = "width: 100px;"; // Remove borders and padding
+    ele.style.width = "100px"; // Remove borders and padding
     equal(Unbose(ele).width(), 100);
     Unbose(ele).width(80);
     equal(Unbose(ele).width(), 80);
     Unbose(ele).width(-1);
     equal(Unbose(ele).width(), 0);
     Unbose(ele).width(80);
-    Unbose(ele).width("bogus");
-    equal(Unbose(ele).width(), 0);
+    Unbose(ele).width("bogus"); // should not set anything
+    equal(Unbose(ele).width(), 80);
 });

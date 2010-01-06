@@ -996,9 +996,9 @@ Unbose.prototype = {
         }
         else {
             if (+value === parseInt(value)) {
-                value = Math.max(parseInt(value), 0) + "px";
+                value = parseInt(value) + "px";
             }
-            else if (isNaN(parseInt(value)) || parseInt(value) < 0) {
+            if (parseInt(value) < 0) {
                 value = 0;
             }
             ele.style.width = value;
@@ -1031,9 +1031,9 @@ Unbose.prototype = {
         }
         else {
             if (+value === parseInt(value)) {
-                value = Math.max(parseInt(value), 0) + "px";
+                value = parseInt(value) + "px";
             }
-            else if (isNaN(parseInt(value)) || parseInt(value) < 0) {
+            if (parseInt(value) < 0) {
                 value = 0;
             }
             ele.style.height = value;
