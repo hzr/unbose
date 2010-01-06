@@ -923,7 +923,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   attr - The name of the style attribute
+     *   prop - The name of the style attribute
      *
      * Fixme:
      *
@@ -933,22 +933,40 @@ Unbose.prototype = {
      *   opera and rgb in chrome/ff
      *
      */
-    getStyle: function(attr) {
+    getStyle: function(prop) {
         var ele = this.elements[0];
         return ele.ownerDocument.defaultView
                                 .getComputedStyle(ele, null)
-                                .getPropertyValue(attr);
+                                .getPropertyValue(prop);
     },
 
     /**
      * Method: setStyle
      *
-     * Set the style value of the first element of the set
+     * Set the style value for the elements in the set
+     *
+     * Parameters:
+     *
+     *   prop - The property to set
+     *   value - The property's value
+     *
+     * Returns:
+     *
+     *   An Unbose object
      *
      */
-    setStyle: function(name, value) {
-        // fixme: check style name map
-        this.forEach(function(ele) { ele.element.style[name] = value; });
+    setStyle: function(prop, value) {
+        prop = prop.toLowerCase().replace(/-([a-z])/g, function(all, letter) {
+            return letter.toUpperCase();
+        });
+
+        if (prop.match(/float/)) {
+            prop = "cssFloat";
+        }
+
+        this.elements.forEach(function(ele) {
+            ele.style[prop] = value;
+        });
         return this;
     },
 

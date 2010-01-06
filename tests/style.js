@@ -24,3 +24,14 @@ test("getStyle", function() {
     equal(subject.getStyle("border-left"), "solid gold 1px");
     document.body.removeChild(ele);
 });
+
+test("setStyle()", function() {
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    document.body.appendChild(ele);
+    subject.setStyle("float", "right"); // float maps to cssFloat
+    equal(subject.getStyle("float"), "right");
+    subject.style("padding-right", "1px"); // handle properties with dash
+    equal(subject.getStyle("padding-right"), "1px");
+    document.body.removeChild(ele);
+});
