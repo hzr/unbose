@@ -11,25 +11,22 @@ function Unbose(subject, context) {
 
     this.elements = [];
 
-    // FIXME: shouldn't use instanceof here below, since it
-    // won't work across frames
-
     if (typeof subject == "string") {
         var elems = (context || document).querySelectorAll(subject);
         for (var i = 0, e; e = elems[i]; i++) {
             this.elements.push(e);
         }
     }
-    else if (subject instanceof Unbose) {
+    else if (subject.toString() == "[object Unbose]") {
         this.elements = subject.elements;
     }
-    else if (subject instanceof Array) {
+    else if (Unbose.isArray(subject)) {
         this.elements = subject;
     }
-    else if (subject instanceof HTMLElement) {
+    else if (subject.nodeType == Node.ELEMENT_NODE) {
         this.elements = [subject];
     }
-    else if (subject instanceof DocumentFragment) {
+    else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
         var child = subject.firstChild;
         while (child) {
             if (child.nodeType == Node.ELEMENT_NODE) {
