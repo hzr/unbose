@@ -1261,30 +1261,30 @@ Unbose.tplFromZen = function(zen) {
 
     // Main parsing entrypoint
     function parse_zencode(str) {
-        str = str.split("");
+        var chars = str.split("");
         var ret = [];
         var n = 10;
-        while (str.length && --n) {
-            ret = ret.concat((parse_expr(str)));
+        while (chars.length && --n) {
+            ret = ret.concat((parse_expr(chars)));
         }
         return ret;
     }
 
     // Expression is top level zen element. tag or parens
-    function parse_expr(str) {
+    function parse_expr(chars) {
         var ret;
-        if (str[0] == "(") {
-            str.shift();
-            ret = parse_expr(str);
-            str.shift(); // fixme Make sure it's ")"
+        if (chars[0] == "(") {
+            chars.shift();
+            ret = parse_expr(chars);
+            chars.shift(); // fixme Make sure it's ")"
         }
         else {
-            ret = parse_tag(str);
+            ret = parse_tag(chars);
         }
 
-        var multiplier = get_multiplier(str);
-        var siblings = parse_siblings(str);
-        var children = parse_children(str);
+        var multiplier = get_multiplier(chars);
+        var siblings = parse_siblings(chars);
+        var children = parse_children(chars);
 
         if (ret.length == 2 && children.length) { // a set of sibligns can't have children
             ret.push(children);
@@ -1298,43 +1298,43 @@ Unbose.tplFromZen = function(zen) {
     }
 
     // Parses a tag, obviously..
-    function parse_tag(str) {
-        var name = consume_name(str);
-        var props = parse_props(str);
+    function parse_tag(chars) {
+        var name = consume_name(chars);
+        var props = parse_props(chars);
         var current = [name, props];
         return current;
     }
 
     // Consume and return the multiplier if there is one
-    function get_multiplier(str) {
-        var strNum = "";
-        if (str.length && str[0] == "*") {
-            str.shift();
+    function get_multiplier(chars) {
+        var charsNum = "";
+        if (chars.length && chars[0] == "*") {
+            chars.shift();
         }
 
-        while(str.length && str[0].match(/\d/)) {
-            strNum += str.shift();
+        while(chars.length && chars[0].match(/\d/)) {
+            charsNum += chars.shift();
         }
-        return parseInt(strNum, 10) || 1;
+        return parseInt(charsNum, 10) || 1;
     }
 
     // Parse siblings
-    function parse_siblings(str) {
+    function parse_siblings(chars) {
         var ret = [];
 
-        while (str.length && str[0] == "+") {
-            str.shift();
-            ret.push(parse_expr(str));
+        while (chars.length && chars[0] == "+") {
+            chars.shift();
+            ret.push(parse_expr(chars));
         }
         return ret;
     }
 
     // Parse children
-    function parse_children(str) {
+    function parse_children(chars) {
         var ret = [];
-        if (str.length && str[0] == ">") {
-            str.shift();
-            ret = parse_expr(str);
+        if (chars.length && chars[0] == ">") {
+            chars.shift();
+            ret = parse_expr(chars);
         }
         return ret;
     }
@@ -1342,10 +1342,10 @@ Unbose.tplFromZen = function(zen) {
     /**
      * Consume and return anything alphanumeric, a-z,0-9_-
      */
-    function consume_name(str) {
+    function consume_name(chars) {
         var s = "";
-        while (str.length && str[0].match(/[a-zA-Z0-9]/)) {
-            s += str.shift();
+        while (chars.length && chars[0].match(/[a-zA-Z0-9]/)) {
+            s += chars.shift();
         }
         return s;
     }
@@ -1353,10 +1353,10 @@ Unbose.tplFromZen = function(zen) {
     /**
      * Class names and IDs
      */
-    function consume_class_or_id(str) {
+    function consume_class_or_id(chars) {
         var s = "";
-        while (str.length && str[0].match(/[a-zA-Z0-9-_]/)) {
-            s += str.shift();
+        while (chars.length && chars[0].match(/[a-zA-Z0-9-_]/)) {
+            s += chars.shift();
         }
         return s;
     }
@@ -1364,38 +1364,38 @@ Unbose.tplFromZen = function(zen) {
     /**
      * Property values
      */
-    function consume_value(str) {
+    function consume_value(chars) {
         var s = "";
-        while (str.length && str[0].match(/[a-zA-Z0-9-_#\.]/)) {
-            s += str.shift();
+        while (chars.length && chars[0].match(/[a-zA-Z0-9-_#\.]/)) {
+            s += chars.shift();
         }
         return s;
     }
 
     // consume IDs, classnames and properties
-    function parse_props(str) {
+    function parse_props(chars) {
         var props = {};
 
-        while (str.length) {
-            var chr = str.shift();
+        while (chars.length) {
+            var chr = chars.shift();
             if (chr == ".") {
-                var className = consume_class_or_id(str);
+                var className = consume_class_or_id(chars);
                 props["class"] = props["class"] ?
                     props["class"] + " " + className :
                     className;
             }
             else if(chr == "#") {
-                var id = consume_class_or_id(str);
+                var id = consume_class_or_id(chars);
                 props["id"] = id;
             }
             else if(chr == " ") {
-                var name = consume_name(str);
-                str.shift(); // fixme. make sure is always "="
-                var value = consume_value(str);
+                var name = consume_name(chars);
+                chars.shift(); // fixme. make sure is always "="
+                var value = consume_value(chars);
                 props[name] = value;
             }
             else {
-                str.unshift(chr);
+                chars.unshift(chr);
                 break;
             }
         }
