@@ -1312,7 +1312,7 @@ Unbose.tplFromZen = function(zen) {
             chars.shift();
         }
 
-        while(chars.length && chars[0].match(/\d/)) {
+        while (chars.length && chars[0].match(/\d/)) {
             charsNum += chars.shift();
         }
         return parseInt(charsNum, 10) || 1;
@@ -1340,7 +1340,7 @@ Unbose.tplFromZen = function(zen) {
     }
 
     /**
-     * Consume and return anything alphanumeric, a-z,0-9_-
+     * Consume and return anything alphanumeric, a-z,0-9
      */
     function consume_name(chars) {
         var s = "";
@@ -1384,11 +1384,11 @@ Unbose.tplFromZen = function(zen) {
                     props["class"] + " " + className :
                     className;
             }
-            else if(chr == "#") {
+            else if (chr == "#") {
                 var id = consume_class_or_id(chars);
                 props["id"] = id;
             }
-            else if(chr == " ") {
+            else if (chr == " ") {
                 var name = consume_name(chars);
                 chars.shift(); // fixme. make sure is always "="
                 var value = consume_value(chars);
@@ -1414,11 +1414,11 @@ Unbose.eleFromZen = function(zen) {
 
 // These are copied from jQuery
 Unbose.isArray = function(obj) {
-    return toString.call(obj) == "[object Array]";
+    return toString.call(obj) === "[object Array]";
 }
 
 Unbose.isFunction = function(obj) {
-    return toString.call(obj) == "[object Function]";
+    return toString.call(obj) === "[object Function]";
 }
 
 Unbose.trim = function(text) {
