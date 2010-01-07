@@ -11,6 +11,9 @@ function Unbose(subject, context) {
 
     this.elements = [];
 
+    // FIXME: shouldn't use instanceof here below, since it
+    // won't work across frames
+
     if (typeof subject == "string") {
         var elems = (context || document).querySelectorAll(subject);
         for (var i = 0, e; e = elems[i]; i++) {
@@ -1412,13 +1415,13 @@ Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
 
-// These are copied from jQuery
+// http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
 Unbose.isArray = function(obj) {
-    return toString.call(obj) === "[object Array]";
+    return Object.prototype.toString.call(obj) === "[object Array]";
 }
 
 Unbose.isFunction = function(obj) {
-    return toString.call(obj) === "[object Function]";
+    return Object.prototype.toString.call(obj) === "[object Function]";
 }
 
 Unbose.trim = function(text) {
