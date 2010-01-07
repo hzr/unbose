@@ -1061,7 +1061,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            return ele.className.split(/\/).indexOf(cls) != -1;
+            return ele.className.split(/\s+/).indexOf(cls) != -1;
         });
     },
 
