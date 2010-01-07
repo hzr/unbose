@@ -1413,13 +1413,13 @@ Unbose.eleFromZen = function(zen) {
 };
 
 Unbose.isArray = function(obj) {
-    return obj.toString == "[object Array]";
+    return toString.call(obj) == "[object Array]";
 }
 
 Unbose.isFunction = function(obj) {
-    return obj.toString == "[object Function]";
+    return toString.call(obj) == "[object Function]";
 }
 
 Unbose.trim = function(text) {
-    return text.replace(/^\s+|\s+$/, "");
+    return text.replace(/^\s+|\s+$/g, "");
 }
