@@ -1061,7 +1061,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            return ele.className.split(/\s+/).indexOf(cls) != -1;
+            return ele.className.split(/\/).indexOf(cls) != -1;
         });
     },
 
@@ -1412,3 +1412,14 @@ Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
 
+Unbose.isArray = function(obj) {
+    return obj.toString == "[object Array]";
+}
+
+Unbose.isFunction = function(obj) {
+    return obj.toString == "[object Function]";
+}
+
+Unbose.trim = function(text) {
+    return text.replace(/^\s+|\s+$/, "");
+}
