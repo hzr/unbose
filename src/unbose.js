@@ -1412,6 +1412,7 @@ Unbose.eleFromZen = function(zen) {
     return this.eleFromTpl(this.tplFromZen(zen));
 };
 
+// These are copied from jQuery
 Unbose.isArray = function(obj) {
     return toString.call(obj) == "[object Array]";
 }
@@ -1421,5 +1422,5 @@ Unbose.isFunction = function(obj) {
 }
 
 Unbose.trim = function(text) {
-    return text.replace(/^\s+|\s+$/g, "");
+    return (text || "").replace(/^\s+|\s+$/g, "");
 }
