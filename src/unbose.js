@@ -680,7 +680,6 @@ Unbose.prototype = {
         return this;
     },
 
-
     /**
      * Method: empty
      *
@@ -1188,7 +1187,7 @@ Unbose.eleFromTpl = function(tpl) {
             elem.appendChild(document.createTextNode(cur));
         }
         else {
-            elem.appendChild(this.eleFromTpl(cur));
+            elem.appendChild(Unbose.eleFromTpl(cur));
         }
     }
 
@@ -1387,7 +1386,7 @@ Unbose.tplFromZen = function(zen) {
  * Converts a zencode string to an element (NOT to an unbose object atm)
  */
 Unbose.eleFromZen = function(zen) {
-    return this.eleFromTpl(this.tplFromZen(zen));
+    return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
 };
 
 // http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
