@@ -1,8 +1,8 @@
 /**
  * Class: Unbose
  *
- * Subject can be string selector, array (presumed to be of elements),
- * element, Unbose object.
+ * Subject can be a CSS selector (string), array (presumed to be of elements),
+ * element, document fragment or an Unbose object.
  */
 function Unbose(subject, context) {
     if (! (this instanceof Unbose)) {
@@ -16,9 +16,6 @@ function Unbose(subject, context) {
         for (var i = 0, e; e = elems[i]; i++) {
             this.elements.push(e);
         }
-    }
-    else if (subject.toString() == "[object Unbose]") {
-        this.elements = subject.elements;
     }
     else if (Unbose.isArray(subject)) {
         this.elements = subject;
@@ -34,6 +31,9 @@ function Unbose(subject, context) {
             }
             child = child.nextSibling;
         }
+    }
+    else if (subject.toString() == "[object Unbose]") {
+        this.elements = subject.elements;
     }
 
     this.length = this.elements.length;
@@ -125,8 +125,14 @@ Unbose.prototype = {
     /**
      *
      */
-    filter: function(fun, context) {
-        return this.elements.filter(fun, context || this);
+    filter: function(filter) {
+        var eles = this.elements;
+        if (filter) {
+            eles = eles.filter(function(ele) {
+                return Unbose(ele).matchesSelector(filter);
+            });
+        }
+        return Unbose(eles);
     },
 
 
@@ -166,9 +172,11 @@ Unbose.prototype = {
      *
      *   True if the element matches the selector, false otherwise
      *
+     * Note:
+     *
+     *   This method is currently limited to filtering on element names,
+     *   classes and IDs.
      */
-    // Note: this method is currently limited to filtering on element names,
-    // classes and IDs.
     matchesSelector: function(selector) {
         var parts = selector.split(/([#\.])/);
         var ele = this.elements[0];
@@ -177,15 +185,10 @@ Unbose.prototype = {
             return false;
         }
         while ((type = parts.shift()) && (value = parts.shift())) {
-            if (type == ".") {
-                if (!Unbose(ele).hasClass(value)) {
-                    return false;
-                }
-            }
-            else {
-                if (ele.id != value) {
-                    return false;
-                }
+            if ((type == "." && !Unbose(ele).hasClass(value)) ||
+                (type == "#" && ele.id != value))
+            {
+                return false;
             }
         }
         return true;
@@ -223,7 +226,7 @@ Unbose.prototype = {
      * Returns:
      *
      *   The name of the first element in the set. Name will always be lower
-     *   case when returned
+     *   case when returned.
      */
     name: function() {
         return this.elements[0] && this.elements[0].nodeName.toLowerCase();
@@ -256,12 +259,7 @@ Unbose.prototype = {
                 parents.push(parent);
             }
         });
-        if (filter) {
-            parents = parents.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
-            });
-        }
-        return Unbose(parents);
+        return Unbose(parents).filter(filter);
     },
 
     /**
@@ -295,12 +293,7 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        if (filter) {
-            children = children.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
-            });
-        }
-        return Unbose(children);
+        return Unbose(children).filter(filter);
     },
 
     /**
@@ -330,12 +323,7 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        if (filter) {
-            siblings = siblings.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
-            });
-        }
-        return Unbose(siblings);
+        return Unbose(siblings).filter(filter);
     },
 
     /**
@@ -400,12 +388,7 @@ Unbose.prototype = {
                 prevs.push(prev);
             }
         });
-        if (filter) {
-            prevs = prevs.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
-            });
-        }
-        return Unbose(prevs);
+        return Unbose(prevs).filter(filter);
     },
 
     /**
@@ -434,12 +417,7 @@ Unbose.prototype = {
                 nexts.push(next);
             }
         });
-        if (filter) {
-            nexts = nexts.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
-            });
-        }
-        return Unbose(nexts);
+        return Unbose(nexts).filter(filter);
     },
 
     /**
@@ -1214,8 +1192,8 @@ Unbose.eleFromTpl = function(tpl) {
         }
     }
 
-    // flatten unneeded documentfragments
-    if (elem instanceof DocumentFragment && elem.childNodes.length == 1) {
+    // flatten unneeded DocumentFragments
+    if (elem.nodeType == Node.DOCUMENT_FRAGMENT_NODE && elem.childNodes.length == 1) {
         elem = elem.firstChild;
     }
     return elem;
