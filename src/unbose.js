@@ -181,7 +181,9 @@ Unbose.prototype = {
         var parts = selector.split(/([#\.])/);
         var ele = this.elements[0];
         var type, value;
-        if (parts.shift().toLowerCase() != ele.nodeName.toLowerCase()) {
+        var tag = parts.shift().toLowerCase();
+
+        if (tag && tag != ele.nodeName.toLowerCase()) {
             return false;
         }
         while ((type = parts.shift()) && (value = parts.shift())) {
