@@ -12,9 +12,9 @@ function Unbose(subject, context) {
     this.elements = [];
 
     if (typeof subject == "string") {
-        var elems = (context || document).querySelectorAll(subject);
-        for (var i = 0, e; e = elems[i]; i++) {
-            this.elements.push(e);
+        var eles = (context || document).querySelectorAll(subject);
+        for (var i = 0, ele; ele = eles[i]; i++) {
+            this.elements.push(ele);
         }
     }
     else if (Unbose.isArray(subject)) {
@@ -981,6 +981,7 @@ Unbose.prototype = {
             }
             ele.style.width = value;
         }
+        return this;
     },
 
     /**
@@ -1016,6 +1017,7 @@ Unbose.prototype = {
             }
             ele.style.height = value;
         }
+        return this;
     },
 
     /**
@@ -1168,14 +1170,14 @@ Unbose.prototype = {
 // static methods:
 Unbose.eleFromTpl = function(tpl) {
     var index = 0;
-    var elem = document.createDocumentFragment();
+    var ele = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
-        elem = createElementWithAttrs(tpl[index]);
+        ele = createElementWithAttrs(tpl[index]);
         index++;
         if (typeof tpl[index] === "object") {
             var props = tpl[index++];
             for (var key in props) {
-                elem.setAttribute(key, props[key]);
+                ele.setAttribute(key, props[key]);
             }
         }
     }
@@ -1184,18 +1186,18 @@ Unbose.eleFromTpl = function(tpl) {
     // fixme: what if data has something falsey?
     while (cur = (tpl[index++])) {
         if (typeof cur === "string") {
-            elem.appendChild(document.createTextNode(cur));
+            ele.appendChild(document.createTextNode(cur));
         }
         else {
-            elem.appendChild(Unbose.eleFromTpl(cur));
+            ele.appendChild(Unbose.eleFromTpl(cur));
         }
     }
 
     // flatten unneeded DocumentFragments
-    if (elem.nodeType == Node.DOCUMENT_FRAGMENT_NODE && elem.childNodes.length == 1) {
-        elem = elem.firstChild;
+    if (ele.nodeType == Node.DOCUMENT_FRAGMENT_NODE && ele.childNodes.length == 1) {
+        ele = ele.firstChild;
     }
-    return elem;
+    return ele;
 
     function createElementWithAttrs(text) {
         var parts = text.split(/([#\.])/);
