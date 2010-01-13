@@ -172,28 +172,40 @@ Unbose.prototype = {
      *
      *   True if the element matches the selector, false otherwise
      *
-     * Note:
+     * Caveats:
      *
-     *   This method is currently limited to filtering on element names,
-     *   classes and IDs.
+     *   This matcher is a lot less sophisticated than a native one would be.
+     *   Currently the following selectors are supported:
+     *
+     *   - Tag names
+     *   - Class names
+     *   - IDs
+     *   - Chains of the above
+     *   - Multiple selectors separated by comma
+     *
      */
     matchesSelector: function(selector) {
-        var parts = selector.split(/([#\.])/);
-        var ele = this.elements[0];
-        var type, value;
-        var tag = parts.shift().toLowerCase();
+        var selectors = selector.split(/\s*,\s*/);
+        return selectors.some(matcher, this);
 
-        if (tag && tag != ele.nodeName.toLowerCase()) {
-            return false;
-        }
-        while ((type = parts.shift()) && (value = parts.shift())) {
-            if ((type == "." && !Unbose(ele).hasClass(value)) ||
-                (type == "#" && ele.id != value))
-            {
+        function matcher(selector) {
+            var parts = selector.split(/([#\.])/);
+            var ele = this.elements[0];
+            var type, value;
+            var tag = parts.shift().toLowerCase();
+
+            if (tag && tag != ele.nodeName.toLowerCase()) {
                 return false;
             }
+            while ((type = parts.shift()) && (value = parts.shift())) {
+                if ((type == "." && !Unbose(ele).hasClass(value)) ||
+                    (type == "#" && ele.id != value))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
     },
 
     /**

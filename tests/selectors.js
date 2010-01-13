@@ -41,14 +41,24 @@ test("Find method", function() {
 
 });
 
-test("mathesSelector()", function() {
+test("matchesSelector()", function() {
     var ele = Unbose(Unbose.eleFromZen("div#foo.bar.baz"));
     ok(ele.matchesSelector("div#foo"));
     ok(ele.matchesSelector("#foo"));
+    ok(ele.matchesSelector(".bar"));
+    ok(ele.matchesSelector(".baz"));
+    ok(ele.matchesSelector(".bar.baz"));
+    ok(ele.matchesSelector(".baz.bar"));
     ok(!ele.matchesSelector("span#foo"));
     ok(!ele.matchesSelector("#bar"));
     ok(ele.matchesSelector("#foo.bar"));
     ok(ele.matchesSelector("div#foo.bar"));
+    ok(ele.matchesSelector("span,div"));
+    ok(ele.matchesSelector("span, div"));
+    ok(ele.matchesSelector("div,span"));
+    ok(ele.matchesSelector("div\t\t ,\tspan"));
+    ok(ele.matchesSelector(".foo, .bar"));
+
 });
 
 
