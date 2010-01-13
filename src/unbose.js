@@ -1397,12 +1397,16 @@ Unbose.isArray = function(obj) {
         return Array.isArray(obj);
     }
     return Object.prototype.toString.call(obj) === "[object Array]";
-}
+};
 
 Unbose.isFunction = function(obj) {
     return Object.prototype.toString.call(obj) === "[object Function]";
 }
 
+Unbose.isElement = function (obj) {
+    return !!(obj && obj.nodeType && obj.nodeType == Node.ELEMENT_NODE);
+};
+
 Unbose.trim = function(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
-}
+};
