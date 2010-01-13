@@ -178,6 +178,22 @@ test("parent()", function() {
     equal(ele.parent().length, 1);
 });
 
+
+test("ancestor()", function() {
+    var ele = Unbose(Unbose.eleFromZen("div.foo>div.bar>div.baz"));
+    var tip = ele.find(".baz");
+
+    equal(tip.ancestor("div.bar").length, 1);
+    equal(tip.ancestor("div.bar").elem(0), ele.find(".bar").elem(0));
+    ok(tip.ancestor("div.bar").hasClass("bar"));
+
+    equal(tip.ancestor("div.foo").length, 1);
+    equal(tip.ancestor("div.foo").elem(0), ele.elem(0));
+    ok(tip.ancestor("div.foo").hasClass("foo"));
+
+});
+
+
 test("siblings()", function() {
     var ele = Unbose.eleFromZen("body>i+p+div>i+i+span");
     var subject = Unbose(ele).find("p");

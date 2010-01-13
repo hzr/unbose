@@ -263,6 +263,42 @@ Unbose.prototype = {
     },
 
     /**
+     * Method: ancestor
+     *
+     * Get the closest ancestor matching filter.
+     *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     *   <parent>
+     *
+     * Fixme:
+     *
+     *   Returns nearest ancestor or all matching ancestors?
+     *
+     */
+    ancestor: function(filter) {
+        var ancestors = [];
+        this.elements.forEach(function(ele) {
+            while(ele = ele.parentNode) {
+                if (Unbose(ele).matchesSelector(filter) && ancestors.indexOf(ele) == -1) {
+                    ancestors.push(ele);
+                    break;
+                }
+            }
+        });
+        return Unbose(ancestors);
+    },
+
+
+    /**
      * Method: children
      *
      * Get the elements children
