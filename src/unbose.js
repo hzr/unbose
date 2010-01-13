@@ -116,7 +116,7 @@ Unbose.prototype = {
      */
     once: function(name, callback, capture) {
         function cancelCb(evt) {
-            evt.target.removeEventListener(name, cancelCb, capture || false);
+            evt.target.removeEventListener(name, cancelCb, capture);
             callback(evt);
         };
         return this.on(name, cancelCb, capture);
@@ -254,8 +254,7 @@ Unbose.prototype = {
         var parents = [];
         this.elements.forEach(function(ele) {
             var parent = ele.parentNode;
-            if (parent && parents.indexOf(parent) == -1)
-            {
+            if (parent && parents.indexOf(parent) == -1) {
                 parents.push(parent);
             }
         });
@@ -520,6 +519,7 @@ Unbose.prototype = {
      */
      append: function(thing) {
          //todo
+         this.appendUnbose(thing);
          return this;
      },
 
@@ -580,10 +580,10 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-     appendUnbose: function (ubobj) {
-         ubobj.elem().forEach(function(ele) {
+     appendUnbose: function(ubobj) {
+         ubobj.elements.forEach(function(ele) {
              this.appendElem(ele);
-         });
+         }, this);
          return this;
      },
 
@@ -725,7 +725,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   newText - (optional) new string
+     *   text - (optional) new string
      *
      * Returns:
      *
@@ -736,8 +736,8 @@ Unbose.prototype = {
      * <getText>, <setText>
      *
      */
-    text: function(newText) {
-        return (newText === undefined) ? this.getText() : this.setText(newText);
+    text: function(text) {
+        return (text === undefined) ? this.getText() : this.setText(text);
     },
 
     /**
@@ -1389,6 +1389,10 @@ Unbose.tplFromZen = function(zen) {
  */
 Unbose.eleFromZen = function(zen) {
     return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
+};
+
+Unbose.fromZen = function(zen) {
+    return Unbose(Unbose.eleFromZen(zen));
 };
 
 // http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
