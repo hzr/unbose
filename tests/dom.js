@@ -284,6 +284,8 @@ test("height()", function() {
     equal(Unbose(ele).height(), 100);
     Unbose(ele).height(80);
     equal(Unbose(ele).height(), 80);
+    Unbose(ele).height("0x10");
+    equal(Unbose(ele).height(), 80, "This test is a corner-case. Known to fail in Opera pre-Carakan");
     Unbose(ele).height("-1px");
     equal(Unbose(ele).height(), 0);
     Unbose(ele).height(80);

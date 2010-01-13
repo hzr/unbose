@@ -973,7 +973,7 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-right"));
         }
         else {
-            if (+value === parseInt(value)) {
+            if (+value === parseInt(value, 10)) {
                 value = parseInt(value) + "px";
             }
             if (parseInt(value) < 0) {
@@ -1008,7 +1008,7 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-bottom"));
         }
         else {
-            if (+value === parseInt(value)) {
+            if (+value === parseInt(value, 10)) {
                 value = parseInt(value) + "px";
             }
             if (parseInt(value) < 0) {
