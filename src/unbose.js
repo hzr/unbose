@@ -1167,7 +1167,12 @@ Unbose.prototype = {
     }
 };
 
-// static methods:
+
+/**
+ * Group: Static methods
+ *
+ */
+
 Unbose.eleFromTpl = function(tpl) {
     var index = 0;
     var ele = document.createDocumentFragment();
@@ -1228,7 +1233,7 @@ Unbose.list = function(whatever) {
 };
 
 /**
- * Static method: eleFromZen
+ * Method: tplFromZen (static)
  *
  * Converts a template array to an element (NOT to an unbose object atm)
  */
@@ -1383,7 +1388,7 @@ Unbose.tplFromZen = function(zen) {
 };
 
 /**
- * Static method: eleFromZen
+ * Method: eleFromZen (static)
  *
  * Converts a zencode string to an element (NOT to an unbose object atm)
  */
@@ -1391,7 +1396,25 @@ Unbose.eleFromZen = function(zen) {
     return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
 };
 
-// http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+/**
+ * Method: isArray (static)
+ *
+ * Check if an object is an array
+ *
+ * Parameters:
+ *
+ *   obj - the object to check
+ *
+ * Returns:
+ *
+ *   boolean, true if object is an array. Otherwise false.
+ *
+ * Note:
+ *
+ *   Copied from:
+ *   http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+ *
+ */
 Unbose.isArray = function(obj) {
     if (Array.isArray) {
         return Array.isArray(obj);
@@ -1399,10 +1422,38 @@ Unbose.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
+/**
+ * Method: isFunction (static)
+ *
+ * Check if an object is a function
+ *
+ * Parameters:
+ *
+ *   obj - the object to check
+ *
+ * Returns:
+ *
+ *   boolean, true if object is a function. Otherwise false.
+ *
+ */
 Unbose.isFunction = function(obj) {
     return Object.prototype.toString.call(obj) === "[object Function]";
-}
+};
 
+/**
+ * Method: isElement (static)
+ *
+ * Check if an object is an element
+ *
+ * Parameters:
+ *
+ *   obj - the object to check
+ *
+ * Returns:
+ *
+ *   boolean, true if object is an element. Otherwise false.
+ *
+ */
 Unbose.isElement = function (obj) {
     return !!(obj && obj.nodeType && obj.nodeType == Node.ELEMENT_NODE);
 };
