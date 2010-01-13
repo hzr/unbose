@@ -251,6 +251,39 @@ test("eleFromZen", function() {
 });
 
 
+test("append()", function() {
+    // test zen
+    var ele = Unbose(document.createElement("div"));
+    ele.append("div.first+div.last");
+    equal(ele.find("div").length, 2);
+    ok(ele.find("div").nth(0).hasClass("first"));
+    ok(ele.find("div").nth(1).hasClass("last"));
+
+    // test tpl
+    var ele = Unbose(document.createElement("div"));
+    ele.append([["div" {class: "first"}], ["div" {class: "last"}]]);
+    equal(ele.find("div").length, 2);
+    ok(ele.find("div").nth(0).hasClass("first"));
+    ok(ele.find("div").nth(1).hasClass("last"));
+
+    // test elem
+    var ele = Unbose(document.createElement("div"));
+    var ele2 = document.createElement("div");
+    ele2.className="first";
+    var ele3 = document.createElement("div");
+    ele3.className="last";
+
+    ele.append(ele2);
+    ele.append(ele3);
+    equal(ele.find("div").length, 2);
+    ok(ele.find("div").nth(0).hasClass("first"));
+    ok(ele.find("div").nth(1).hasClass("last"));
+
+    // todo test appendUnbose
+
+});
+
+
 test("appendTpl", function() {
     var tpl = ["div", {id: "testid", "class": "testclass"},
         ["h1", "title1"],

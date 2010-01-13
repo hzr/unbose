@@ -568,8 +568,21 @@ Unbose.prototype = {
      *
      */
      append: function(thing) {
-         //todo
-         this.appendUnbose(thing);
+         if (Unbose.isElement(thing)) {
+             return this.appendElem(thing);
+         }
+         else if (Unbose.isArray(thing)) {
+             return this.appendTpl(thing);
+         }
+         else if (thing instanceof Unbose) {
+             this.appendUnbose(thing);
+         }
+         else if (typeof thing === "string") {
+             this.appendZen(thing);
+         }
+         else {
+             //fixme: return what?
+         }
          return this;
      },
 
