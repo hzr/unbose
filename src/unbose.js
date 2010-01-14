@@ -1304,7 +1304,7 @@ Unbose.tplFromZen = function(zen) {
     return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
-
+    // fimxe: do whitespace cleanup at first instead of inside parser?
 
     // Main parsing entrypoint
     function parse_zencode(str) {
@@ -1319,6 +1319,7 @@ Unbose.tplFromZen = function(zen) {
 
     // Expression is top level zen element. tag or parens
     function parse_expr(chars) {
+        consume_ws(chars);
         var ret;
         if (chars[0] == "(") {
             chars.shift();
@@ -1329,8 +1330,11 @@ Unbose.tplFromZen = function(zen) {
             ret = parse_tag(chars);
         }
 
+        consume_ws(chars);
         var multiplier = get_multiplier(chars);
+        consume_ws(chars);
         var siblings = parse_siblings(chars);
+        consume_ws(chars);
         var children = parse_children(chars);
 
         if (ret.length == 2 && children.length) { // a set of sibligns can't have children
@@ -1346,7 +1350,6 @@ Unbose.tplFromZen = function(zen) {
 
     // Parses a tag, obviously..
     function parse_tag(chars) {
-        consume_ws(chars);
         var name = consume_name(chars);
         var props = parse_props(chars);
         var current = [name, props];
