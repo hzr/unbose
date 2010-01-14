@@ -35,6 +35,13 @@ function Unbose(subject, context) {
     else if (subject.toString() == "[object Unbose]") {
         this.elements = subject.elements;
     }
+    else if (Unbose.isFunction(subject)) {
+        document.addEventListener("DOMContentLoaded", function ready() {
+            subject();
+            // I wonder if this is neccessary. jQuery does it, but shouldn't browser's themselves do it?
+            document.removeEventListener("DOMContentLoaded", ready, false);
+        }, false);
+    }
 
     this.length = this.elements.length;
 }
@@ -1535,6 +1542,7 @@ Unbose.isElement = function(obj) {
  * Returns:
  *
  *   The trimmed text
+ *
  */
 Unbose.trim = function(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
