@@ -1453,13 +1453,43 @@ Unbose.tplFromZen = function(zen) {
 /**
  * Method: eleFromZen (static)
  *
- * Converts a zencode string to an element (NOT to an unbose object atm)
+ * Create an html element from a zencode string
+ *
+ * Parameters:
+ *
+ *   zen - the string of zencode
+ *
+ * Returns:
+ *
+ *   HTMLElement
+ *
+ * See also:
+ *
+ * <fromZen>
+ *
  */
 Unbose.eleFromZen = function(zen) {
     return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
 };
 
-
+/**
+ * Method: fromZen (static)
+ *
+ * Create an unbose object from a zencode string
+ *
+ * Parameters:
+ *
+ *   zen - the string of zencode
+ *
+ * Returns:
+ *
+ *   Unbose element of zencode
+ *
+ * See also:
+ *
+ * <eleFromZen>
+ *
+ */
 Unbose.fromZen = function(zen) {
     return Unbose(Unbose.eleFromZen(zen));
 };
