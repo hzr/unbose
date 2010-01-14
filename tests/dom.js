@@ -1,5 +1,5 @@
 
-module("Attributes");
+module("DOM");
 
 test("text()", function() {
     var subject = Unbose("#qunit-header");
@@ -191,6 +191,8 @@ test("ancestor()", function() {
     equal(tip.ancestor(".foo").elem(0), ele.elem(0));
     ok(tip.ancestor(".foo").hasClass("foo"));
 
+    equal(tip.ancestor("bogus").length, 0);
+    equal(tip.ancestor("").length, 0);
 });
 
 

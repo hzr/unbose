@@ -177,7 +177,7 @@ Unbose.prototype = {
      *   This matcher is a lot less sophisticated than a native one would be.
      *   Currently the following selectors are supported:
      *
-     *   - Tag names
+     *   - Element names
      *   - Class names
      *   - IDs
      *   - Chains of the above
@@ -192,9 +192,9 @@ Unbose.prototype = {
             var parts = selector.split(/([#\.])/);
             var ele = this.elements[0];
             var type, value;
-            var tag = parts.shift().toLowerCase();
+            var eleName = parts.shift().toLowerCase();
 
-            if (tag && tag != ele.nodeName.toLowerCase()) {
+            if (!Unbose.trim(selector) || (eleName && eleName != ele.nodeName.toLowerCase())) {
                 return false;
             }
             while ((type = parts.shift()) && (value = parts.shift())) {
@@ -226,6 +226,7 @@ Unbose.prototype = {
      * Todo:
      *
      *   Should we pass ele or Unbose object to args?
+     *
      */
     forEach: function(func, context) {
         this.elements.forEach(func, context || this);
@@ -292,22 +293,18 @@ Unbose.prototype = {
      *
      *   <parent>
      *
-     * Fixme:
-     *
-     *   Returns nearest ancestor or all matching ancestors?
-     *
      */
     ancestor: function(filter) {
-        var ancestors = [];
+        var ancestor = [];
         this.elements.forEach(function(ele) {
-            while(ele = ele.parentNode) {
-                if (Unbose(ele).matchesSelector(filter) && ancestors.indexOf(ele) == -1) {
-                    ancestors.push(ele);
+            while ((ele = ele.parentNode)) {
+                if (Unbose(ele).matchesSelector(filter)) {
+                    ancestor = ele;
                     break;
                 }
             }
         });
-        return Unbose(ancestors);
+        return Unbose(ancestor);
     },
 
 
@@ -386,7 +383,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     * <last>, <nth>
+     *   <last>, <nth>
      *
      */
     first: function() {
@@ -404,7 +401,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     * <first>, <nth>
+     *   <first>, <nth>
      *
      */
     last: function() {
@@ -574,7 +571,7 @@ Unbose.prototype = {
          else if (Unbose.isArray(thing)) {
              return this.appendTpl(thing);
          }
-         else if (thing instanceof Unbose) {
+         else if (thing.toString() == "[object Unbose]") {
              this.appendUnbose(thing);
          }
          else if (typeof thing === "string") {
@@ -1464,7 +1461,6 @@ Unbose.fromZen = function(zen) {
     return Unbose(Unbose.eleFromZen(zen));
 };
 
-
 /**
  * Method: isArray (static)
  *
@@ -1523,10 +1519,24 @@ Unbose.isFunction = function(obj) {
  *   boolean, true if object is an element. Otherwise false.
  *
  */
-Unbose.isElement = function (obj) {
+Unbose.isElement = function(obj) {
     return !!(obj && obj.nodeType && obj.nodeType == Node.ELEMENT_NODE);
 };
 
+/**
+ * Method: trim (static)
+ *
+ * Trim leading and trailing whitespace in a string.
+ *
+ * Parameters:
+ *
+ *   text - The text to be trimmed
+ *
+ * Returns:
+ *
+ *   The trimmed text
+ */
 Unbose.trim = function(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
 };
+
