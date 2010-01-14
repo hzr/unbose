@@ -1346,6 +1346,7 @@ Unbose.tplFromZen = function(zen) {
 
     // Parses a tag, obviously..
     function parse_tag(chars) {
+        consume_ws(chars);
         var name = consume_name(chars);
         var props = parse_props(chars);
         var current = [name, props];
@@ -1419,6 +1420,17 @@ Unbose.tplFromZen = function(zen) {
         return s;
     }
 
+    /**
+     * White space
+     */
+    function consume_ws(chars) {
+        var s = "";
+        while (chars.length && chars[0].match(/\s/)) {
+            s += chars.shift();
+        }
+        return s;
+    }
+
     // consume IDs, classnames and properties
     function parse_props(chars) {
         var props = {};
@@ -1437,6 +1449,10 @@ Unbose.tplFromZen = function(zen) {
             }
             else if (chr == " ") {
                 var name = consume_name(chars);
+                if (!name) { // no valid name found
+                    break; // presumably whitespace in zen for readability.
+                }
+
                 chars.shift(); // fixme. make sure is always "="
                 var value = consume_value(chars);
                 props[name] = value;

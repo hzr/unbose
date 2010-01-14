@@ -242,7 +242,7 @@ test("eleFromZen", function() {
     var zen = "div#testid.testclass>h1+(p>a href=testlink)+h1";
     var ele = Unbose.eleFromZen(zen);
     ok(ele, "Elem generated");
-    ok(Unbose.eleFromZen("div + div"), "Elem generated");
+    ok(Unbose.eleFromZen("div+div"), "Elem generated");
     ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
     equal(ele.length, 1);
