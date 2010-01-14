@@ -107,5 +107,9 @@ test("whitespace in zencode", function() {
     ok(ele, "Elem generated");
     equals(ele.length, 2);
     equals(ele.nth(1).attr("meh"), 123);
+
+    var ele = Unbose.fromZen("(div\n) \n+\n (\ndiv)");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
 });
 

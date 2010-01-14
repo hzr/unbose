@@ -1308,7 +1308,7 @@ Unbose.tplFromZen = function(zen) {
 
     // Main parsing entrypoint
     function parse_zencode(str) {
-        var chars = str.split("");
+        var chars = str.replace("\n").split("");
         var ret = [];
         var n = 10;
         while (chars.length && --n) {
