@@ -1527,6 +1527,20 @@ Unbose.isElement = function (obj) {
     return !!(obj && obj.nodeType && obj.nodeType == Node.ELEMENT_NODE);
 };
 
+/**
+ * Method: trim (static)
+ *
+ * Remove any leading or trailing whitespace from a string
+ *
+ * Parameters:
+ *
+ *   text - the string to trim
+ *
+ * Returns:
+ *
+ *   string, the trimmed string.
+ *
+ */
 Unbose.trim = function(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
 };
