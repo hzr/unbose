@@ -43,6 +43,8 @@ function Unbose(subject, context) {
         }, false);
     }
 
+    // TODO: handle Unbose(window|document)
+
     this.length = this.elements.length;
 }
 
@@ -88,7 +90,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   name - Name of the event
+     *   name - Name of the event. To attach multiple event handlers,
+     *          just separate them with a space.
      *   callback - Function called when event occurs
      *   capture - Use capturing
      *
@@ -97,10 +100,12 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    on: function(name, callback, capture) {
-        this.elements.forEach(function(ele) {
-            ele.addEventListener(name, callback, capture || false);
-        });
+    on: function(names, callback, capture) {
+        names.split(" ").forEach(function(name) {
+            this.elements.forEach(function(ele) {
+                ele.addEventListener(name, callback, capture || false);
+            });
+        }, this);
         return this;
     },
 
@@ -1001,12 +1006,17 @@ Unbose.prototype = {
      *
      */
     setStyle: function(prop, value) {
-        prop = prop.replace(/-([a-z])/g, function(all, letter) {
+        // Normalize properties
+        prop = prop.toLowerCase().replace(/-([a-z])/g, function(all, letter) {
             return letter.toUpperCase();
         });
 
         if (prop == "float") {
             prop = "cssFloat";
+        }
+
+        if (+value === parseInt(value, 10) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
+            value = parseInt(value, 10) + "px";
         }
 
         this.elements.forEach(function(ele) {
