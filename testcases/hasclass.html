@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+ <head>
+  <title>hasClass performance testcase</title>
+
+<script>
+ 
+var test_re = (function()
+{
+  var re_cache = {};
+  return function(str, name)
+  {
+    return (re_cache[name] || (re_cache[name] = new RegExp('(?:^| +)'+name+'(?: +|$)'))).test(str);
+  };
+})();
+// alternative
+var test_index_of = function(str, name)
+{
+   return (' '+str+' ').indexOf(' '+name+' ') >= 0;
+}
+// split
+var test_split = function(str, name)
+{
+  return str.split(/\s+/).indexOf(name) != -1;
+}
+ 
+var  run_test = function(test_fn)
+{
+   var
+   times = [],
+   MAX = 10000,
+   i = 0,
+   j = 0,
+   tests =
+   [
+     ['a b c', 'd'],
+     ['a b c', 'a'],
+     ['a b c', 'b'],
+     ['a b c', 'c'],
+     ['a', 'd'],
+     ['a', 'a'],
+   ],
+   pre = document.getElementsByTagName('pre')[0],
+   total = 0;
+ 
+   pre.textContent = "";
+   for( ; i < tests.length; i++)
+   {
+     times[i] = new Date().getTime();
+     for( j = 0; j < MAX; j++) test_fn(tests[i][0], tests[i][1]);
+   }
+   times[i] = new Date().getTime();
+   pre.textContent =
+     times.map(function(t,i,a){return tests[i-1] +': '+ (t-a[i-1])}).slice(1).join('\n') + '\n' +
+     'total: ' + ( total = times[times.length-1] - times[0]) + '\n' +
+     'average millisec per check: ' + (total / (times.length * MAX)).toFixed(4)
+}
+</script>
+Testcase courtesy of <a href="aleto.ch">Christian Krebs.</a>
+<p><input value="reg exp" type="button" onclick="run_test(test_re)">
+<p><input value="indexOf" type="button" onclick="run_test(test_index_of)">
+<p><input value="split" type="button" onclick="run_test(test_split)">
+ 
+<pre></pre>
