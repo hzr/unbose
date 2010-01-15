@@ -722,7 +722,10 @@ Unbose.prototype = {
      *
      */
     getAttr: function(name) {
-        return this.elements[0].getAttribute(name) || this.elements[0][name];
+      if (this.elements.length) {
+          this.elements[0].getAttribute(name) || this.elements[0][name];
+      }
+      return undefined;
     },
 
     /**
