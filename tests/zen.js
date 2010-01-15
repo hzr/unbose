@@ -81,3 +81,35 @@ test("Parenthesis", function() {
     equal(zen("(a>b)*2"), "<a><b></b></a><a><b></b></a>");
     equal(zen("(a+b)*2"), "<a></a><b></b><a></a><b></b>");
 });
+
+test("whitespace in zencode", function() {
+    var ele = Unbose.fromZen("div > div");
+    ok(ele, "Elem generated");
+    equals(ele.length, 1);
+
+    var ele = Unbose.fromZen("div + div");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+
+    var ele = Unbose.fromZen("div +( div )");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+
+    var ele = Unbose.fromZen("div + (div)");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+
+    var ele = Unbose.fromZen("(div) + (div)");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+
+    var ele = Unbose.fromZen(" ( div#asdf.zxcv ) + ( div.foo#meh meh=123) ");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+    equals(ele.nth(1).attr("meh"), 123);
+
+    var ele = Unbose.fromZen("(div\n) \n+\n (\ndiv)");
+    ok(ele, "Elem generated");
+    equals(ele.length, 2);
+});
+

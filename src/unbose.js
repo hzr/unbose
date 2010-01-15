@@ -1308,11 +1308,11 @@ Unbose.tplFromZen = function(zen) {
     return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
-
+    // fimxe: do whitespace cleanup at first instead of inside parser?
 
     // Main parsing entrypoint
     function parse_zencode(str) {
-        var chars = str.split("");
+        var chars = str.replace("\n").split("");
         var ret = [];
         var n = 10;
         while (chars.length && --n) {
@@ -1323,6 +1323,7 @@ Unbose.tplFromZen = function(zen) {
 
     // Expression is top level zen element. tag or parens
     function parse_expr(chars) {
+        consume_ws(chars);
         var ret;
         if (chars[0] == "(") {
             chars.shift();
@@ -1333,8 +1334,11 @@ Unbose.tplFromZen = function(zen) {
             ret = parse_tag(chars);
         }
 
+        consume_ws(chars);
         var multiplier = get_multiplier(chars);
+        consume_ws(chars);
         var siblings = parse_siblings(chars);
+        consume_ws(chars);
         var children = parse_children(chars);
 
         if (ret.length == 2 && children.length) { // a set of sibligns can't have children
@@ -1423,6 +1427,17 @@ Unbose.tplFromZen = function(zen) {
         return s;
     }
 
+    /**
+     * White space
+     */
+    function consume_ws(chars) {
+        var s = "";
+        while (chars.length && chars[0].match(/\s/)) {
+            s += chars.shift();
+        }
+        return s;
+    }
+
     // consume IDs, classnames and properties
     function parse_props(chars) {
         var props = {};
@@ -1441,6 +1456,10 @@ Unbose.tplFromZen = function(zen) {
             }
             else if (chr == " ") {
                 var name = consume_name(chars);
+                if (!name) { // no valid name found
+                    break; // presumably whitespace in zen for readability.
+                }
+
                 chars.shift(); // fixme. make sure is always "="
                 var value = consume_value(chars);
                 props[name] = value;
@@ -1457,13 +1476,43 @@ Unbose.tplFromZen = function(zen) {
 /**
  * Method: eleFromZen (static)
  *
- * Converts a zencode string to an element (NOT to an unbose object atm)
+ * Create an html element from a zencode string
+ *
+ * Parameters:
+ *
+ *   zen - the string of zencode
+ *
+ * Returns:
+ *
+ *   HTMLElement
+ *
+ * See also:
+ *
+ * <fromZen>
+ *
  */
 Unbose.eleFromZen = function(zen) {
     return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
 };
 
-
+/**
+ * Method: fromZen (static)
+ *
+ * Create an unbose object from a zencode string
+ *
+ * Parameters:
+ *
+ *   zen - the string of zencode
+ *
+ * Returns:
+ *
+ *   Unbose element of zencode
+ *
+ * See also:
+ *
+ * <eleFromZen>
+ *
+ */
 Unbose.fromZen = function(zen) {
     return Unbose(Unbose.eleFromZen(zen));
 };
