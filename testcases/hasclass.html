@@ -1,0 +1,83 @@
+<!doctype html>
+<script>
+
+var test_re = (function()
+{
+  var re_cache = {};
+  return function(str, name)
+  {
+    return (re_cache[name] || (re_cache[name] =
+      new RegExp('(?:^|[ \r\n\t]+)'+name+'(?:[ \r\n\t]+|$)'))).test(str);
+  };
+})();
+// alternative
+var test_index_of = function(str, name)
+{
+   return (' '+str+' ').indexOf(' '+name+' ') >= 0;
+}
+// split
+var test_split = function(str, name)
+{
+  return str.split(/\s+/).indexOf(name) != -1;
+}
+
+var tests =
+[
+ ['a b c', 'd', false],
+ ['a b c', 'a', true],
+ ['a b c', 'b', true],
+ ['a b c', 'c', true],
+ ['a\nb\nc', 'd', false],
+ ['a\nb\nc', 'a', true],
+ ['a\nb\nc', 'b', true],
+ ['a\nb\nc', 'c', true],
+ ['a', 'd', false],
+ ['a', 'a', true]
+];
+
+var check_method = function(method)
+{
+  var passes = tests.map(function(test){return method(test[0], test[1]) === test[2]}).filter(Boolean);
+  return (
+    'PASS: ' + passes.length + '\n' +
+    'FAIL: ' + (tests.length - passes.length)
+  );
+}
+
+var  run_test = function(test_fn)
+{
+   var
+   times = [],
+   MAX = 10000,
+   i = 0,
+   j = 0,
+
+   pre = document.getElementsByTagName('pre')[0],
+   total = 0;
+
+   pre.textContent = "";
+   for( ; i < tests.length; i++)
+   {
+     times[i] = new Date().getTime();
+     for( j = 0; j < MAX; j++) test_fn(tests[i][0], tests[i][1]);
+   }
+   times[i] = new Date().getTime();
+   pre.textContent =
+     times.map(function(t,i,a){return tests[i-1] +': '+ (t-a[i-1])}).slice(1).join('\n') + '\n' +
+     'total: ' + ( total = times[times.length-1] - times[0]) + '\n' +
+     'average millisec per check: ' + (total / (times.length * MAX)).toFixed(4);
+}
+
+window.onload = function()
+{
+  document.getElementsByTagName('pre')[0].textContent = 'check methods\n\n' +
+    ['test_re', 'test_index_of', 'test_split'].map(function(test){
+      return test + '\n' + check_method(window[test]) + '\n\n';}).join('');
+}
+</script>
+Testcase courtesy of <a href="aleto.ch">Christian Krebs.</a>
+<p><input value="reg exp" type="button" onclick="run_test(test_re)">
+<p><input value="indexOf" type="button" onclick="run_test(test_index_of)">
+<p><input value="split" type="button" onclick="run_test(test_split)">
+
+<pre></pre>
