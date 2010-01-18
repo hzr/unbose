@@ -603,8 +603,7 @@ Unbose.prototype = {
     /**
      * Method: appendElem
      *
-     * Append an element to all elements. If there are multiple elements
-     * in the Unbose object, append clones.
+     * Append clones of element to all elements.
      *
      * Parameters:
      *
