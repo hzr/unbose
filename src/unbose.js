@@ -568,7 +568,9 @@ Unbose.prototype = {
     /**
      * Method: append
      *
-     * Append an element, an unbose object, a template or a zen string
+     * Append an element, an unbose object, a template or a zen
+     * string. Append adds the element after the last child element.
+     * append(thing) is a cleaner shorthand for insert(thing, true)
      *
      * Parameters:
      *
@@ -580,26 +582,11 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
+     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>, <insert>
      *
      */
      append: function(thing) {
-         if (Unbose.isElement(thing)) {
-             return this.appendElem(thing);
-         }
-         else if (Unbose.isArray(thing)) {
-             return this.appendTpl(thing);
-         }
-         else if (thing.toString() == "[object Unbose]") {
-             this.appendUnbose(thing);
-         }
-         else if (typeof thing === "string") {
-             this.appendZen(thing);
-         }
-         else {
-             //fixme: return what?
-         }
-         return this;
+         return this.insert(thing, true);
      },
 
     /**
@@ -617,10 +604,7 @@ Unbose.prototype = {
      *
      */
      appendElem: function(newEle) {
-         this.elements.forEach(function(ele) {
-             ele.appendChild(newEle.cloneNode(true));
-         });
-         return this;
+         return this.insertElem(newEle, true);
      },
 
     /**
@@ -638,9 +622,7 @@ Unbose.prototype = {
      *
      */
      appendTpl: function(tpl) {
-         var newEle = Unbose.eleFromTpl(tpl);
-         this.appendElem(newEle);
-         return this;
+         return this.insertTpl(tpl, true);
      },
 
     /**
@@ -659,10 +641,7 @@ Unbose.prototype = {
      *
      */
      appendUnbose: function(ubobj) {
-         ubobj.elements.forEach(function(ele) {
-             this.appendElem(ele);
-         }, this);
-         return this;
+         return this.insertUnbose(ubobj, true);
      },
 
     /**
@@ -681,10 +660,135 @@ Unbose.prototype = {
      *
      */
      appendZen: function (zen) {
-         var tpl = Unbose.tplFromZen(zen);
-         this.appendTpl(tpl);
+         this.insertZen(zen, true);
+     },
+
+    /**
+     * Method: insert
+     *
+     * Insert an element, an unbose object, a template or a zen
+     * string. By default, add it as the first child of the parent. If the
+     * append argument is true, the element is appended as the last child
+     * element instead.
+     *
+     * Parameters:
+     *
+     *   thing - Thing to add
+     *   append - append instead of insert
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <insertElem>, <insertTpl>, <insertUnbose>, <insertZen>
+     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
+     *
+     */
+    insert: function(thing, append) {
+         if (Unbose.isElement(thing)) {
+             return this.insertElem(thing, append);
+         }
+         else if (Unbose.isArray(thing)) {
+             return this.insertTpl(thing, append);
+         }
+         else if (thing.toString() == "[object Unbose]") {
+             this.insertUnbose(thing, append);
+         }
+         else if (typeof thing === "string") {
+             this.insertZen(thing, append);
+         }
+         else {
+             //fixme: return what?
+         }
          return this;
      },
+
+    /**
+     * Method: insertElem
+     *
+     * Insert an element into all elements. If there are multiple elements
+     * in the Unbose object, insert clones.
+     *
+     * Parameters:
+     *
+     *   newEle - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    insertElem: function(newEle, append) {
+         this.elements.forEach(function(ele) {
+             if (!append && ele.firstChild) {
+                 ele.insertBefore(newEle.cloneNode(true), ele.firstChild);
+             }
+             else {
+                 ele.appendChild(newEle.cloneNode(true));
+             }
+         });
+         return this;
+     },
+
+    /**
+     * Method: insertTpl
+     *
+     * Insert elements from a template to all elements
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    insertTpl: function(tpl, append) {
+        return this.insertElem(Unbose.eleFromTpl(tpl), append);
+     },
+
+    /**
+     * Method: insertUnbose
+     *
+     * Insert an element in to all elements. If there are multiple elements
+     * in the Unbose object, insert clones.
+     *
+     * Parameters:
+     *
+     *   ele - Element to add
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    insertUnbose: function(ubobj, append) {
+         ubobj.elements.forEach(function(ele) {
+             this.appendElem(ele, append);
+         }, this);
+         return this;
+     },
+
+    /**
+     * Method: insertZen
+     *
+     * insert elements from a zencoding string
+     *
+     * Parameters:
+     *
+     *   tpl - Template array
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     */
+    insertZen: function (zen, append) {
+        return this.insertTpl(Unbose.tplFromZen(zen), append);
+    },
 
     /**
      * Method: attr
@@ -1138,12 +1242,13 @@ Unbose.prototype = {
     /**
      * Method: addClass
      *
-     * Add a class to the element, or to all elements in the set
+     * Add a class or classes to the element, or to all elements in the set
      *
      * Parameters:
      *
      *   cls - The class name to add as a string.
-     *
+     *   cls2 - Any number of optional addition class name parameters to add
+     *   
      * Returns:
      *
      *   The Unbose object
@@ -1153,11 +1258,19 @@ Unbose.prototype = {
      *   <delClass>, <hasClass>, <toggleClass>
      *
      */
-    addClass: function(cls) {
+    addClass: function(/* multiple arguments */) {
+        var classes = Array.prototype.join.call(arguments, " ")
+                        .replace(/^\s+|\s$/g,"")
+                        .split(/\s+/);
         this.elements.forEach(function(ele) {
-            if (!Unbose(ele).hasClass(cls)) {
-                ele.className += " " + cls;
-            }
+            var className = ele.className;
+            classes.forEach(function(cls) {
+                if (!Unbose(ele).hasClass(cls))
+                {
+                    className += " " + cls;
+                }
+            });
+            ele.className = className;
         });
         return this;
     },
@@ -1165,11 +1278,12 @@ Unbose.prototype = {
     /**
      * Method: delClass
      *
-     * Removes a class from the element, or to all elements in the set
+     * Removes a class or classes from the element, or from all elements in the set
      *
      * Parameters:
      *
      *   cls - The class name to delete as a string.
+     *   cls2 - Any number of optional addition class name parameters to delete also
      *
      * Returns:
      *
@@ -1180,15 +1294,18 @@ Unbose.prototype = {
      *   <addClass>, <hasClass>, <toggleClass>
      *
      */
-    delClass: function(cls) {
-        var classes = cls.split(/\s+/);
-        classes.forEach(function(cls) {
-            this.elements.forEach(function(ele) {
-                ele.className = (" " + ele.className + " ")
-                                    .replace(/\s+/g, " ")
-                                    .replace(" " + cls + " ", " ");
+    delClass: function(/* multiple arguments */) {
+        var classes = Array.prototype.join.call(arguments, " ")
+                        .replace(/^\s+|\s$/g,"")
+                        .split(/\s+/);
+        this.elements.forEach(function(ele) {
+            var className = (" " + ele.className + " ")
+                                .replace(/\s+/g, " ");
+            classes.forEach(function(cls) {
+                className = className.replace(" " + cls + " ", " ")
             });
-        }, this);
+            ele.className = className.replace(/^\s+|\s$/g,"");
+        });
         return this;
     },
 

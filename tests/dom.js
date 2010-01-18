@@ -330,6 +330,17 @@ test("appendZen", function() {
     equal(ele.find("div>div>p>a").length, 1);
 });
 
+
+test("insert()", function() {
+    // smoke testing insert behaviour
+    var ele = document.createElement("div");
+    Unbose(ele).appendZen("span");
+    Unbose(ele).insertZen("strong");
+    equal(ele.childNodes.length, 2);
+    equal(ele.firstChild.nodeName.toLowerCase(), "strong");
+});
+
+
 test("val()", function() {
     var ele = Unbose.eleFromZen("div>form>input#text type=text value=foo");
     var subject = Unbose(ele).find("input");
