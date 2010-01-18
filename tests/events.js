@@ -33,7 +33,7 @@ test("on", function()
     simulateMouseEvent(ele3, "click");
     simulateMouseEvent(ele3, "mouseover");
 });
-test("once", function()
+test("once()", function()
 {
     expect(2);
     
@@ -50,6 +50,19 @@ test("once", function()
     simulateMouseEvent(ele2, "click"); // should not trigger event
     simulateMouseEvent(ele2, "mouseover"); // should not trigger event
     simulateMouseEvent(ele2, "mouseover"); // should not trigger event
+});
+
+test("once() - childTrigger", function()
+{
+    expect(1);
+    
+    var ele = document.createElement("div");
+    var ele2 = document.createElement("div");
+    ele.appendChild(ele2);
+    var subject = Unbose(ele);
+    subject.once("click", function(evt) { ok(evt); });
+    simulateMouseEvent(ele2, "click");
+    simulateMouseEvent(ele2, "click"); // should not trigger event
 });
 
 function simulateMouseEvent(ele, type) {
