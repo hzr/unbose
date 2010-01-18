@@ -568,8 +568,9 @@ Unbose.prototype = {
     /**
      * Method: append
      *
-     * Append an element, an unbose object, a template or a zen string
-     *
+     * Append an element, an unbose object, a template or a zen
+     * string. Append adds the element after the last child element.
+      *
      * Parameters:
      *
      *   thing - Thing to add
