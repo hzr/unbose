@@ -146,8 +146,12 @@ test("toggleClass()", function() {
 
 });
 
+test("nth(n)", function() {
+    var eles = Unbose.fromZen("div.a + div.b + div.c");
+    equals(eles.nth(2).attr("class"), "c");
+    equals(eles.nth(-4).attr("class"), "c");
+});
 
-// should move to a core test suite I guess
 test("elem(n)", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
@@ -158,6 +162,10 @@ test("elem(n)", function() {
     equal(h2s.length, 2);
     equal(h2s.elem(0), document.getElementsByTagName("h2")[0]);
     equal(h2s.elem(1), document.getElementsByTagName("h2")[1]);
+
+    eles = Unbose.fromZen("div.a + div.b + div.c");
+    equals(eles.elem(-1).className, "c");
+    equals(eles.elem(-4).className, "c");
 });
 
 test("elem()", function() {

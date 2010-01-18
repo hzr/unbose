@@ -531,6 +531,7 @@ Unbose.prototype = {
      *
      */
     nth: function(index) {
+        if (index < 0) { index = (index % this.length) + this.length; }
         return Unbose(this.elements[index]);
     },
 
@@ -554,6 +555,7 @@ Unbose.prototype = {
      *
      */
     elem: function(index) {
+        if (index < 0) { index = (index % this.length) + this.length; }
         return (index === undefined) ? this.elements : this.elements[index];
     },
 
