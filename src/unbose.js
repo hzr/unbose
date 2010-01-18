@@ -1049,8 +1049,8 @@ Unbose.prototype = {
      */
     width: function(value) {
         var ele = this.elements[0];
-        if (!ele) { return undefined; }
         if (value === undefined) {
+            if (!ele) { return 0; }
             var uele = Unbose(ele);
             return ele.offsetWidth -
                    parseInt(uele.getStyle("border-left-width")) -
@@ -1058,7 +1058,7 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-left")) -
                    parseInt(uele.getStyle("padding-right"));
         }
-        else {
+        else if (ele) {
             if (+value === parseFloat(value)) {
                 value = +value + "px";
             }
@@ -1086,8 +1086,8 @@ Unbose.prototype = {
      */
     height: function(value) {
         var ele = this.elements[0];
-        if (!ele) { return undefined; }
         if (value === undefined) {
+            if (!ele) { return 0; }
             var uele = Unbose(ele);
             return ele.offsetHeight -
                    parseInt(uele.getStyle("border-top-width")) -
@@ -1095,7 +1095,7 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-top")) -
                    parseInt(uele.getStyle("padding-bottom"));
         }
-        else {
+        else if (ele) {
             if (+value === parseFloat(value)) {
                 value = +value + "px";
             }
