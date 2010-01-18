@@ -2,25 +2,59 @@ module("Events");
 
 
 test("click", function() {
-    expect(3);
+    expect(1);
 
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     subject.click(function(evt) { ok(evt); });
-    simulateClick(ele);
-
-    var ele2 = document.createElement("div");
-    var subject2 = Unbose(ele2);
-    subject2.on("click", function(evt) { ok(evt);
-                                  equal(this, subject2.elem(0));
-                                });
-    simulateClick(ele2);
+    simulateMouseEvent(ele, "click");
 });
 
+test("on", function()
+{
+    expect(6);
+    
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    subject.on("click", function(evt) { ok(evt);
+                                  equal(this, subject.elem(0));
+                                });
+    simulateMouseEvent(ele, "click");
+    
+    var ele2 = document.createElement("div");
+    var subject2 = Unbose(ele2);
+    subject2.on("click", function(evt) { ok(evt); });
+    subject2.on("click", function(evt) { ok(evt); });
+    simulateMouseEvent(ele2, "click");; // should fire two events
 
-function simulateClick(ele) {
+    var ele3 = document.createElement("div");
+    var subject3 = Unbose(ele3);
+    subject3.on("click mouseover", function(evt) { ok(evt); });
+    simulateMouseEvent(ele3, "click");
+    simulateMouseEvent(ele3, "mouseover");
+});
+test("once", function()
+{
+    expect(2);
+    
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    subject.once("click", function(evt) { ok(evt); });
+    simulateMouseEvent(ele, "click");
+    simulateMouseEvent(ele, "click"); // should not trigger event
+    
+    var ele2 = document.createElement("div");
+    var subject2 = Unbose(ele2);
+    subject2.once("click mouseover", function(evt) { ok(evt); });
+    simulateMouseEvent(ele2, "click");
+    simulateMouseEvent(ele2, "click"); // should not trigger event
+    simulateMouseEvent(ele2, "mouseover");
+    simulateMouseEvent(ele2, "mouseover"); // should not trigger event
+});
+
+function simulateMouseEvent(ele, type) {
     var evt = document.createEvent("MouseEvents");
-    evt.initMouseEvent("click", true, true, window,
+    evt.initMouseEvent(type, true, true, window,
                        0, 0, 0, 0, 0, false, false, false, false, 0, null);
     var canceled = !ele.dispatchEvent(evt);
 }
