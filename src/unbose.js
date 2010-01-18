@@ -732,10 +732,7 @@ Unbose.prototype = {
      *
      */
     getAttr: function(name) {
-      if (this.elements.length) {
-          return this.elements[0].getAttribute(name) || this.elements[0][name];
-      }
-      return undefined;
+      return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
     },
 
     /**
@@ -831,7 +828,7 @@ Unbose.prototype = {
      *
      */
     getText: function() {
-        return this.elements[0].textContent || "";
+        return (this.elements[0] && this.elements[0].textContent) || "";
     },
 
     /**
@@ -890,7 +887,7 @@ Unbose.prototype = {
      *
      */
     getVal: function() {
-        return this.elements[0].value;
+        return this.elements[0] && this.elements[0].value;
     },
 
     /**
@@ -936,7 +933,7 @@ Unbose.prototype = {
      */
     data: function(name, val) {
         if (val === undefined) {
-            return this.elements[0].getAttribute("data-unbose-" + name);
+            return (this.elements[0] && this.elements[0].getAttribute("data-unbose-" + name)) || undefined;
         }
 
         this.elements.forEach(function(ele) {
@@ -993,6 +990,7 @@ Unbose.prototype = {
      */
     getStyle: function(prop) {
         var ele = this.elements[0];
+        if (!ele) { return undefined; }
         return ele.ownerDocument.defaultView
                                 .getComputedStyle(ele, null)
                                 .getPropertyValue(prop);
@@ -1049,6 +1047,7 @@ Unbose.prototype = {
      */
     width: function(value) {
         var ele = this.elements[0];
+        if (!ele) { return undefined; }
         if (value === undefined) {
             var uele = Unbose(ele);
             return ele.offsetWidth -
@@ -1085,6 +1084,7 @@ Unbose.prototype = {
      */
     height: function(value) {
         var ele = this.elements[0];
+        if (!ele) { return undefined; }
         if (value === undefined) {
             var uele = Unbose(ele);
             return ele.offsetHeight -
@@ -1130,7 +1130,7 @@ Unbose.prototype = {
             // Not pretty, but fast. Thanks Krebbie and Ben Joffe for this one.
             var cache = {};
             return (cache[cls] || (cache[cls] =
-                new RegExp("(?:^|\\s+)" + cls + "(?:\\s+|$)"))).test(ele.className);
+                new RegExp("(?:^|\\s)" + cls + "(?:\\s|$)"))).test(ele.className);
         });
     },
 
