@@ -10,6 +10,9 @@ function Unbose(subject, context) {
     }
 
     this.elements = [];
+    this.length = 0;
+
+    if (!subject) { return; }
 
     if (typeof subject == "string") {
         var eles = (context || document).querySelectorAll(subject);
@@ -141,7 +144,7 @@ Unbose.prototype = {
      */
     filter: function(filter) {
         var eles = this.elements;
-        if (filter) {
+        if (filter !== undefined) {
             eles = eles.filter(function(ele) {
                 return Unbose(ele).matchesSelector(filter);
             });
@@ -1637,3 +1640,4 @@ if (!Function.prototype.bind) {
         }
     }
 }
+

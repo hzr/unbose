@@ -35,6 +35,8 @@ test("prev()", function() {
     equal(ele.length, 3);
     ele = Unbose(tpl).find("span").prev("i#b.c");
     equal(ele.length, 1);
+    ele = Unbose(tpl).find("span").prev(""); // Filter everything
+    equal(ele.length, 0);
 });
 
 test("next()", function() {
