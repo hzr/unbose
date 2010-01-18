@@ -723,7 +723,7 @@ Unbose.prototype = {
     insertElem: function(newEle, append) {
          this.elements.forEach(function(ele) {
              if (!append && ele.firstChild) {
-                 ele.insertBefore(newEle.cloneNode(true));
+                 ele.insertBefore(newEle.cloneNode(true), ele.firstChild);
              }
              else {
                  ele.appendChild(newEle.cloneNode(true));
