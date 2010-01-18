@@ -33,3 +33,9 @@ test("isElement()", function() {
 test("trim()", function() {
     equal(Unbose.trim(" \v\t t e s t \f\r\n "), "t e s t");
 });
+
+test("list()", function() {
+    equal(Unbose.list([0,1,2]).join('-'), '0-1-2');
+    equal(Unbose.list([0],[1],[2]).join('-'), '0-1-2');
+    equal(Unbose.list([],[0],[1,2],[3,4]).join('-'), '0-1-2-3-4');
+});
