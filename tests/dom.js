@@ -79,6 +79,9 @@ test("hasClass()", function() {
     ok(!subject.hasClass("ar"));
     ok(!subject.hasClass("baar"));
     ok(!subject.hasClass("bara"));
+    
+    ok(subject.hasClass("toString"));
+		
 });
 
 test("addClass()", function() {
