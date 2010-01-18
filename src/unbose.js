@@ -951,7 +951,7 @@ Unbose.prototype = {
      *
      */
     setText: function(text) {
-        this.forEach(function(ele) { ele.textContent = text; });
+        this.elements.forEach(function(ele) { ele.textContent = text; });
         return this;
     },
 
