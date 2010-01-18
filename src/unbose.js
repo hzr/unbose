@@ -531,6 +531,7 @@ Unbose.prototype = {
      *
      */
     nth: function(index) {
+        if (index < 0) { index = (index % this.length) + this.length; }
         return Unbose(this.elements[index]);
     },
 
@@ -554,6 +555,7 @@ Unbose.prototype = {
      *
      */
     elem: function(index) {
+        if (index < 0) { index = (index % this.length) + this.length; }
         return (index === undefined) ? this.elements : this.elements[index];
     },
 
@@ -731,7 +733,7 @@ Unbose.prototype = {
      *
      */
     getAttr: function(name) {
-      return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
+        return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
     },
 
     /**
@@ -1056,8 +1058,8 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-right"));
         }
         else {
-            if (+value === parseInt(value, 10)) {
-                value = parseInt(value) + "px";
+            if (+value === parseFloat(value)) {
+                value = +value + "px";
             }
             if (parseInt(value) < 0) {
                 value = 0;
@@ -1093,8 +1095,8 @@ Unbose.prototype = {
                    parseInt(uele.getStyle("padding-bottom"));
         }
         else {
-            if (+value === parseInt(value, 10)) {
-                value = parseInt(value) + "px";
+            if (+value === parseFloat(value)) {
+                value = +value + "px";
             }
             if (parseInt(value) < 0) {
                 value = 0;
