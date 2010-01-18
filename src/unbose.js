@@ -118,11 +118,13 @@ Unbose.prototype = {
      * Method: once
      *
      * Add an event listener to the set of elements that will be called once
-     * and then removed.
+     * and then removed. If multiple events supplied, all will be removed once
+     * one of them is triggered.
      *
      * Parameters:
      *
-     *   name - Name of the event
+     *   name - Name of the event. To attach multiple event handlers,
+     *          just separate them with a space.
      *   callback - Function called when event occurs
      *   capture - Use capturing
      *
@@ -131,12 +133,14 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    once: function(name, callback, capture) {
+    once: function(names, callback, capture) {
         function cancelCb(evt) {
-            evt.target.removeEventListener(name, cancelCb, capture);
+            names.split(" ").forEach(function(name) {
+                evt.target.removeEventListener(name, cancelCb, capture);
+            }, this);
             callback(evt);
         };
-        return this.on(name, cancelCb, capture);
+        return this.on(names, cancelCb, capture);
     },
 
     /**
