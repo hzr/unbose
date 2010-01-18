@@ -1242,12 +1242,13 @@ Unbose.prototype = {
     /**
      * Method: addClass
      *
-     * Add a class to the element, or to all elements in the set
+     * Add a class or classes to the element, or to all elements in the set
      *
      * Parameters:
      *
      *   cls - The class name to add as a string.
-     *
+     *   cls2 - Any number of optional addition class name parameters to add
+     *   
      * Returns:
      *
      *   The Unbose object
@@ -1257,11 +1258,19 @@ Unbose.prototype = {
      *   <delClass>, <hasClass>, <toggleClass>
      *
      */
-    addClass: function(cls) {
+    addClass: function(/* multiple arguments */) {
+        var classes = Array.prototype.join.call(arguments, " ")
+                        .replace(/^\s+|\s$/g,"")
+                        .split(/\s+/);
         this.elements.forEach(function(ele) {
-            if (!Unbose(ele).hasClass(cls)) {
-                ele.className += " " + cls;
-            }
+            var className = ele.className;
+            classes.forEach(function(cls) {
+                if (!Unbose(ele).hasClass(cls))
+                {
+                    className += " " + cls;
+                }
+            });
+            ele.className = className;
         });
         return this;
     },
@@ -1269,11 +1278,12 @@ Unbose.prototype = {
     /**
      * Method: delClass
      *
-     * Removes a class from the element, or to all elements in the set
+     * Removes a class or classes from the element, or from all elements in the set
      *
      * Parameters:
      *
      *   cls - The class name to delete as a string.
+     *   cls2 - Any number of optional addition class name parameters to delete also
      *
      * Returns:
      *
@@ -1284,15 +1294,18 @@ Unbose.prototype = {
      *   <addClass>, <hasClass>, <toggleClass>
      *
      */
-    delClass: function(cls) {
-        var classes = cls.split(/\s+/);
-        classes.forEach(function(cls) {
-            this.elements.forEach(function(ele) {
-                ele.className = (" " + ele.className + " ")
-                                    .replace(/\s+/g, " ")
-                                    .replace(" " + cls + " ", " ");
+    delClass: function(/* multiple arguments */) {
+        var classes = Array.prototype.join.call(arguments, " ")
+                        .replace(/^\s+|\s$/g,"")
+                        .split(/\s+/);
+        this.elements.forEach(function(ele) {
+            var className = (" " + ele.className + " ")
+                                .replace(/\s+/g, " ");
+            classes.forEach(function(cls) {
+                className = className.replace(" " + cls + " ", " ")
             });
-        }, this);
+            ele.className = className.replace(/^\s+|\s$/g,"");
+        });
         return this;
     },
 
