@@ -36,6 +36,8 @@ function Unbose(subject, context) {
         this.elements = subject.elements;
     }
     else if (Unbose.isFunction(subject)) {
+        // Fails in Webkit if there's nothing after <head>, so make sure
+        // there's always something explicit in <body>
         document.addEventListener("DOMContentLoaded", function ready() {
             subject();
             // I wonder if this is neccessary. jQuery does it, but shouldn't browser's themselves do it?
@@ -1550,11 +1552,12 @@ Unbose.fromZen = function(zen) {
  *
  */
 Unbose.isArray = function(obj) {
-    if (Array.isArray) {
-        return Array.isArray(obj);
-    }
     return Object.prototype.toString.call(obj) === "[object Array]";
 };
+// Use native Array.isArray if available
+if (Array.isArray) {
+    Unbose.isArray = Array.isArray;
+}
 
 /**
  * Method: isFunction (static)
@@ -1589,7 +1592,7 @@ Unbose.isFunction = function(obj) {
  *
  */
 Unbose.isElement = function(obj) {
-    return !!(obj && obj.nodeType && obj.nodeType == Node.ELEMENT_NODE);
+    return !!(obj && obj.nodeType == Node.ELEMENT_NODE);
 };
 
 /**
@@ -1609,4 +1612,18 @@ Unbose.isElement = function(obj) {
 Unbose.trim = function(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
 };
+
+if (String.prototype.trim) {
+    Unbose.trim = function(text) {
+        return String.prototype.trim.call(text);
+    };
+}
+
+/**
+ * Method: nop (static)
+ *
+ * Empty function. Can be useful in cases where a function is required.
+ *
+ */
+Unbose.nop = function() { };
 
