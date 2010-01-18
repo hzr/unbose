@@ -1264,13 +1264,12 @@ Unbose.prototype = {
      */
     addClass: function(/* multiple arguments */) {
         var classes = Array.prototype.join.call(arguments, " ")
-                        .replace(/^\s+|\s$/g,"")
-                        .split(/\s+/);
+                           .replace(/^\s+|\s$/g, "")
+                           .split(/\s+/);
         this.elements.forEach(function(ele) {
             var className = ele.className;
             classes.forEach(function(cls) {
-                if (!Unbose(ele).hasClass(cls))
-                {
+                if (!Unbose(ele).hasClass(cls)) {
                     className += " " + cls;
                 }
             });
@@ -1300,15 +1299,15 @@ Unbose.prototype = {
      */
     delClass: function(/* multiple arguments */) {
         var classes = Array.prototype.join.call(arguments, " ")
-                        .replace(/^\s+|\s$/g,"")
-                        .split(/\s+/);
+                           .replace(/^\s+|\s$/g,"")
+                           .split(/\s+/);
         this.elements.forEach(function(ele) {
             var className = (" " + ele.className + " ")
                                 .replace(/\s+/g, " ");
             classes.forEach(function(cls) {
                 className = className.replace(" " + cls + " ", " ")
             });
-            ele.className = className.replace(/^\s+|\s$/g,"");
+            ele.className = className.replace(/^\s+|\s$/g, "");
         });
         return this;
     },
