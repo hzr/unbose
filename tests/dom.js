@@ -99,7 +99,13 @@ test("addClass()", function() {
     ok(subject.hasClass("foo"));
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz-meh"));
-
+    
+    ele.className = '';
+    subject.addClass("\nfoo  ", " bar\tbaz");
+    ok(subject.hasClass("foo") &&
+	subject.hasClass("bar") &&
+	subject.hasClass("baz"));
+    
     equal(subject, subject.addClass("flabaten"));
 });
 
@@ -133,7 +139,13 @@ test("delClass()", function() {
     ok(!subject.hasClass("foo"));
     ok(!subject.hasClass("bar"));
     ok(!subject.hasClass("baz"));
-
+    
+    ele.className = "foo bar baz";
+    subject.delClass("\nfoo  ", " bar\tbaz");
+    ok(!subject.hasClass("foo") &&
+        !subject.hasClass("bar") &&
+        !subject.hasClass("baz"));
+    
 });
 
 test("toggleClass()", function() {
