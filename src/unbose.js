@@ -1627,3 +1627,13 @@ if (String.prototype.trim) {
  */
 Unbose.nop = function() { };
 
+if (!Function.prototype.bind) {
+    // TODO: check this implementation against the spec.
+    // Prototype for example does more funky stuff.
+    Function.prototype.bind = function(context) {
+        var method = this, args = Array.prototype.slice.call(arguments, 1);
+        return function() {
+            return method.apply(context, args);
+        }
+    }
+}
