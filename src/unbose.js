@@ -1020,8 +1020,8 @@ Unbose.prototype = {
             prop = "cssFloat";
         }
 
-        if (+value === parseInt(value, 10) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
-            value = parseInt(value, 10) + "px";
+        if (+value === parseFloat(value, 10) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
+            value = (+value) + "px";
         }
 
         this.elements.forEach(function(ele) {
