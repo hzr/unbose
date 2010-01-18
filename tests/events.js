@@ -48,7 +48,7 @@ test("once", function()
     subject2.once("click mouseover", function(evt) { ok(evt); });
     simulateMouseEvent(ele2, "click");
     simulateMouseEvent(ele2, "click"); // should not trigger event
-    simulateMouseEvent(ele2, "mouseover");
+    simulateMouseEvent(ele2, "mouseover"); // should not trigger event
     simulateMouseEvent(ele2, "mouseover"); // should not trigger event
 });
 
