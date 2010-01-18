@@ -1023,7 +1023,7 @@ Unbose.prototype = {
         }
 
         if (+value === parseFloat(value) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
-            value = +value + "px";
+            value = (+value | 0) + "px";
         }
 
         this.elements.forEach(function(ele) {
@@ -1059,7 +1059,7 @@ Unbose.prototype = {
         }
         else if (ele) {
             if (+value === parseFloat(value)) {
-                value = +value + "px";
+                value = (+value | 0) + "px";
             }
             if (parseInt(value) < 0) {
                 value = 0;
@@ -1096,7 +1096,7 @@ Unbose.prototype = {
         }
         else if (ele) {
             if (+value === parseFloat(value)) {
-                value = +value + "px";
+                value = (+value | 0) + "px";
             }
             if (parseInt(value) < 0) {
                 value = 0;

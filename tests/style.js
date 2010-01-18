@@ -50,6 +50,8 @@ test("setStyle()", function() {
     equal(subject.getStyle("padding-right"), "1px");
     subject.style("padding-right", 2); // handle properties without unit
     equal(subject.getStyle("padding-right"), "2px");
+    subject.style("padding-right", 3.5); // Floor the value
+    equal(subject.getStyle("padding-right"), "3px");
     subject.setStyle("font-size", "10px");
     subject.setStyle("line-height", 2); // Should not append "px" to this property
     equal(subject.getStyle("line-height"), "20px");
