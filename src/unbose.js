@@ -1234,12 +1234,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            //return ele.className.split(/\s+/).indexOf(cls) != -1;
-
-            // Not pretty, but fast. Thanks Krebbie and Ben Joffe for this one.
-            var cache = {};
-            return (cache[cls] || (cache[cls] =
-                new RegExp("(?:^|\\s)" + cls + "(?:\\s|$)"))).test(ele.className);
+            return ele.className.split(/\s+/).indexOf(cls) != -1;
         });
     },
 
