@@ -82,7 +82,7 @@ test("hasClass()", function() {
     
     Object.prototype.customProperty = true;
     
-    subject.className = "";
+    ele.className = "";
     try {
         ok (
             !subject.hasClass("customProperty") &&
@@ -99,10 +99,10 @@ test("hasClass()", function() {
         ok(false, 'Error checking special class names');
     }
     
-    subject.className = "customProperty toString constructor toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable";
+    ele.className = "customProperty toString constructor toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable";
     try {
         ok (
-            subject.hasClass("toString") &&
+            subject.hasClass("customProperty") &&
             subject.hasClass("toString") &&
             subject.hasClass("constructor") &&
             subject.hasClass("toLocaleString") &&
