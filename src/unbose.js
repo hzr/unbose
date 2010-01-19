@@ -589,9 +589,9 @@ Unbose.prototype = {
      *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>, <insert>
      *
      */
-     append: function(thing) {
-         return this.insert(thing, true);
-     },
+    append: function(thing) {
+        return this.insert(thing, true);
+    },
 
     /**
      * Method: appendElem
@@ -607,9 +607,9 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-     appendElem: function(newEle) {
-         return this.insertElem(newEle, true);
-     },
+    appendElem: function(newEle) {
+        return this.insertElem(newEle, true);
+    },
 
     /**
      * Method: appendTpl
@@ -625,9 +625,9 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-     appendTpl: function(tpl) {
-         return this.insertTpl(tpl, true);
-     },
+    appendTpl: function(tpl) {
+        return this.insertTpl(tpl, true);
+    },
 
     /**
      * Method: appendUnbose
@@ -644,9 +644,9 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-     appendUnbose: function(ubobj) {
-         return this.insertUnbose(ubobj, true);
-     },
+    appendUnbose: function(ubobj) {
+        return this.insertUnbose(ubobj, true);
+    },
 
     /**
      *
@@ -663,9 +663,9 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-     appendZen: function (zen) {
-         this.insertZen(zen, true);
-     },
+    appendZen: function (zen) {
+        this.insertZen(zen, true);
+    },
 
     /**
      * Method: insert
@@ -733,6 +733,9 @@ Unbose.prototype = {
                  ele.appendChild(newEle.cloneNode(true));
              }
          });
+
+         // FIXME: need to copy all events
+
          return this;
      },
 
@@ -1297,8 +1300,7 @@ Unbose.prototype = {
                            .replace(/^\s+|\s+$/g,"")
                            .split(/\s+/);
         this.elements.forEach(function(ele) {
-            var className = (" " + ele.className + " ")
-                                .replace(/\s+/g, " ");
+            var className = (" " + ele.className + " ").replace(/\s+/g, " ");
             classes.forEach(function(cls) {
                 className = className.replace(" " + cls + " ", " ");
             });
