@@ -12,7 +12,7 @@ function Unbose(subject, context) {
     this.elements = [];
     this.length = 0;
 
-    if (!subject) { return; }
+    if (!subject) { return this; }
 
     if (typeof subject == "string") {
         var eles = (context || document).querySelectorAll(subject);

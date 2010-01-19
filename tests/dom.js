@@ -324,7 +324,7 @@ test("append()", function() {
 
     // test tpl
     var ele = Unbose(document.createElement("div"));
-    ele.append([["div" {class: "first"}], ["div" {class: "last"}]]);
+    ele.append([["div", {class: "first"}], ["div", {class: "last"}]]);
     equal(ele.find("div").length, 2);
     ok(ele.find("div").nth(0).hasClass("first"));
     ok(ele.find("div").nth(1).hasClass("last"));
