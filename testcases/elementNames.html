@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>elementNames</title>
+<script>
+// http://www.w3.org/TR/REC-html40/index/elements.html
+var html4elements = ['A','ABBR','ACRONYM','ADDRESS','APPLET','AREA','B','BASE','BASEFONT','BDO','BIG','BLOCKQUOTE','BODY','BR','BUTTON','CAPTION','CENTER','CITE','CODE','COL','COLGROUP','DD','DEL','DFN','DIR','DIV','DL','DT','EM','FIELDSET','FONT','FORM','FRAME','FRAMESET','H1','H2','H3','H4','H5','H6','HEAD','HR','HTML','I','IFRAME','IMG','INPUT','INS','ISINDEX','KBD','LABEL','LEGEND','LI','LINK','MAP','MENU','META','NOFRAMES','NOSCRIPT','OBJECT','OL','OPTGROUP','OPTION','P','PARAM','PRE','Q','S','SAMP','SCRIPT','SELECT','SMALL','SPAN','STRIKE','STRONG','STYLE','SUB','SUP','TABLE','TBODY','TD','TEXTAREA','TFOOT','TH','THEAD','TITLE','TR','TT','U','UL','VAR'];
+// http://www.w3.org/TR/html5-diff/
+var html5elements = ['section','article','aside','hgroup','header','footer','nav','dialog','figure','video','audio','embed','mark','progress','meter','time','ruby','rt','rp','canvas','command','details','datalist','keygen','output'];
+var fakeElements = ['foo', 'bar'];
+var regexp = /^\[object HTML(.*)Element\]$/;
+
+window.onload = function()
+{
+  var elements = html4elements.concat(html5elements, fakeElements);
+  
+  var list = document.getElementsByTagName('ul')[0];
+  
+  for (var i=0; i<elements.length; i++)
+  {
+    addListItem(
+      document.createElement(elements[i])
+    );
+  }
+  
+  list = document.getElementsByTagName('ul')[1];
+  
+  addListItem(window);
+  addListItem(document);
+  addListItem(document.createTextNode(''));
+  addListItem(document.createDocumentFragment());
+  addListItem(1);
+  addListItem(false);
+  addListItem(null);
+  addListItem(undefined);
+  addListItem([]);
+  addListItem({});
+  addListItem(new Date());
+  addListItem(function(){});
+  addListItem(Math);
+  
+  
+  function addListItem(obj)
+  {
+    var name = Object.prototype.toString.call(obj);
+    
+    var li = document.createElement('li');
+    li.innerHTML = (regexp.test(name) ? '<span style="color:green;">Pass</span>'
+                        : '<span style="color:red;">Fail</span>') + ': ' + name;
+    list.appendChild(li);
+  }
+  
+  
+}
+</script>
+</head>
+<body>
+<p>A list of all element object names against the test: <script>document.write(regexp);</script>.</p>
+<ul></ul>
+<p>The following should fail:</p>
+<ul></ul>
+</body>
+</html>
