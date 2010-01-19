@@ -135,9 +135,8 @@ Unbose.prototype = {
      */
     once: function(names, callback, capture) {
         function cancelCb(evt) {
-	    var self = this;
             names.split(" ").forEach(function(name) {
-                self.removeEventListener(name, cancelCb, capture);
+                this.removeEventListener(name, cancelCb, capture);
             }, this);
             callback.apply(this, arguments);
         };
