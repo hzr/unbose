@@ -80,8 +80,43 @@ test("hasClass()", function() {
     ok(!subject.hasClass("baar"));
     ok(!subject.hasClass("bara"));
     
-    ok(subject.hasClass("toString"));
-		
+    Object.prototype.customProperty = true;
+    
+    subject.className = "";
+    try {
+        ok (
+            !subject.hasClass("customProperty") &&
+            !subject.hasClass("toString") &&
+            !subject.hasClass("constructor") &&
+            !subject.hasClass("toLocaleString") &&
+            !subject.hasClass("valueOf") &&
+            !subject.hasClass("hasOwnProperty") &&
+            !subject.hasClass("isPrototypeOf") &&
+            !subject.hasClass("propertyIsEnumerable")
+        );
+    }
+    catch (e) {
+        ok(false, 'Error checking special class names');
+    }
+    
+    subject.className = "customProperty toString constructor toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable";
+    try {
+        ok (
+            subject.hasClass("toString") &&
+            subject.hasClass("toString") &&
+            subject.hasClass("constructor") &&
+            subject.hasClass("toLocaleString") &&
+            subject.hasClass("valueOf") &&
+            subject.hasClass("hasOwnProperty") &&
+            subject.hasClass("isPrototypeOf") &&
+            subject.hasClass("propertyIsEnumerable")
+        );
+    }
+    catch (e) {
+        ok(false, 'Error checking special class names');
+    }
+    
+    delete Object.prototype.customProperty;
 });
 
 test("addClass()", function() {
