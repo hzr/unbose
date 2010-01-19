@@ -150,10 +150,10 @@ Unbose.prototype = {
         var eles = this.elements;
         if (filter !== undefined) {
             eles = eles.filter(function(ele) {
-                return Unbose(ele).matchesSelector(filter);
+                return new Unbose(ele).matchesSelector(filter);
             });
         }
-        return Unbose(eles);
+        return new Unbose(eles);
     },
 
 
@@ -176,7 +176,7 @@ Unbose.prototype = {
      *
      */
     find: function(selector) {
-        return Unbose(selector, this.elements[0]);
+        return new Unbose(selector, this.elements[0]);
     },
 
     /**
@@ -219,7 +219,7 @@ Unbose.prototype = {
                 return false;
             }
             while ((type = parts.shift()) && (value = parts.shift())) {
-                if ((type == "." && !Unbose(ele).hasClass(value)) ||
+                if ((type == "." && !new Unbose(ele).hasClass(value)) ||
                     (type == "#" && ele.id != value))
                 {
                     return false;
@@ -294,7 +294,7 @@ Unbose.prototype = {
                 parents.push(parent);
             }
         });
-        return Unbose(parents).filter(filter);
+        return new Unbose(parents).filter(filter);
     },
 
     /**
@@ -319,13 +319,13 @@ Unbose.prototype = {
         var ancestor = [];
         this.elements.forEach(function(ele) {
             while ((ele = ele.parentNode)) {
-                if (Unbose(ele).matchesSelector(filter)) {
+                if (new Unbose(ele).matchesSelector(filter)) {
                     ancestor = ele;
                     break;
                 }
             }
         });
-        return Unbose(ancestor);
+        return new Unbose(ancestor);
     },
 
 
@@ -360,7 +360,7 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        return Unbose(children).filter(filter);
+        return new Unbose(children).filter(filter);
     },
 
     /**
@@ -390,7 +390,7 @@ Unbose.prototype = {
                 child = child.nextSibling;
             }
         });
-        return Unbose(siblings).filter(filter);
+        return new Unbose(siblings).filter(filter);
     },
 
     /**
@@ -408,7 +408,7 @@ Unbose.prototype = {
      *
      */
     first: function() {
-        return Unbose(this.elements[0]);
+        return new Unbose(this.elements[0]);
     },
 
     /**
@@ -455,7 +455,7 @@ Unbose.prototype = {
                 prevs.push(prev);
             }
         });
-        return Unbose(prevs).filter(filter);
+        return new Unbose(prevs).filter(filter);
     },
 
     /**
@@ -484,7 +484,7 @@ Unbose.prototype = {
                 nexts.push(next);
             }
         });
-        return Unbose(nexts).filter(filter);
+        return new Unbose(nexts).filter(filter);
     },
 
     /**
@@ -536,7 +536,7 @@ Unbose.prototype = {
      */
     nth: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return Unbose(this.elements[index]);
+        return new Unbose(this.elements[index]);
     },
 
     /**
@@ -1158,7 +1158,7 @@ Unbose.prototype = {
         var ele = this.elements[0];
         if (value === undefined) {
             if (!ele) { return 0; }
-            var uele = Unbose(ele);
+            var uele = new Unbose(ele);
             return ele.offsetWidth -
                    parseInt(uele.getStyle("border-left-width")) -
                    parseInt(uele.getStyle("border-right-width")) -
@@ -1195,7 +1195,7 @@ Unbose.prototype = {
         var ele = this.elements[0];
         if (value === undefined) {
             if (!ele) { return 0; }
-            var uele = Unbose(ele);
+            var uele = new Unbose(ele);
             return ele.offsetHeight -
                    parseInt(uele.getStyle("border-top-width")) -
                    parseInt(uele.getStyle("border-bottom-width")) -
@@ -1264,12 +1264,12 @@ Unbose.prototype = {
      */
     addClass: function(/* multiple arguments */) {
         var classes = Array.prototype.join.call(arguments, " ")
-                           .replace(/^\s+|\s$/g, "")
+                           .replace(/^\s+|\s+$/g, "")
                            .split(/\s+/);
         this.elements.forEach(function(ele) {
             var className = ele.className;
             classes.forEach(function(cls) {
-                if (!Unbose(ele).hasClass(cls)) {
+                if (!new Unbose(ele).hasClass(cls)) {
                     className += " " + cls;
                 }
             });
@@ -1299,7 +1299,7 @@ Unbose.prototype = {
      */
     delClass: function(/* multiple arguments */) {
         var classes = Array.prototype.join.call(arguments, " ")
-                           .replace(/^\s+|\s$/g,"")
+                           .replace(/^\s+|\s+$/g,"")
                            .split(/\s+/);
         this.elements.forEach(function(ele) {
             var className = (" " + ele.className + " ")
@@ -1332,7 +1332,7 @@ Unbose.prototype = {
      */
     toggleClass: function(cls) {
         this.elements.forEach(function(ele) {
-            Unbose(ele)[Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
+            new Unbose(ele)[new Unbose(ele).hasClass(cls) ? "delClass" : "addClass"](cls);
         });
         return this;
     },
@@ -1350,8 +1350,8 @@ Unbose.prototype = {
      */
     hide: function() {
         this.elements.forEach(function(ele) {
-            Unbose(ele).data("olddisplay", Unbose(ele).style("display"))
-                       .style("display", "none");
+            new Unbose(ele).data("olddisplay", new Unbose(ele).style("display"))
+                          .style("display", "none");
         });
         return this;
     },
@@ -1372,7 +1372,7 @@ Unbose.prototype = {
      */
     show: function() {
         this.elements.forEach(function(ele) {
-            ele.style.display = Unbose(ele).data("olddisplay") || "";
+            ele.style.display = new Unbose(ele).data("olddisplay") || "";
         });
         return this;
     }
@@ -1421,7 +1421,7 @@ Unbose.eleFromTpl = function(tpl) {
         var type, value;
         while ((type = parts.shift()) && (value = parts.shift())) {
             if (type == ".") {
-                Unbose(ele).addClass(value);
+                new Unbose(ele).addClass(value);
             }
             else {
                 ele.id = value;
@@ -1658,7 +1658,7 @@ Unbose.eleFromZen = function(zen) {
  *
  */
 Unbose.fromZen = function(zen) {
-    return Unbose(Unbose.eleFromZen(zen));
+    return new Unbose(Unbose.eleFromZen(zen));
 };
 
 /**
