@@ -727,15 +727,16 @@ Unbose.prototype = {
     insertElem: function(newEle, append) {
          this.elements.forEach(function(ele) {
              if (!append && ele.firstChild) {
-                 ele.insertBefore(newEle.cloneNode(true), ele.firstChild);
+                 this.length > 1 ?
+                     ele.insertBefore(newEle.cloneNode(true), ele.firstChild) :
+                     ele.insertBefore(newEle, ele.firstChild);
              }
              else {
-                 ele.appendChild(newEle.cloneNode(true));
+                 this.length > 1 ?
+                     ele.appendChild(newEle.cloneNode(true)) :
+                     ele.appendChild(newEle);
              }
-         });
-
-         // FIXME: need to copy all events
-
+         }, this);
          return this;
      },
 
