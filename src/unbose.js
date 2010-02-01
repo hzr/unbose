@@ -576,6 +576,9 @@ Unbose.prototype = {
      * string. Append adds the element after the last child element.
      * append(thing) is a cleaner shorthand for insert(thing, true)
      *
+     * Note: when appending an element to several elements, any event
+     * listener will be removed.
+     *
      * Parameters:
      *
      *   thing - Thing to add
@@ -713,7 +716,8 @@ Unbose.prototype = {
      * Method: insertElem
      *
      * Insert an element into all elements. If there are multiple elements
-     * in the Unbose object, insert clones.
+     * in the Unbose object, insert clones (this means that any event
+     * listeners will be removed).
      *
      * Parameters:
      *
@@ -1378,6 +1382,16 @@ Unbose.prototype = {
     }
 };
 
+/**
+ * Check support for various features.
+ */
+Unbose.support = {
+    classList: (function() {
+        var ele = document.createElement("div");
+        return ele.classList;
+    })()
+};
+
 
 /**
  * Group: Static methods
@@ -1756,13 +1770,18 @@ if (String.prototype.trim) {
  */
 Unbose.nop = function() { };
 
+/**
+ * Add Function.prototype.bind if it's not available
+ * TODO: check this implementation against the spec.
+ * Prototype for example does more funky stuff.
+ */
 if (!Function.prototype.bind) {
-    // TODO: check this implementation against the spec.
-    // Prototype for example does more funky stuff.
+    var slice = Array.prototype.slice;
     Function.prototype.bind = function(context) {
-        var method = this, args = Array.prototype.slice.call(arguments, 1);
+        var method = this;
+        var args = slice.call(arguments, 1);
         return function() {
-            return method.apply(context, args);
+            return method.apply(context, args.concat(slice.call(arguments, 0)));
         }
     }
 }
