@@ -1290,8 +1290,8 @@ Unbose.prototype = {
      *
      */
     delClass: function(cls) {
+        var classes = cls.split(/\s+/);
         this.elements.forEach(function(ele) {
-            var classes = cls.split(/\s+/);
             ele.className = ele.className.split(/\s+/).filter(function(cls) {
                 return classes.indexOf(cls) == -1;
             }).join(" ");
