@@ -79,9 +79,9 @@ test("hasClass()", function() {
     ok(!subject.hasClass("ar"));
     ok(!subject.hasClass("baar"));
     ok(!subject.hasClass("bara"));
-    
+
     Object.prototype.customProperty = true;
-    
+
     ele.className = "";
     try {
         ok (
@@ -98,7 +98,6 @@ test("hasClass()", function() {
     catch (e) {
         ok(false, 'Error checking special class names');
     }
-    
     ele.className = "customProperty toString constructor toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable";
     try {
         ok (
@@ -115,7 +114,7 @@ test("hasClass()", function() {
     catch (e) {
         ok(false, 'Error checking special class names');
     }
-    
+
     delete Object.prototype.customProperty;
 });
 
@@ -134,13 +133,7 @@ test("addClass()", function() {
     ok(subject.hasClass("foo"));
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz-meh"));
-    
-    ele.className = '';
-    subject.addClass("\nfoo  ", " bar\tbaz");
-    ok(subject.hasClass("foo") &&
-	subject.hasClass("bar") &&
-	subject.hasClass("baz"));
-    
+
     equal(subject, subject.addClass("flabaten"));
 });
 
@@ -174,13 +167,6 @@ test("delClass()", function() {
     ok(!subject.hasClass("foo"));
     ok(!subject.hasClass("bar"));
     ok(!subject.hasClass("baz"));
-    
-    ele.className = "foo bar baz";
-    subject.delClass("\nfoo  ", " bar\tbaz");
-    ok(!subject.hasClass("foo") &&
-        !subject.hasClass("bar") &&
-        !subject.hasClass("baz"));
-    
 });
 
 test("toggleClass()", function() {

@@ -1253,8 +1253,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   cls - The class name to add as a string.
-     *   cls2 - Any number of optional addition class name parameters to add
+     *   cls - A space separated list of class names to add to the element
      *   
      * Returns:
      *
@@ -1265,22 +1264,9 @@ Unbose.prototype = {
      *   <delClass>, <hasClass>, <toggleClass>
      *
      */
-    addClass: function(/* multiple arguments */) {
-        var classes = Array.prototype.join.call(arguments, " ")
-                           .replace(/^\s+|\s+$/g, "")
-                           .split(/\s+/);
+    addClass: function(cls) {
         this.elements.forEach(function(ele) {
-            if (!Unbose.support.classList) {
-                var className = classes.filter(function(cls) {
-                    return !new Unbose(ele).hasClass(cls);
-                }).join(" ");
-                ele.className += " " + className;
-            }
-            else {
-                classes.forEach(function(cls) {
-                    ele.classList.add(cls);
-                });
-            }
+            if (!new Unbose(ele).hasClass(cls)) { ele.className += " " + cls; }
         });
         return this;
     },
@@ -1292,8 +1278,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   cls - The class name to delete as a string.
-     *   cls2 - Any number of optional addition class name parameters to delete also
+     *   cls - A space separated list of class names to remove from the element
      *
      * Returns:
      *
@@ -1304,23 +1289,12 @@ Unbose.prototype = {
      *   <addClass>, <hasClass>, <toggleClass>
      *
      */
-    delClass: function(/* multiple arguments */) {
-        var classes = Array.prototype.join.call(arguments, " ")
-                           .replace(/^\s+|\s+$/g,"")
-                           .split(/\s+/);
+    delClass: function(cls) {
         this.elements.forEach(function(ele) {
-            if (!Unbose.support.classList) {
-                var className = (" " + ele.className + " ").replace(/\s+/g, " ");
-                classes.forEach(function(cls) {
-                    className = className.replace(" " + cls + " ", " ");
-                });
-                ele.className = className.replace(/^\s+|\s$/g, "");
-            }
-            else {
-                classes.forEach(function(cls) {
-                    ele.classList.remove(cls);
-                });
-            }
+            var classes = cls.split(/\s+/);
+            ele.className = ele.className.split(/\s+/).filter(function(cls) {
+                return classes.indexOf(cls) == -1;
+            }).join(" ");
         });
         return this;
     },
@@ -1345,13 +1319,8 @@ Unbose.prototype = {
      */
     toggleClass: function(cls) {
         this.elements.forEach(function(ele) {
-            if (!Unbose.support.classList) {
-                var uele = new Unbose(ele);
-                uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
-            }
-            else {
-                ele.classList.toggle(cls);
-            }
+            var uele = new Unbose(ele);
+            uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
         });
         return this;
     },
