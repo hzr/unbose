@@ -1242,7 +1242,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            return ele.className.split(/\s+/).indexOf(cls) != -1;
+            return ele.className.split(/[\x20\x09\x0A\x0C\x0D]+/).indexOf(cls) != -1;
         });
     },
 
@@ -1270,13 +1270,17 @@ Unbose.prototype = {
                            .replace(/^\s+|\s+$/g, "")
                            .split(/\s+/);
         this.elements.forEach(function(ele) {
-            var className = ele.className;
-            classes.forEach(function(cls) {
-                if (!new Unbose(ele).hasClass(cls)) {
-                    className += " " + cls;
-                }
-            });
-            ele.className = className;
+            if (!Unbose.support.classList) {
+                var className = classes.filter(function(cls) {
+                    return !new Unbose(ele).hasClass(cls);
+                }).join(" ");
+                ele.className += " " + className;
+            }
+            else {
+                classes.forEach(function(cls) {
+                    ele.classList.add(cls);
+                });
+            }
         });
         return this;
     },
@@ -1305,11 +1309,18 @@ Unbose.prototype = {
                            .replace(/^\s+|\s+$/g,"")
                            .split(/\s+/);
         this.elements.forEach(function(ele) {
-            var className = (" " + ele.className + " ").replace(/\s+/g, " ");
-            classes.forEach(function(cls) {
-                className = className.replace(" " + cls + " ", " ");
-            });
-            ele.className = className.replace(/^\s+|\s$/g, "");
+            if (!Unbose.support.classList) {
+                var className = (" " + ele.className + " ").replace(/\s+/g, " ");
+                classes.forEach(function(cls) {
+                    className = className.replace(" " + cls + " ", " ");
+                });
+                ele.className = className.replace(/^\s+|\s$/g, "");
+            }
+            else {
+                classes.forEach(function(cls) {
+                    ele.classList.remove(cls);
+                });
+            }
         });
         return this;
     },
@@ -1334,8 +1345,13 @@ Unbose.prototype = {
      */
     toggleClass: function(cls) {
         this.elements.forEach(function(ele) {
-            var uele = new Unbose(ele);
-            uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
+            if (!Unbose.support.classList) {
+                var uele = new Unbose(ele);
+                uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
+            }
+            else {
+                ele.classList.toggle(cls);
+            }
         });
         return this;
     },
@@ -1388,7 +1404,7 @@ Unbose.prototype = {
 Unbose.support = {
     classList: (function() {
         var ele = document.createElement("div");
-        return ele.classList;
+        return !!ele.classList;
     })()
 };
 

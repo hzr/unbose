@@ -156,7 +156,7 @@ test("delClass()", function() {
     ok(subject.hasClass("meh"));
 
     subject.delClass("meh");
-    ok(!subject.hasClass("meh"));
+    ok(subject.hasClass("meh"), "Vertical tab (\\v) is not a space character per HTML5");
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz"));
 
