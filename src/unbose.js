@@ -1255,9 +1255,9 @@ Unbose.prototype = {
         }
         return {
             top: rect.top,
-            left: rect.left,
-            bottom: rect.bottom,
             right: rect.right,
+            bottom: rect.bottom,
+            left: rect.left,
             height: rect.bottom - rect.top,
             width: rect.right - rect.left
         };
