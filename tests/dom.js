@@ -400,6 +400,8 @@ test("height()", function() {
     Unbose(ele).height(80);
     Unbose(ele).height("bogus"); // should not set anything
     equal(Unbose(ele).height(), 80);
+    Unbose(ele).hide();
+    equal(Unbose(ele).height(), 80, "Element with display: none");
 });
 
 test("width()", function() {
@@ -416,4 +418,6 @@ test("width()", function() {
     Unbose(ele).width(80);
     Unbose(ele).width("bogus"); // should not set anything
     equal(Unbose(ele).width(), 80);
+    Unbose(ele).hide();
+    equal(Unbose(ele).width(), 80, "Element with display: none");
 });

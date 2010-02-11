@@ -355,8 +355,7 @@ Unbose.prototype = {
         this.elements.forEach(function(ele) {
             var child = ele.firstElementChild;
             while (child) {
-                if (children.indexOf(child) == -1)
-                {
+                if (children.indexOf(child) == -1) {
                     children.push(child);
                 }
                 child = child.nextElementSibling;
@@ -384,8 +383,7 @@ Unbose.prototype = {
         this.elements.forEach(function(ele) {
             var child = ele.parentNode.firstElementChild;
             while (child) {
-                if (child != ele && siblings.indexOf(child) == -1)
-                {
+                if (child != ele && siblings.indexOf(child) == -1) {
                     siblings.push(child);
                 }
                 child = child.nextElementSibling;
@@ -1086,7 +1084,15 @@ Unbose.prototype = {
      *
      */
     style: function(attr, value) {
-        return (value === undefined) ? this.getStyle(attr) : this.setStyle(attr, value);
+        if (typeof attr == "object") {
+            return this._setStyles(attr);
+        }
+        else if (value === undefined) {
+            return this.getStyle(attr);
+        }
+        else {
+            return this.setStyle(attr, value);
+        }
     },
 
     /**
@@ -1148,6 +1154,16 @@ Unbose.prototype = {
     },
 
     /**
+     * Private method
+     */
+    _setStyles: function(decls) {
+        for (var prop in decls) {
+            this.setStyle(prop, decls[prop]);
+        }
+        return this;
+    },
+
+    /**
      * Method: width
      *
      * Gets or sets the width of the element
@@ -1166,7 +1182,14 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            return ele.offsetWidth -
+            var width = ele.offsetWidth;
+            if (uele.style("display") == "none") {
+                var oldposition = uele.style("position");
+                var oldvisibility = uele.style("visibility");
+                width = uele.style({"position": "absolute", "visbility": "hidden"}).show().elem(0).offsetWidth;
+                uele.style({"position": oldposition, "visibility": oldvisibility}).hide();
+            }
+            return width -
                    parseInt(uele.getStyle("border-left-width")) -
                    parseInt(uele.getStyle("border-right-width")) -
                    parseInt(uele.getStyle("padding-left")) -
@@ -1203,7 +1226,14 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            return ele.offsetHeight -
+            var height = ele.offsetHeight;
+            if (uele.style("display") == "none") {
+                var oldposition = uele.style("position");
+                var oldvisibility = uele.style("visibility");
+                height = uele.style({"position": "absolute", "visbility": "hidden"}).show().elem(0).offsetHeight;
+                uele.style({"position": oldposition, "visibility": oldvisibility}).hide();
+            }
+            return height -
                    parseInt(uele.getStyle("border-top-width")) -
                    parseInt(uele.getStyle("border-bottom-width")) -
                    parseInt(uele.getStyle("padding-top")) -
@@ -1253,7 +1283,7 @@ Unbose.prototype = {
      * Parameters:
      *
      *   cls - A space separated list of class names to add to the element
-     *   
+     *
      * Returns:
      *
      *   The Unbose object

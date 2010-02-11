@@ -27,7 +27,17 @@ test("show()", function() {
     equal(subject.style("display"), "inline-block");
 });
 
-test("getStyle", function() {
+test("style()", function() {
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    document.body.appendChild(ele);
+    subject.style({"width": "10px", "height": "20px"});
+    equal(subject.getStyle("width"), "10px");
+    equal(subject.getStyle("height"), "20px");
+    document.body.removeChild(ele);
+});
+
+test("getStyle()", function() {
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     document.body.appendChild(ele);
