@@ -1182,14 +1182,7 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            var width = ele.offsetWidth;
-            if (uele.style("display") == "none") {
-                var oldposition = uele.style("position");
-                var oldvisibility = uele.style("visibility");
-                width = uele.style({"position": "absolute", "visbility": "hidden"}).show().elem(0).offsetWidth;
-                uele.style({"position": oldposition, "visibility": oldvisibility}).hide();
-            }
-            return width -
+            return this.getDimensions().width -
                    parseInt(uele.getStyle("border-left-width")) -
                    parseInt(uele.getStyle("border-right-width")) -
                    parseInt(uele.getStyle("padding-left")) -
@@ -1226,14 +1219,7 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            var height = ele.offsetHeight;
-            if (uele.style("display") == "none") {
-                var oldposition = uele.style("position");
-                var oldvisibility = uele.style("visibility");
-                height = uele.style({"position": "absolute", "visbility": "hidden"}).show().elem(0).offsetHeight;
-                uele.style({"position": oldposition, "visibility": oldvisibility}).hide();
-            }
-            return height -
+            return this.getDimensions().height -
                    parseInt(uele.getStyle("border-top-width")) -
                    parseInt(uele.getStyle("border-bottom-width")) -
                    parseInt(uele.getStyle("padding-top")) -
@@ -1249,6 +1235,32 @@ Unbose.prototype = {
             ele.style.height = value;
         }
         return this;
+    },
+
+    /**
+     * Method: getDimensions
+     *
+     * ...
+     */
+    getDimensions: function() {
+        var ele = this.elements[0];
+        var uele = new Unbose(ele);
+        var rect = ele.getBoundingClientRect();
+        if (uele.style("display") == "none") {
+            var oldpos = uele.style("position");
+            var oldvis = uele.style("visibility");
+            uele.style({"position": "absolute", "visbility": "hidden"}).show(); // TODO: check if this is enough. Otherwise, position it outside the viewport
+            rect = ele.getBoundingClientRect();
+            uele.style({"position": oldpos, "visibility": oldvis}).hide();
+        }
+        return {
+            top: rect.top,
+            left: rect.left,
+            bottom: rect.bottom,
+            right: rect.right,
+            height: rect.bottom - rect.top,
+            width: rect.right - rect.left
+        };
     },
 
     /**
