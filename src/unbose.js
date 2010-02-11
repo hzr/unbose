@@ -32,7 +32,7 @@ function Unbose(subject, context) {
             if (child.nodeType == Node.ELEMENT_NODE) {
                 this.elements.push(child);
             }
-            child = child.nextSibling;
+            child = child.nextElementSibling;
         }
     }
     else if (subject.toString() == "[object Unbose]") {
@@ -52,6 +52,9 @@ function Unbose(subject, context) {
 
     this.length = this.elements.length;
 }
+
+// http://www.whatwg.org/specs/web-apps/current-work/#space-character
+Unbose.SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
 
 Unbose.prototype = {
     toString: function() {
@@ -350,14 +353,13 @@ Unbose.prototype = {
     children: function(filter) {
         var children = [];
         this.elements.forEach(function(ele) {
-            var child = ele.firstChild;
+            var child = ele.firstElementChild;
             while (child) {
-                if (child.nodeType == Node.ELEMENT_NODE
-                    && children.indexOf(child) == -1)
+                if (children.indexOf(child) == -1)
                 {
                     children.push(child);
                 }
-                child = child.nextSibling;
+                child = child.nextElementSibling;
             }
         });
         return new Unbose(children).filter(filter);
@@ -380,14 +382,13 @@ Unbose.prototype = {
     siblings: function(filter) {
         var siblings = [];
         this.elements.forEach(function(ele) {
-            var child = ele.parentNode.firstChild;
+            var child = ele.parentNode.firstElementChild;
             while (child) {
-                if (child != ele && child.nodeType == Node.ELEMENT_NODE
-                    && siblings.indexOf(child) == -1)
+                if (child != ele && siblings.indexOf(child) == -1)
                 {
                     siblings.push(child);
                 }
-                child = child.nextSibling;
+                child = child.nextElementSibling;
             }
         });
         return new Unbose(siblings).filter(filter);
@@ -450,8 +451,8 @@ Unbose.prototype = {
     prev: function(filter) {
         var prevs = [];
         this.elements.forEach(function(ele) {
-            var prev = ele.previousSibling;
-            if (prev && prev.nodeType == Node.ELEMENT_NODE) {
+            var prev = ele.previousElementSibling;
+            if (prev) {
                 prevs.push(prev);
             }
         });
@@ -479,8 +480,8 @@ Unbose.prototype = {
     next: function(filter) {
         var nexts = [];
         this.elements.forEach(function(ele) {
-            var next = ele.nextSibling;
-            if (next && next.nodeType == Node.ELEMENT_NODE) {
+            var next = ele.nextElementSibling;
+            if (next) {
                 nexts.push(next);
             }
         });
@@ -1134,9 +1135,7 @@ Unbose.prototype = {
             return letter.toUpperCase();
         });
 
-        if (prop == "float") {
-            prop = "cssFloat";
-        }
+        if (prop == "float") { prop = "cssFloat"; }
 
         if (+value === parseFloat(value) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
             value = (+value | 0) + "px";
@@ -1242,8 +1241,8 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this.elements.some(function(ele) {
-            return ele.className.split(/[\x20\x09\x0A\x0C\x0D]+/).indexOf(cls) != -1;
-        });
+            return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
+        }, this);
     },
 
     /**
@@ -1290,9 +1289,9 @@ Unbose.prototype = {
      *
      */
     delClass: function(cls) {
-        var classes = cls.split(/\s+/);
+        var classes = cls.split(Unbose.SPACE_CHARS);
         this.elements.forEach(function(ele) {
-            ele.className = ele.className.split(/\s+/).filter(function(cls) {
+            ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
                 return classes.indexOf(cls) == -1;
             }).join(" ");
         });
