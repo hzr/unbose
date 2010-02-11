@@ -1423,7 +1423,6 @@ Unbose.support = {
  * Group: Static methods
  *
  */
-
 Unbose.eleFromTpl = function(tpl) {
     var index = 0;
     var ele = document.createDocumentFragment();
@@ -1468,18 +1467,6 @@ Unbose.eleFromTpl = function(tpl) {
             }
         }
         return ele;
-    }
-};
-
-/**
- * Todo:
- *
- *   Arbitrary number of args
- */
-Unbose.list = function(whatever) {
-    var ret = [];
-    for (var i = 0, l = whatever.length; i < l; i++) {
-        ret.push(whatever[i]);
     }
 };
 
@@ -1699,6 +1686,31 @@ Unbose.eleFromZen = function(zen) {
  */
 Unbose.fromZen = function(zen) {
     return new Unbose(Unbose.eleFromZen(zen));
+};
+
+/**
+ * Method: list (static)
+ *
+ * Convert something to a list. Takes an arbitrary number of arguments.
+ * Useful e.g. for converting the arguments object to an array to use
+ * array methods.
+ *
+ * Parameters:
+ *
+ *   An arbitrary number of parameters
+ *
+ * Returns:
+ *
+ *   An array
+ */
+Unbose.list = function() {
+    var ret = [];
+    Array.prototype.forEach.call(arguments, function(arg) {
+        for (var i = 0, len = arg.length; i < len; i++) {
+            ret.push(arg[i]);
+        }
+    });
+    return ret;
 };
 
 /**

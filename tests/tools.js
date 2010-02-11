@@ -38,4 +38,5 @@ test("list()", function() {
     equal(Unbose.list([0,1,2]).join('-'), '0-1-2');
     equal(Unbose.list([0],[1],[2]).join('-'), '0-1-2');
     equal(Unbose.list([],[0],[1,2],[3,4]).join('-'), '0-1-2-3-4');
+    equal(Unbose.list("list").join('-'), 'l-i-s-t');
 });
