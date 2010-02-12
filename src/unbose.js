@@ -569,7 +569,110 @@ Unbose.prototype = {
      */
 
     /**
-     * Method: append
+     * Method: hasClass
+     *
+     * Check if the elements in the set has a specific class
+     *
+     * Parameters:
+     *
+     *   cls - The class name to check for
+     *
+     * Returns:
+     *
+     *   True if all the elements in the set has the class, false othwerwise
+     *
+     * See also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
+     */
+    hasClass: function(cls) {
+        return this.elements.some(function(ele) {
+            return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
+        }, this);
+    },
+
+    /**
+     * Method: addClass
+     *
+     * Add a class or classes to the element, or to all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - A space separated list of class names to add to the element
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <delClass>, <hasClass>, <toggleClass>
+     *
+     */
+    addClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            if (!new Unbose(ele).hasClass(cls)) { ele.className += " " + cls; }
+        });
+        return this;
+    },
+
+    /**
+     * Method: delClass
+     *
+     * Removes a class or classes from the element, or from all elements in the set
+     *
+     * Parameters:
+     *
+     *   cls - A space separated list of class names to remove from the element
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <toggleClass>
+     *
+     */
+    delClass: function(cls) {
+        var classes = cls.split(Unbose.SPACE_CHARS);
+        this.elements.forEach(function(ele) {
+            ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
+                return classes.indexOf(cls) == -1;
+            }).join(" ");
+        });
+        return this;
+    },
+
+    /**
+     * Method: toggleClass
+     *
+     * Set class name if it's not set, unset it otherwise
+     *
+     * Parameters:
+     *
+     *   cls - The class name to toggle.
+     *
+     * Returns:
+     *
+     *   The Unbose object
+     *
+     * See also:
+     *
+     *   <addClass>, <hasClass>, <delClass>
+     *
+     */
+    toggleClass: function(cls) {
+        this.elements.forEach(function(ele) {
+            var uele = new Unbose(ele);
+            uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
+        });
+        return this;
+    },
+
+    /**
+     * Method: _append
      *
      * Append an element, an unbose object, a template or a zen
      * string. Append adds the element after the last child element.
@@ -596,7 +699,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: appendElem
+     * Private method: _appendElem
      *
      * Append clones of element to all elements.
      *
@@ -609,12 +712,12 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    appendElem: function(newEle) {
-        return this.insertElem(newEle, true);
+    _appendElem: function(newEle) {
+        return this._insertElem(newEle, true);
     },
 
     /**
-     * Method: appendTpl
+     * Private method: _appendTpl
      *
      * Append elements from a template to all elements
      *
@@ -627,12 +730,12 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    appendTpl: function(tpl) {
-        return this.insertTpl(tpl, true);
+    _appendTpl: function(tpl) {
+        return this._insertTpl(tpl, true);
     },
 
     /**
-     * Method: appendUnbose
+     * Private method: _appendUnbose
      *
      * Append an element to all elements. If there are multiple elements
      * in the Unbose object, append clones.
@@ -646,13 +749,13 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    appendUnbose: function(ubobj) {
-        return this.insertUnbose(ubobj, true);
+    _appendUnbose: function(ubobj) {
+        return this._insertUnbose(ubobj, true);
     },
 
     /**
      *
-     * Method: appendZen
+     * Private method: _appendZen
      *
      * Append elements from a zencoding string
      *
@@ -665,12 +768,12 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    appendZen: function (zen) {
-        this.insertZen(zen, true);
+    _appendZen: function (zen) {
+        this._insertZen(zen, true);
     },
 
     /**
-     * Method: insert
+     * Private method: insert
      *
      * Insert an element, an unbose object, a template or a zen
      * string. By default, add it as the first child of the parent. If the
@@ -694,16 +797,16 @@ Unbose.prototype = {
      */
     insert: function(thing, append) {
          if (Unbose.isElement(thing)) {
-             return this.insertElem(thing, append);
+             return this._insertElem(thing, append);
          }
          else if (Unbose.isArray(thing)) {
-             return this.insertTpl(thing, append);
+             return this._insertTpl(thing, append);
          }
          else if (thing.toString() == "[object Unbose]") {
-             this.insertUnbose(thing, append);
+             this._insertUnbose(thing, append);
          }
          else if (typeof thing === "string") {
-             this.insertZen(thing, append);
+             this._insertZen(thing, append);
          }
          else {
              //fixme: return what?
@@ -712,7 +815,7 @@ Unbose.prototype = {
      },
 
     /**
-     * Method: insertElem
+     * Private method: _insertElem
      *
      * Insert an element into all elements. If there are multiple elements
      * in the Unbose object, insert clones (this means that any event
@@ -727,7 +830,7 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    insertElem: function(newEle, append) {
+    _insertElem: function(newEle, append) {
          this.elements.forEach(function(ele) {
              if (!append && ele.firstChild) {
                  this.length > 1 ?
@@ -744,7 +847,7 @@ Unbose.prototype = {
      },
 
     /**
-     * Method: insertTpl
+     * Private method: _insertTpl
      *
      * Insert elements from a template to all elements
      *
@@ -757,12 +860,12 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    insertTpl: function(tpl, append) {
-        return this.insertElem(Unbose.eleFromTpl(tpl), append);
+    _insertTpl: function(tpl, append) {
+        return this._insertElem(Unbose.eleFromTpl(tpl), append);
      },
 
     /**
-     * Method: insertUnbose
+     * Private method: _insertUnbose
      *
      * Insert an element in to all elements. If there are multiple elements
      * in the Unbose object, insert clones.
@@ -776,15 +879,15 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    insertUnbose: function(ubobj, append) {
+    _insertUnbose: function(ubobj, append) {
          ubobj.elements.forEach(function(ele) {
-             this.appendElem(ele, append);
+             this._appendElem(ele, append);
          }, this);
          return this;
      },
 
     /**
-     * Method: insertZen
+     * Private method: _insertZen
      *
      * insert elements from a zencoding string
      *
@@ -797,8 +900,8 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    insertZen: function (zen, append) {
-        return this.insertTpl(Unbose.tplFromZen(zen), append);
+    _insertZen: function (zen, append) {
+        return this._insertTpl(Unbose.tplFromZen(zen), append);
     },
 
     /**
@@ -1263,109 +1366,6 @@ Unbose.prototype = {
             height: rect.bottom - rect.top,
             width: rect.right - rect.left
         };
-    },
-
-    /**
-     * Method: hasClass
-     *
-     * Check if the elements in the set has a specific class
-     *
-     * Parameters:
-     *
-     *   cls - The class name to check for
-     *
-     * Returns:
-     *
-     *   True if all the elements in the set has the class, false othwerwise
-     *
-     * See also:
-     *
-     *   <delClass>, <hasClass>, <toggleClass>
-     *
-     */
-    hasClass: function(cls) {
-        return this.elements.some(function(ele) {
-            return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
-        }, this);
-    },
-
-    /**
-     * Method: addClass
-     *
-     * Add a class or classes to the element, or to all elements in the set
-     *
-     * Parameters:
-     *
-     *   cls - A space separated list of class names to add to the element
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <delClass>, <hasClass>, <toggleClass>
-     *
-     */
-    addClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            if (!new Unbose(ele).hasClass(cls)) { ele.className += " " + cls; }
-        });
-        return this;
-    },
-
-    /**
-     * Method: delClass
-     *
-     * Removes a class or classes from the element, or from all elements in the set
-     *
-     * Parameters:
-     *
-     *   cls - A space separated list of class names to remove from the element
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <addClass>, <hasClass>, <toggleClass>
-     *
-     */
-    delClass: function(cls) {
-        var classes = cls.split(Unbose.SPACE_CHARS);
-        this.elements.forEach(function(ele) {
-            ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
-                return classes.indexOf(cls) == -1;
-            }).join(" ");
-        });
-        return this;
-    },
-
-    /**
-     * Method: toggleClass
-     *
-     * Set class name if it's not set, unset it otherwise
-     *
-     * Parameters:
-     *
-     *   cls - The class name to toggle.
-     *
-     * Returns:
-     *
-     *   The Unbose object
-     *
-     * See also:
-     *
-     *   <addClass>, <hasClass>, <delClass>
-     *
-     */
-    toggleClass: function(cls) {
-        this.elements.forEach(function(ele) {
-            var uele = new Unbose(ele);
-            uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
-        });
-        return this;
     },
 
     /**

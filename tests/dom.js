@@ -342,7 +342,7 @@ test("appendTpl", function() {
     var ele = Unbose(document.createElement("div"));
 
     ok(ele);
-    ele.appendTpl(tpl);
+    ele.append(tpl);
     ok(ele);
     equal(ele.length, 1);
     equal(ele.find("a").attr("href"), "testlink");
@@ -358,7 +358,7 @@ test("appendZen", function() {
     ok(ele, "Elem generated");
     ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
-    ele.appendZen(zen);
+    ele.append(zen);
     equal(ele.length, 1);
     equal(ele.find("a").attr("href"), "testlink");
     equal(ele.find("h1").length, 2);
@@ -369,8 +369,8 @@ test("appendZen", function() {
 test("insert()", function() {
     // smoke testing insert behaviour
     var ele = document.createElement("div");
-    Unbose(ele).appendZen("span");
-    Unbose(ele).insertZen("strong");
+    Unbose(ele).append("span");
+    Unbose(ele).insert("strong");
     equal(ele.childNodes.length, 2);
     equal(ele.firstChild.nodeName.toLowerCase(), "strong");
 });

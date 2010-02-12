@@ -13,7 +13,7 @@
 // Helper function for making an html string we can compare with.
 function zen(s) {
                  var div = Unbose(document.createElement("div"));
-                 div.appendZen(s);
+                 div.append(s);
                  return div.elem(0).innerHTML.toLowerCase();
                  }
 
