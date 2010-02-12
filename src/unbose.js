@@ -1289,7 +1289,7 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            return this.getDimensions().width -
+            return this._getDimensions().width -
                    parseInt(uele._getStyle("border-left-width")) -
                    parseInt(uele._getStyle("border-right-width")) -
                    parseInt(uele._getStyle("padding-left")) -
@@ -1328,7 +1328,7 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
-            return this.getDimensions().height -
+            return this._getDimensions().height -
                    parseInt(uele._getStyle("border-top-width")) -
                    parseInt(uele._getStyle("border-bottom-width")) -
                    parseInt(uele._getStyle("padding-top")) -
@@ -1349,14 +1349,17 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: getDimensions
+     * Private method: getDimensions
      *
-     * ...
+     * Get the dimensions of the first element in the set. Returns an object
+     * with properties for top, right, bottom, left, height and width.
      */
-    getDimensions: function() {
+    _getDimensions: function() {
         var ele = this.elements[0];
         var uele = new Unbose(ele);
         var rect = ele.getBoundingClientRect();
+        var scrollX = window.scrollX;
+        var scrollY = window.scrollY;
         if (uele._getStyle("display") == "none") {
             var oldpos = uele.style("position");
             var oldvis = uele.style("visibility");
@@ -1365,10 +1368,10 @@ Unbose.prototype = {
             uele._setStyles({"position": oldpos, "visibility": oldvis}).hide();
         }
         return {
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom,
-            left: rect.left,
+            top: rect.top + window.scrollY,
+            right: rect.right + window.scrollX,
+            bottom: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
             height: rect.bottom - rect.top,
             width: rect.right - rect.left
         };
