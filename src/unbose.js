@@ -1358,8 +1358,6 @@ Unbose.prototype = {
         var ele = this.elements[0];
         var uele = new Unbose(ele);
         var rect = ele.getBoundingClientRect();
-        var scrollX = window.scrollX;
-        var scrollY = window.scrollY;
         if (uele._getStyle("display") == "none") {
             var oldpos = uele.style("position");
             var oldvis = uele.style("visibility");
