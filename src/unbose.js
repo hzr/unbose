@@ -70,8 +70,8 @@ Unbose.prototype = {
     /**
      * Method: click
      *
-     * Adds a click event.
-     * Shorthand for on("click", callback);
+     * Adds a click event to all elements in the set. Shorthand for
+     * ele.on("click", callback).
      *
      * Parameters:
      *
@@ -80,7 +80,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -167,7 +167,7 @@ Unbose.prototype = {
     /**
      * Method: find
      *
-     * Find decendents of the set of objects that match a selector
+     * Find decendents of the elements that matches the given selector.
      *
      * Parameters:
      *
@@ -235,12 +235,12 @@ Unbose.prototype = {
     /**
      * Method: forEach
      *
-     * Call a function for all elements in the Unbose set
+     * Call a function for all elements in the set.
      *
      * Parameters:
      *
      *   func - The function to call
-     *   context - (optional) context, the value of "this" for the function
+     *   context - (optional) context, the value of `this` for the function
      *             calls
      *
      * Returns:
@@ -260,7 +260,7 @@ Unbose.prototype = {
     /**
      * Method: name
      *
-     * Get the element name of the first element in the set
+     * Get the element name of the first element in the set.
      *
      * Returns:
      *
@@ -274,7 +274,7 @@ Unbose.prototype = {
     /**
      * Method: parent
      *
-     * Get the elements parents
+     * Get the elements parents.
      *
      * Parameters:
      *
@@ -303,7 +303,7 @@ Unbose.prototype = {
     /**
      * Method: ancestor
      *
-     * Get the closest ancestor matching filter.
+     * Get the closest ancestor matching the given filter.
      *
      * Parameters:
      *
@@ -335,7 +335,7 @@ Unbose.prototype = {
     /**
      * Method: children
      *
-     * Get the elements children
+     * Get the elements child elements.
      *
      * Parameters:
      *
@@ -367,7 +367,7 @@ Unbose.prototype = {
     /**
      * Method: siblings
      *
-     * Get the siblings of the elements in the set
+     * Get the siblings of the elements in the set.
      *
      * Parameters:
      *
@@ -395,7 +395,7 @@ Unbose.prototype = {
     /**
      * Method: first
      *
-     * Get the first element in the set
+     * Get the first element in the set.
      *
      * Returns:
      *
@@ -413,7 +413,7 @@ Unbose.prototype = {
     /**
      * Method: last
      *
-     * Get the last element in the set
+     * Get the last element in the set.
      *
      * Returns:
      *
@@ -431,7 +431,7 @@ Unbose.prototype = {
     /**
      * Method: prev
      *
-     * Get the previous siblings of the elements in the set
+     * Get the previous siblings of the elements in the set.
      *
      * Returns:
      *
@@ -460,7 +460,7 @@ Unbose.prototype = {
     /**
      * Method: next
      *
-     * Get the next siblings of the elements in the set
+     * Get the next siblings of the elements in the set.
      *
      * Parameters:
      *
@@ -511,7 +511,7 @@ Unbose.prototype = {
     /**
      * Method: nth
      *
-     * Returns the Unbose object for the nth element in the Unbose set
+     * Returns the nth element in the set.
      *
      * Parameters:
      *
@@ -521,16 +521,9 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * Example:
-     *
-     * Get the second h1 element in the document:
-     * (example)
-     * Unbose("h1").nth(1);
-     * (end)
-     *
      * See also:
      *
-     * <first>, <last>
+     *   <first>, <last>
      *
      */
     nth: function(index) {
@@ -541,8 +534,8 @@ Unbose.prototype = {
     /**
      * Method: elem
      *
-     * Gets an HTMLElement from the Unbose object, or an array of all
-     * HTMLElements in the collection.
+     * Gets the HTMLElement for the nth element in the set if the index parameter
+     * is given. Otherwise, gets an array of all HTMLElements in the set.
      *
      * Parameters:
      *
@@ -571,7 +564,7 @@ Unbose.prototype = {
     /**
      * Method: hasClass
      *
-     * Check if the elements in the set has a specific class
+     * Check if the elements in the set has a specific class.
      *
      * Parameters:
      *
@@ -595,7 +588,7 @@ Unbose.prototype = {
     /**
      * Method: addClass
      *
-     * Add a class or classes to the element, or to all elements in the set
+     * Add a class to all elements in the set.
      *
      * Parameters:
      *
@@ -603,7 +596,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -620,7 +613,7 @@ Unbose.prototype = {
     /**
      * Method: delClass
      *
-     * Removes a class or classes from the element, or from all elements in the set
+     * Removes a class  from all elements in the set.
      *
      * Parameters:
      *
@@ -628,7 +621,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -648,7 +641,7 @@ Unbose.prototype = {
     /**
      * Method: toggleClass
      *
-     * Set class name if it's not set, unset it otherwise
+     * Add class name if it's not set, remove it otherwise.
      *
      * Parameters:
      *
@@ -656,7 +649,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -672,14 +665,14 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: _append
+     * Method: append
      *
-     * Append an element, an unbose object, a template or a zen
+     * Append an element, an Unbose object, a template or a zen
      * string. Append adds the element after the last child element.
      * append(thing) is a cleaner shorthand for insert(thing, true)
      *
-     * Note: when appending an element to several elements, any event
-     * listener will be removed.
+     * Note that when appending an element to several elements, event
+     * listeners will be removed.
      *
      * Parameters:
      *
@@ -687,7 +680,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -709,7 +702,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _appendElem: function(newEle) {
@@ -727,7 +720,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _appendTpl: function(tpl) {
@@ -746,7 +739,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _appendUnbose: function(ubobj) {
@@ -765,7 +758,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _appendZen: function (zen) {
@@ -773,9 +766,9 @@ Unbose.prototype = {
     },
 
     /**
-     * Private method: insert
+     * Method: insert
      *
-     * Insert an element, an unbose object, a template or a zen
+     * Insert an element, an Unbose object, a template or a zen
      * string. By default, add it as the first child of the parent. If the
      * append argument is true, the element is appended as the last child
      * element instead.
@@ -787,7 +780,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -827,7 +820,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _insertElem: function(newEle, append) {
@@ -857,7 +850,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _insertTpl: function(tpl, append) {
@@ -876,7 +869,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _insertUnbose: function(ubobj, append) {
@@ -897,7 +890,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _insertZen: function (zen, append) {
@@ -917,7 +910,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object or an attribute
+     *   An Unbose object or an attribute
      *
      * See also:
      *
@@ -966,7 +959,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *  The Unbose object
+     *  An Unbose object
      *
      */
     _setAttr: function(name, val) {
@@ -979,11 +972,11 @@ Unbose.prototype = {
     /**
      * Method: empty
      *
-     * Remove all children of the element, or of all elements in the set.
+     * Remove all children of the elements in the set.
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     empty: function() {
@@ -996,11 +989,11 @@ Unbose.prototype = {
     /**
      * Method: remove
      *
-     * Remove the set of elements
+     * Remove the set of elements.
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * Todo:
      *
@@ -1016,8 +1009,10 @@ Unbose.prototype = {
     /**
      * Method: text
      *
-     * If argument is given, set text content of elements. If not, return
-     * text content instead. See <setText> and <getText>
+     * Set or get the text of elements. If the text argument is given, the
+     * text content of all elements in the set is updated. If the text argument
+     * is not given, it returns the text content of the first element in
+     * the set.
      *
      * Parameters:
      *
@@ -1061,7 +1056,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     _setText: function(text) {
@@ -1072,15 +1067,17 @@ Unbose.prototype = {
     /**
      * Method: val
      *
-     * Set or get the value of the set of elements
+     * Set or get the value of elements. If the val argument is given, the
+     * value of all elements in the set is updated. If the val argument
+     * is not given, it returns the value of the first element in the set.
      *
      * Parameters:
      *
-     *   text - (optional) The text to set
+     *   val - (optional) The value to set
      *
      * Returns:
      *
-     *   The value of the Unbose object
+     *   An Unbose object
      *
      * See also:
      *
@@ -1126,6 +1123,11 @@ Unbose.prototype = {
      *
      *   <val>, <setVal>
      *
+     * TODO:
+     *
+     *   This might need some special-casing for some elements.
+     *   Need to look into that.
+     *
      */
     _setVal: function(val) {
         this.elements.forEach(function(ele) {
@@ -1170,7 +1172,7 @@ Unbose.prototype = {
     /**
      * Method: style
      *
-     * Set or get a style attribute.
+     * Set or get a CSS property.
      *
      * Parameters:
      *
@@ -1271,7 +1273,7 @@ Unbose.prototype = {
     /**
      * Method: width
      *
-     * Gets or sets the width of the element
+     * Gets or sets the width of elements.
      *
      * Parameters:
      *
@@ -1300,7 +1302,9 @@ Unbose.prototype = {
             if (parseInt(value) < 0) {
                 value = 0;
             }
-            ele.style.width = value;
+            this.elements.forEach(function(ele) {
+                ele.style.width = value;
+            });
         }
         return this;
     },
@@ -1308,7 +1312,7 @@ Unbose.prototype = {
     /**
      * Method: height
      *
-     * Get the height of the element
+     * Gets or sets the height of elements.
      *
      * Parameters:
      *
@@ -1337,7 +1341,9 @@ Unbose.prototype = {
             if (parseInt(value) < 0) {
                 value = 0;
             }
-            ele.style.height = value;
+            this.elements.forEach(function(ele) {
+                ele.style.height = value;
+            });
         }
         return this;
     },
@@ -1371,12 +1377,11 @@ Unbose.prototype = {
     /**
      * Method: hide
      *
-     * Hides the element or set of elements by setting the "display"
-     * style property to none.
+     * Hides the elements.
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      */
     hide: function() {
@@ -1391,11 +1396,11 @@ Unbose.prototype = {
     /**
      * Method: show
      *
-     * Show an element by clearing its display style element.
+     * Shows the elements.
      *
      * Returns:
      *
-     *   The Unbose object
+     *   An Unbose object
      *
      * Todo:
      *
@@ -1473,9 +1478,9 @@ Unbose.eleFromTpl = function(tpl) {
 };
 
 /**
- * Method: tplFromZen (static)
+ * Method: Unbose.tplFromZen
  *
- * Converts a template array to an element (NOT to an unbose object atm)
+ * Converts a template array to an element (NOT to an unbose object atm).
  */
 Unbose.tplFromZen = function(zen) {
     return parse_zencode(zen);
@@ -1647,9 +1652,9 @@ Unbose.tplFromZen = function(zen) {
 };
 
 /**
- * Method: eleFromZen (static)
+ * Method: Unbose.eleFromZen
  *
- * Create an html element from a zencode string
+ * Create an HTML element from a zencode string.
  *
  * Parameters:
  *
@@ -1661,7 +1666,7 @@ Unbose.tplFromZen = function(zen) {
  *
  * See also:
  *
- * <fromZen>
+ *   <fromZen>
  *
  */
 Unbose.eleFromZen = function(zen) {
@@ -1669,9 +1674,9 @@ Unbose.eleFromZen = function(zen) {
 };
 
 /**
- * Method: fromZen (static)
+ * Method: Unbose.fromZen
  *
- * Create an unbose object from a zencode string
+ * Create an Unbose object from a zencode string.
  *
  * Parameters:
  *
@@ -1683,7 +1688,7 @@ Unbose.eleFromZen = function(zen) {
  *
  * See also:
  *
- * <eleFromZen>
+ *   <eleFromZen>
  *
  */
 Unbose.fromZen = function(zen) {
@@ -1691,7 +1696,7 @@ Unbose.fromZen = function(zen) {
 };
 
 /**
- * Method: list (static)
+ * Method: Unbose.list
  *
  * Convert something to a list. Takes an arbitrary number of arguments.
  * Useful e.g. for converting the arguments object to an array to use
@@ -1716,9 +1721,9 @@ Unbose.list = function() {
 };
 
 /**
- * Method: isArray (static)
+ * Method: Unbose.isArray
  *
- * Check if an object is an array
+ * Check if an object is an array.
  *
  * Parameters:
  *
@@ -1743,9 +1748,9 @@ if (Array.isArray) {
 }
 
 /**
- * Method: isFunction (static)
+ * Method: Unbose.isFunction
  *
- * Check if an object is a function
+ * Check if an object is a function.
  *
  * Parameters:
  *
@@ -1761,9 +1766,9 @@ Unbose.isFunction = function(obj) {
 };
 
 /**
- * Method: isElement (static)
+ * Method: Unbose.isElement
  *
- * Check if an object is an element
+ * Check if an object is an element.
  *
  * Parameters:
  *
@@ -1779,7 +1784,7 @@ Unbose.isElement = function(obj) {
 };
 
 /**
- * Method: trim (static)
+ * Method: Unbose.trim
  *
  * Trim leading and trailing whitespace in a string.
  *
@@ -1803,7 +1808,7 @@ if (String.prototype.trim) {
 }
 
 /**
- * Method: nop (static)
+ * Method: Unbose.nop
  *
  * Empty function. Can be useful in cases where a function is required.
  *
