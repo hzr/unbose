@@ -425,7 +425,7 @@ Unbose.prototype = {
      *
      */
     last: function() {
-        return this.elements[this.elements.length-1];
+        return new Unbose(this.elements[this.elements.length-1]);
     },
 
     /**
@@ -818,15 +818,15 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <getAttr>, <setAttr>
+     *   <_getAttr>, <_setAttr>
      *
      */
     attr: function(name, val) {
-        return (val === undefined) ? this.getAttr(name) : this.setAttr(name, val);
+        return (val === undefined) ? this._getAttr(name) : this._setAttr(name, val);
     },
 
     /**
-     * Method: getAttr
+     * Method: _getAttr
      *
      * Get the value of an attribute
      *
@@ -847,12 +847,12 @@ Unbose.prototype = {
      * (end)
      *
      */
-    getAttr: function(name) {
+    _getAttr: function(name) {
         return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
     },
 
     /**
-     * Method: setAttr
+     * Method: _setAttr
      *
      * Set the value of an attribute
      *
@@ -866,7 +866,7 @@ Unbose.prototype = {
      *  The Unbose object
      *
      */
-    setAttr: function(name, val) {
+    _setAttr: function(name, val) {
         this.elements.forEach(function(ele) {
             ele.setAttribute(name, val);
         });
@@ -926,11 +926,11 @@ Unbose.prototype = {
      *
      * See also:
      *
-     * <getText>, <setText>
+     * <_getText>, <_setText>
      *
      */
     text: function(text) {
-        return (text === undefined) ? this.getText() : this.setText(text);
+        return (text === undefined) ? this._getText() : this._setText(text);
     },
 
     /**
@@ -943,7 +943,7 @@ Unbose.prototype = {
      *   A string. If the element has no text content, an empty string.
      *
      */
-    getText: function() {
+    _getText: function() {
         return (this.elements[0] && this.elements[0].textContent) || "";
     },
 
@@ -961,7 +961,7 @@ Unbose.prototype = {
      *   The Unbose object
      *
      */
-    setText: function(text) {
+    _setText: function(text) {
         this.elements.forEach(function(ele) { ele.textContent = text; });
         return this;
     },
@@ -981,11 +981,11 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <getVal>, <setVal>
+     *   <_getVal>, <_setVal>
      *
      */
     val: function(val) {
-        return (val === undefined) ? this.getVal() : this.setVal(val);
+        return (val === undefined) ? this._getVal() : this._setVal(val);
     },
 
     /**
@@ -1002,7 +1002,7 @@ Unbose.prototype = {
      *   <val>, <setVal>
      *
      */
-    getVal: function() {
+    _getVal: function() {
         return this.elements[0] && this.elements[0].value;
     },
 
@@ -1024,7 +1024,7 @@ Unbose.prototype = {
      *   <val>, <setVal>
      *
      */
-    setVal: function(val) {
+    _setVal: function(val) {
         this.elements.forEach(function(ele) {
             ele.value = val;
         });
@@ -1080,7 +1080,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     * <setStyle>, <getStyle>
+     * <_setStyle>, <_getStyle>
      *
      */
     style: function(attr, value) {
@@ -1088,10 +1088,10 @@ Unbose.prototype = {
             return this._setStyles(attr);
         }
         else if (value === undefined) {
-            return this.getStyle(attr);
+            return this._getStyle(attr);
         }
         else {
-            return this.setStyle(attr, value);
+            return this._setStyle(attr, value);
         }
     },
 
@@ -1112,7 +1112,7 @@ Unbose.prototype = {
      *   opera and rgb in chrome/ff
      *
      */
-    getStyle: function(prop) {
+    _getStyle: function(prop) {
         var ele = this.elements[0];
         if (!ele) { return undefined; }
         return ele.ownerDocument.defaultView
@@ -1121,7 +1121,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: setStyle
+     * Method: _setStyle
      *
      * Set the style for the elements in the set
      *
@@ -1135,7 +1135,7 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    setStyle: function(prop, value) {
+    _setStyle: function(prop, value) {
         // Normalize properties
         prop = prop.toLowerCase().replace(/-([a-z])/g, function(all, letter) {
             return letter.toUpperCase();
@@ -1158,7 +1158,7 @@ Unbose.prototype = {
      */
     _setStyles: function(decls) {
         for (var prop in decls) {
-            this.setStyle(prop, decls[prop]);
+            this._setStyle(prop, decls[prop]);
         }
         return this;
     },
@@ -1183,10 +1183,10 @@ Unbose.prototype = {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
             return this.getDimensions().width -
-                   parseInt(uele.getStyle("border-left-width")) -
-                   parseInt(uele.getStyle("border-right-width")) -
-                   parseInt(uele.getStyle("padding-left")) -
-                   parseInt(uele.getStyle("padding-right"));
+                   parseInt(uele._getStyle("border-left-width")) -
+                   parseInt(uele._getStyle("border-right-width")) -
+                   parseInt(uele._getStyle("padding-left")) -
+                   parseInt(uele._getStyle("padding-right"));
         }
         else if (ele) {
             if (+value === parseFloat(value)) {
@@ -1220,10 +1220,10 @@ Unbose.prototype = {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
             return this.getDimensions().height -
-                   parseInt(uele.getStyle("border-top-width")) -
-                   parseInt(uele.getStyle("border-bottom-width")) -
-                   parseInt(uele.getStyle("padding-top")) -
-                   parseInt(uele.getStyle("padding-bottom"));
+                   parseInt(uele._getStyle("border-top-width")) -
+                   parseInt(uele._getStyle("border-bottom-width")) -
+                   parseInt(uele._getStyle("padding-top")) -
+                   parseInt(uele._getStyle("padding-bottom"));
         }
         else if (ele) {
             if (+value === parseFloat(value)) {
@@ -1246,12 +1246,12 @@ Unbose.prototype = {
         var ele = this.elements[0];
         var uele = new Unbose(ele);
         var rect = ele.getBoundingClientRect();
-        if (uele.style("display") == "none") {
+        if (uele._getStyle("display") == "none") {
             var oldpos = uele.style("position");
             var oldvis = uele.style("visibility");
-            uele.style({"position": "absolute", "visbility": "hidden"}).show(); // TODO: check if this is enough. Otherwise, position it outside the viewport
+            uele._setStyles({"position": "absolute", "visbility": "hidden"}).show(); // TODO: check if this is enough. Otherwise, position it outside the viewport
             rect = ele.getBoundingClientRect();
-            uele.style({"position": oldpos, "visibility": oldvis}).hide();
+            uele._setStyles({"position": oldpos, "visibility": oldvis}).hide();
         }
         return {
             top: rect.top,
@@ -1439,7 +1439,7 @@ Unbose.eleFromTpl = function(tpl) {
 
     var cur;
     // fixme: what if data has something falsey?
-    while (cur = (tpl[index++])) {
+    while ((cur = tpl[index++])) {
         if (typeof cur === "string") {
             ele.appendChild(document.createTextNode(cur));
         }

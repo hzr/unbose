@@ -32,8 +32,8 @@ test("style()", function() {
     var subject = Unbose(ele);
     document.body.appendChild(ele);
     subject.style({"width": "10px", "height": "20px"});
-    equal(subject.getStyle("width"), "10px");
-    equal(subject.getStyle("height"), "20px");
+    equal(subject.style("width"), "10px");
+    equal(subject.style("height"), "20px");
     document.body.removeChild(ele);
 });
 
@@ -44,7 +44,7 @@ test("getStyle()", function() {
     ele.style.width = "100px";
     ele.style.height = "12ex";
     ele.style.border = "solid gold thin";
-    equal(subject.getStyle("width"), "100px");
+    equal(subject.style("width"), "100px");
     document.body.removeChild(ele);
 });
 
@@ -52,16 +52,16 @@ test("setStyle()", function() {
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     document.body.appendChild(ele);
-    subject.setStyle("float", "right"); // float maps to cssFloat
-    equal(subject.getStyle("float"), "right");
+    subject.style("float", "right"); // float maps to cssFloat
+    equal(subject.style("float"), "right");
     subject.style("padding-right", "1px"); // handle properties with dash
-    equal(subject.getStyle("padding-right"), "1px");
+    equal(subject.style("padding-right"), "1px");
     subject.style("padding-right", 2); // handle properties without unit
-    equal(subject.getStyle("padding-right"), "2px");
+    equal(subject.style("padding-right"), "2px");
     subject.style("padding-right", 3.5); // Floor the value
-    equal(subject.getStyle("padding-right"), "3px");
-    subject.setStyle("font-size", "10px");
-    subject.setStyle("line-height", 2); // Should not append "px" to this property
-    equal(subject.getStyle("line-height"), "20px");
+    equal(subject.style("padding-right"), "3px");
+    subject.style("font-size", "10px");
+    subject.style("line-height", 2); // Should not append "px" to this property
+    equal(subject.style("line-height"), "20px");
     document.body.removeChild(ele);
 });

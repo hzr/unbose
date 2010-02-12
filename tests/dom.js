@@ -11,13 +11,13 @@ test("text()", function() {
     equal(subject.text(), "Unbose tests");
 });
 
-test("attr -> getAttr", function() {
+test("attr()", function() {
     var ele = document.createElement("div");
     ele.foo = "bar";
     ele.setAttribute("meh", "bleh");
     var subject = Unbose(ele);
-    equal(subject.getAttr("foo"), "bar");
-    equal(subject.getAttr("meh"), "bleh");
+    equal(subject.attr("foo"), "bar");
+    equal(subject.attr("meh"), "bleh");
     equal(subject.attr("foo"), "bar");
     equal(subject.attr("meh"), "bleh");
 });
