@@ -250,7 +250,7 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * Todo:
+     * TODO:
      *
      *   Should we pass ele or Unbose object to args?
      *
@@ -502,7 +502,7 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * Todo:
+     * TODO:
      *
      *   Not implemented
      *
@@ -712,11 +712,6 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * See also:
-     *
-     *   <insertElem>, <insertTpl>, <insertUnbose>, <insertZen>
-     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>
-     *
      */
     insert: function(thing, append) {
          if (Unbose.isElement(thing)) {
@@ -776,7 +771,8 @@ Unbose.prototype = {
      * Method: attr
      *
      * Set or get an attribute value. If value is given, set it. Of not,
-     * just return current value.
+     * just return current value. On getting, if the attribute does not
+     * exist, return undefined.
      *
      * Parameters:
      *
@@ -787,61 +783,17 @@ Unbose.prototype = {
      *
      *   An Unbose object or an attribute
      *
-     * See also:
-     *
-     *   <_getAttr>, <_setAttr>
-     *
      */
     attr: function(name, val) {
-        return (val === undefined) ? this._getAttr(name) : this._setAttr(name, val);
-    },
-
-    /**
-     * Private method: _getAttr
-     *
-     * Get the value of an attribute
-     *
-     * Parameters:
-     *
-     *   name - Name of the attribute to get
-     *
-     * Returns:
-     *
-     *  The value of the attribute. If attribute does not exist, returns
-     *  undefined.
-     *
-     * Example:
-     *
-     * Set the src of an image
-     * (example)
-     * Unbose("#logo").attr("src", "logo.png");
-     * (end)
-     *
-     */
-    _getAttr: function(name) {
-        return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
-    },
-
-    /**
-     * Private method: _setAttr
-     *
-     * Set the value of an attribute
-     *
-     * Parameters:
-     *
-     *   name - Name of the attribute to set
-     *   val - The value of the attribute
-     *
-     * Returns:
-     *
-     *  An Unbose object
-     *
-     */
-    _setAttr: function(name, val) {
-        this.elements.forEach(function(ele) {
-            ele.setAttribute(name, val);
-        });
-        return this;
+        if (val === undefined) {
+            return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
+        }
+        else {
+            this.elements.forEach(function(ele) {
+                ele.setAttribute(name, val);
+            });
+            return this;
+        }
     },
 
     /**
@@ -870,7 +822,7 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * Todo:
+     * TODO:
      *
      *   Support expression arg
      */
@@ -897,46 +849,15 @@ Unbose.prototype = {
      *
      *   An Unbose object or a string
      *
-     * See also:
-     *
-     * <_getText>, <_setText>
-     *
      */
     text: function(text) {
-        return (text === undefined) ? this._getText() : this._setText(text);
-    },
-
-    /**
-     * Private method: getText
-     *
-     * Get the text content of the first element of the set
-     *
-     * Returns:
-     *
-     *   A string. If the element has no text content, an empty string.
-     *
-     */
-    _getText: function() {
-        return (this.elements[0] && this.elements[0].textContent) || "";
-    },
-
-    /**
-     * Private method: setText
-     *
-     * Set the text content of the set of elements
-     *
-     * Parameters:
-     *
-     *   text - The text to set
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _setText: function(text) {
-        this.elements.forEach(function(ele) { ele.textContent = text; });
-        return this;
+        if (text === undefined) {
+            return (this.elements[0] && this.elements[0].textContent) || "";
+        }
+        else {
+            this.elements.forEach(function(ele) { ele.textContent = text; });
+            return this;
+        }
     },
 
     /**
@@ -954,61 +875,23 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * See also:
-     *
-     *   <_getVal>, <_setVal>
-     *
-     */
-    val: function(val) {
-        return (val === undefined) ? this._getVal() : this._setVal(val);
-    },
-
-    /**
-     * Private method: getVal
-     *
-     * get the value of the first element in the set
-     *
-     * Returns:
-     *
-     *   The value
-     *
-     * See also:
-     *
-     *   <val>, <setVal>
-     *
-     */
-    _getVal: function() {
-        return this.elements[0] && this.elements[0].value;
-    },
-
-    /**
-     * Private method: setVal
-     *
-     * Set the value of the set of elements
-     *
-     * Parameters:
-     *
-     *   text - The value to set
-     *
-     * Returns:
-     *
-     *   The value of the Unbose object
-     *
-     * See also:
-     *
-     *   <val>, <setVal>
-     *
      * TODO:
      *
      *   This might need some special-casing for some elements.
      *   Need to look into that.
      *
+     *
      */
-    _setVal: function(val) {
-        this.elements.forEach(function(ele) {
-            ele.value = val;
-        });
-        return this;
+    val: function(val) {
+        if (val === undefined) {
+            return this.elements[0] && this.elements[0].value;
+        }
+        else {
+            this.elements.forEach(function(ele) {
+                ele.value = val;
+            });
+            return this;
+        }
     },
 
     /**
@@ -1283,7 +1166,7 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * Todo:
+     * TODO:
      *
      *   Not implemented
      *
