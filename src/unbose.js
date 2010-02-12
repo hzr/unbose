@@ -1054,15 +1054,7 @@ Unbose.prototype = {
                    parseInt(uele._getStyle("padding-right"));
         }
         else if (ele) {
-            if (+value === parseFloat(value)) {
-                value = (+value | 0) + "px";
-            }
-            if (parseInt(value) < 0) {
-                value = 0;
-            }
-            this.elements.forEach(function(ele) {
-                ele.style.width = value;
-            });
+            this._setDimensions("width", value);
         }
         return this;
     },
@@ -1093,21 +1085,13 @@ Unbose.prototype = {
                    parseInt(uele._getStyle("padding-bottom"));
         }
         else if (ele) {
-            if (+value === parseFloat(value)) {
-                value = (+value | 0) + "px";
-            }
-            if (parseInt(value) < 0) {
-                value = 0;
-            }
-            this.elements.forEach(function(ele) {
-                ele.style.height = value;
-            });
+            this._setDimensions("height", value);
         }
         return this;
     },
 
     /**
-     * Private method: getDimensions
+     * Private method: _getDimensions
      *
      * Get the dimensions of the first element in the set. Returns an object
      * with properties for top, right, bottom, left, height and width.
@@ -1128,6 +1112,8 @@ Unbose.prototype = {
             rect = ele.getBoundingClientRect();
             uele._setStyles({"position": oldpos, "visibility": oldvis}).hide();
         }
+        // XXX: Gecko seems to have a rounding error for top and bottom (at least).
+        // Consider rounding these values.
         return {
             top: rect.top + window.scrollY,
             right: rect.right + window.scrollX,
@@ -1136,6 +1122,19 @@ Unbose.prototype = {
             height: rect.bottom - rect.top,
             width: rect.right - rect.left
         };
+    },
+
+    /**
+     * Private method: _setDimensions
+     *
+     * ...
+     */
+    _setDimensions: function(prop, val) {
+        if (+val === parseFloat(val)) { val = (+val | 0) + "px"; }
+        if (parseInt(val) < 0) { val = 0; }
+        this.elements.forEach(function(ele) {
+            ele.style[prop] = val;
+        });
     },
 
     /**
