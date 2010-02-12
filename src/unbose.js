@@ -65,6 +65,7 @@ Unbose.prototype = {
     /**
      * Group: Events
      *
+     * Methods for handling event
      */
 
     /**
@@ -94,7 +95,7 @@ Unbose.prototype = {
     /**
      * Method: on
      *
-     * Add an event listener to the set of elements.
+     * Add an event listener to all elements in the set.
      *
      * Parameters:
      *
@@ -120,8 +121,8 @@ Unbose.prototype = {
     /**
      * Method: once
      *
-     * Add an event listener to the set of elements that will be called once
-     * and then removed. If multiple events supplied, all will be removed once
+     * Add an event listener to all elements in the set that will be called once
+     * and then removed. If multiple events are supplied, all will be removed once
      * one of them is triggered.
      *
      * Parameters:
@@ -162,6 +163,8 @@ Unbose.prototype = {
 
     /**
      * Group: Finding and traversing
+     *
+     * Methods for finding elements and traversing the DOM
      */
 
     /**
@@ -559,6 +562,7 @@ Unbose.prototype = {
     /**
      * Group: DOM
      *
+     * Methods for manipulating and "querying" the DOM
      */
 
     /**
@@ -692,80 +696,6 @@ Unbose.prototype = {
     },
 
     /**
-     * Private method: _appendElem
-     *
-     * Append clones of element to all elements.
-     *
-     * Parameters:
-     *
-     *   newEle - Element to add
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _appendElem: function(newEle) {
-        return this._insertElem(newEle, true);
-    },
-
-    /**
-     * Private method: _appendTpl
-     *
-     * Append elements from a template to all elements
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _appendTpl: function(tpl) {
-        return this._insertTpl(tpl, true);
-    },
-
-    /**
-     * Private method: _appendUnbose
-     *
-     * Append an element to all elements. If there are multiple elements
-     * in the Unbose object, append clones.
-     *
-     * Parameters:
-     *
-     *   ele - Element to add
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _appendUnbose: function(ubobj) {
-        return this._insertUnbose(ubobj, true);
-    },
-
-    /**
-     *
-     * Private method: _appendZen
-     *
-     * Append elements from a zencoding string
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _appendZen: function (zen) {
-        this._insertZen(zen, true);
-    },
-
-    /**
      * Method: insert
      *
      * Insert an element, an Unbose object, a template or a zen
@@ -793,13 +723,16 @@ Unbose.prototype = {
              return this._insertElem(thing, append);
          }
          else if (Unbose.isArray(thing)) {
-             return this._insertTpl(thing, append);
+            return this._insertElem(Unbose.eleFromTpl(thing), append);
          }
          else if (thing.toString() == "[object Unbose]") {
-             this._insertUnbose(thing, append);
+             thing.elements.forEach(function(ele) {
+                 this._insertElem(ele, true);
+             }, this);
+             return this;
          }
          else if (typeof thing === "string") {
-             this._insertZen(thing, append);
+            return this._insertElem(Unbose.eleFromTpl(Unbose.tplFromZen(thing)), append);
          }
          else {
              //fixme: return what?
@@ -838,64 +771,6 @@ Unbose.prototype = {
          }, this);
          return this;
      },
-
-    /**
-     * Private method: _insertTpl
-     *
-     * Insert elements from a template to all elements
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _insertTpl: function(tpl, append) {
-        return this._insertElem(Unbose.eleFromTpl(tpl), append);
-     },
-
-    /**
-     * Private method: _insertUnbose
-     *
-     * Insert an element in to all elements. If there are multiple elements
-     * in the Unbose object, insert clones.
-     *
-     * Parameters:
-     *
-     *   ele - Element to add
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _insertUnbose: function(ubobj, append) {
-         ubobj.elements.forEach(function(ele) {
-             this._appendElem(ele, append);
-         }, this);
-         return this;
-     },
-
-    /**
-     * Private method: _insertZen
-     *
-     * insert elements from a zencoding string
-     *
-     * Parameters:
-     *
-     *   tpl - Template array
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _insertZen: function (zen, append) {
-        return this._insertTpl(Unbose.tplFromZen(zen), append);
-    },
 
     /**
      * Method: attr
@@ -1139,8 +1014,7 @@ Unbose.prototype = {
     /**
      * Method: data
      *
-     * Associate arbitrary data with this element. The value
-     * will be converted to a string.
+     * Associate data with this element. The value will be converted to a string.
      *
      * Parameters:
      *
@@ -1167,6 +1041,7 @@ Unbose.prototype = {
     /**
      * Group: Style
      *
+     * Methods for getting and setting style for elements
      */
 
     /**
@@ -1358,10 +1233,15 @@ Unbose.prototype = {
         var ele = this.elements[0];
         var uele = new Unbose(ele);
         var rect = ele.getBoundingClientRect();
+        // Elements with display: none has 0 as computed style for width
+        // and height, so remove the display temporarily and hide it in
+        // another way. This may be dangerous if something queries that
+        // property in the meantime. Consider another approach.
         if (uele._getStyle("display") == "none") {
             var oldpos = uele.style("position");
             var oldvis = uele.style("visibility");
-            uele._setStyles({"position": "absolute", "visbility": "hidden"}).show(); // TODO: check if this is enough. Otherwise, position it outside the viewport
+            // TODO: check if this is enough. Otherwise, position it outside the viewport
+            uele._setStyles({"position": "absolute", "visbility": "hidden"}).show();
             rect = ele.getBoundingClientRect();
             uele._setStyles({"position": oldpos, "visibility": oldvis}).hide();
         }
@@ -1417,19 +1297,9 @@ Unbose.prototype = {
 };
 
 /**
- * Check support for various features.
- */
-Unbose.support = {
-    classList: (function() {
-        var ele = document.createElement("div");
-        return !!ele.classList;
-    })()
-};
-
-
-/**
  * Group: Static methods
  *
+ * Static Unbose methods
  */
 Unbose.eleFromTpl = function(tpl) {
     var index = 0;
@@ -1696,6 +1566,13 @@ Unbose.fromZen = function(zen) {
     return new Unbose(Unbose.eleFromZen(zen));
 };
 
+
+/**
+ * Group: Static helper methods
+ *
+ * Various helper methods
+ */
+
 /**
  * Method: Unbose.list
  *
@@ -1831,4 +1708,21 @@ if (!Function.prototype.bind) {
         }
     }
 }
+
+/**
+ * Group: Support
+ *
+ */
+Unbose.support = {
+    /**
+     * Boolean: classList
+     *
+     * Whether or not the user-agent support classList for elements
+     */
+    classList: (function() {
+        var ele = document.createElement("div");
+        return !!ele.classList;
+    })()
+};
+
 
