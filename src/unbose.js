@@ -826,7 +826,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: _getAttr
+     * Private method: _getAttr
      *
      * Get the value of an attribute
      *
@@ -852,7 +852,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: _setAttr
+     * Private method: _setAttr
      *
      * Set the value of an attribute
      *
@@ -934,7 +934,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: getText
+     * Private method: getText
      *
      * Get the text content of the first element of the set
      *
@@ -948,7 +948,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: setText
+     * Private method: setText
      *
      * Set the text content of the set of elements
      *
@@ -989,7 +989,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: getVal
+     * Private method: getVal
      *
      * get the value of the first element in the set
      *
@@ -1007,7 +1007,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: setVal
+     * Private method: setVal
      *
      * Set the value of the set of elements
      *
@@ -1096,7 +1096,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: getStyle
+     * Private method: _getStyle
      *
      * Get the style value of the first element of the set
      *
@@ -1121,7 +1121,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: _setStyle
+     * Private method: _setStyle
      *
      * Set the style for the elements in the set
      *
@@ -1154,7 +1154,9 @@ Unbose.prototype = {
     },
 
     /**
-     * Private method
+     * Private method: _setStyles
+     *
+     * ...
      */
     _setStyles: function(decls) {
         for (var prop in decls) {
