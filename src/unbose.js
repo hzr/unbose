@@ -755,7 +755,7 @@ Unbose.prototype = {
      */
     attr: function(name, val) {
         if (val === undefined) {
-            return (this._firstEle && this._firstEle.getAttribute(name) || this._firstEle[name]) || undefined;
+            return this._firstEle && this._firstEle.getAttribute(name) || this._firstEle[name];
         }
         else {
             this.elements.forEach(function(ele) {

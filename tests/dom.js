@@ -20,6 +20,7 @@ test("attr()", function() {
     equal(subject.attr("meh"), "bleh");
     equal(subject.attr("foo"), "bar");
     equal(subject.attr("meh"), "bleh");
+    equal(subject.attr("bogus"), undefined);
 });
 
 test("empty()", function() {
