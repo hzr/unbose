@@ -76,8 +76,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   callback - The class name to delete as a string.
-     *   capturing - Use capturing.
+     *   handler - Function called when the event occurs
+     *   capturing - Use capturing
      *
      * Returns:
      *
@@ -88,8 +88,8 @@ Unbose.prototype = {
      *   <on>
      *
      */
-    click: function(callback, capturing) {
-        return this.on("click", callback, capturing);
+    click: function(handler, capturing) {
+        return this.on("click", handler, capturing);
     },
 
     /**
@@ -99,9 +99,9 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   name - Name of the event. To attach multiple event handlers,
-     *          just separate them with a space.
-     *   callback - Function called when event occurs
+     *   names - Name of the event. To attach multiple event handlers,
+     *           just separate them with a space.
+     *   handler - Function called when event occurs
      *   capture - Use capturing
      *
      * Returns:
@@ -109,10 +109,10 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    on: function(names, callback, capture) {
+    on: function(names, handler, capture) {
         names.split(" ").forEach(function(name) {
             this.elements.forEach(function(ele) {
-                ele.addEventListener(name, callback, capture || false);
+                ele.addEventListener(name, handler, capture || false);
             });
         }, this);
         return this;
@@ -127,9 +127,9 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   name - Name of the event. To attach multiple event handlers,
-     *          just separate them with a space.
-     *   callback - Function called when event occurs
+     *   names - Name of the event. To attach multiple event handlers,
+     *           just separate them with a space.
+     *   handler - Function called when event occurs
      *   capture - Use capturing
      *
      * Returns:
@@ -137,12 +137,12 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    once: function(names, callback, capture) {
+    once: function(names, handler, capture) {
         function cancelCb(evt) {
             names.split(" ").forEach(function(name) {
                 this.removeEventListener(name, cancelCb, capture);
             }, this);
-            callback.apply(this, arguments);
+            handler.apply(this, arguments);
         };
         return this.on(names, cancelCb, capture);
     },
@@ -269,6 +269,7 @@ Unbose.prototype = {
      *
      *   The name of the first element in the set. Name will always be lower
      *   case when returned.
+     *
      */
     name: function() {
         return this.elements[0] && this.elements[0].nodeName.toLowerCase();
@@ -518,7 +519,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   index - index in the list
+     *   index - The index of the element in the set
      *
      * Returns:
      *
@@ -546,7 +547,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   An HTMLElement
+     *   An HTMLElement or and array of HTMLElements
      *
      * Fixme:
      *
@@ -580,7 +581,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <delClass>, <hasClass>, <toggleClass>
+     *   <delClass>, <addClass>, <toggleClass>
      *
      */
     hasClass: function(cls) {
@@ -617,7 +618,7 @@ Unbose.prototype = {
     /**
      * Method: delClass
      *
-     * Removes a class  from all elements in the set.
+     * Removes a class from all elements in the set.
      *
      * Parameters:
      *
@@ -649,7 +650,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   cls - The class name to toggle.
+     *   cls - The class name to toggle
      *
      * Returns:
      *
@@ -688,7 +689,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <appendElem>, <appendTpl>, <appendUnbose>, <appendZen>, <insert>
+     *   <insert>
      *
      */
     append: function(thing) {
@@ -703,10 +704,13 @@ Unbose.prototype = {
      * append argument is true, the element is appended as the last child
      * element instead.
      *
+     * Note that when inserting an element to several elements, event
+     * listeners will be removed.
+     *
      * Parameters:
      *
      *   thing - Thing to add
-     *   append - append instead of insert
+     *   append - Append instead of insert
      *
      * Returns:
      *
@@ -714,26 +718,26 @@ Unbose.prototype = {
      *
      */
     insert: function(thing, append) {
-         if (Unbose.isElement(thing)) {
-             return this._insertElem(thing, append);
-         }
-         else if (Unbose.isArray(thing)) {
+        if (Unbose.isElement(thing)) {
+            return this._insertElem(thing, append);
+        }
+        else if (Unbose.isArray(thing)) {
             return this._insertElem(Unbose.eleFromTpl(thing), append);
-         }
-         else if (thing.toString() == "[object Unbose]") {
-             thing.elements.forEach(function(ele) {
-                 this._insertElem(ele, true);
-             }, this);
-             return this;
-         }
-         else if (typeof thing === "string") {
+        }
+        else if (thing.toString() == "[object Unbose]") {
+            thing.elements.forEach(function(ele) {
+                this._insertElem(ele, true);
+            }, this);
+            return this;
+        }
+        else if (typeof thing === "string") {
             return this._insertElem(Unbose.eleFromTpl(Unbose.tplFromZen(thing)), append);
-         }
-         else {
-             //fixme: return what?
-         }
-         return this;
-     },
+        }
+        else {
+            //fixme: return what?
+        }
+        return this;
+    },
 
     /**
      * Private method: _insertElem
@@ -807,9 +811,7 @@ Unbose.prototype = {
      *
      */
     empty: function() {
-        this.elements.forEach(function(ele) {
-            while (ele.firstChild) { ele.removeChild(ele.firstChild); }
-        });
+        this.elements.forEach(function(ele) { ele.textContent = ""; });
         return this;
     },
 
@@ -843,7 +845,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   text - (optional) new string
+     *   text - (optional) New text content
      *
      * Returns:
      *
@@ -887,9 +889,7 @@ Unbose.prototype = {
             return this.elements[0] && this.elements[0].value;
         }
         else {
-            this.elements.forEach(function(ele) {
-                ele.value = val;
-            });
+            this.elements.forEach(function(ele) { ele.value = val; });
             return this;
         }
     },
@@ -901,8 +901,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   name - The name to get or to set a value forEach
-     *   val - The value to setAttribute
+     *   name - The name to get or set
+     *   val - (optional) The value of the attribute to set
      *
      * Returns:
      *
@@ -1019,7 +1019,15 @@ Unbose.prototype = {
     /**
      * Private method: _setStyles
      *
-     * ...
+     * Set several CSS properties at once.
+     *
+     * Parameters:
+     *
+     *   decls - An object of property/value pairs
+     *
+     * Returns:
+     *
+     *   An Unbose object
      */
     _setStyles: function(decls) {
         for (var prop in decls) {
@@ -1035,7 +1043,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   value - Sets the width of the element (optional)
+     *   value - (optional) Sets the width of the element
      *
      * Returns:
      *
@@ -1066,7 +1074,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   value - Sets the height of the element (optional)
+     *   value - (optional) Sets the height of the element
      *
      * Returns:
      *
@@ -1093,8 +1101,12 @@ Unbose.prototype = {
     /**
      * Private method: _getDimensions
      *
-     * Get the dimensions of the first element in the set. Returns an object
-     * with properties for top, right, bottom, left, height and width.
+     * Get the dimensions of the first element in the set.
+     *
+     * Returns:
+     *
+     *   An object with properties for top, right, bottom, left, height
+     *   and width.
      */
     _getDimensions: function() {
         var ele = this.elements[0];
@@ -1127,14 +1139,18 @@ Unbose.prototype = {
     /**
      * Private method: _setDimensions
      *
-     * ...
+     * Sets the height or width of all elements in the set.
+     *
+     * Parameters:
+     *
+     *   prop - "height" or "width"
+     *   val - The value to set
+     *
      */
     _setDimensions: function(prop, val) {
-        if (+val === parseFloat(val)) { val = (+val | 0) + "px"; }
+        if (+val == parseFloat(val)) { val = (+val | 0) + "px"; }
         if (parseInt(val) < 0) { val = 0; }
-        this.elements.forEach(function(ele) {
-            ele.style[prop] = val;
-        });
+        this.elements.forEach(function(ele) { ele.style[prop] = val; });
     },
 
     /**
@@ -1164,10 +1180,6 @@ Unbose.prototype = {
      * Returns:
      *
      *   An Unbose object
-     *
-     * TODO:
-     *
-     *   Not implemented
      *
      */
     show: function() {

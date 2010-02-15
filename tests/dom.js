@@ -221,6 +221,9 @@ test("parent()", function() {
     ele = Unbose.eleFromZen("body>div+span+div+span");
     ele = Unbose(ele).find("div");
     equal(ele.parent().length, 1);
+
+    ele = Unbose("html");
+    equals(ele.parent().length, 0);
 });
 
 
