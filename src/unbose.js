@@ -148,13 +148,23 @@ Unbose.prototype = {
     },
 
     /**
+     * Method: filter
      *
+     * Filters the set of element by mathing them against the given selector.
+     *
+     * Parameters:
+     *
+     *   selector - The selector to filter the set against.
+     *
+     * Returns:
+     *
+     *   An Unbose object
      */
-    filter: function(filter) {
+    filter: function(selector) {
         var eles = this.elements;
-        if (filter !== undefined) {
+        if (selector !== undefined) {
             eles = eles.filter(function(ele) {
-                return new Unbose(ele).matchesSelector(filter);
+                return new Unbose(ele).matchesSelector(selector);
             });
         }
         return new Unbose(eles);
@@ -886,7 +896,6 @@ Unbose.prototype = {
      *   This might need some special-casing for some elements.
      *   Need to look into that.
      *
-     *
      */
     val: function(val) {
         if (val === undefined) {
@@ -912,6 +921,7 @@ Unbose.prototype = {
      *
      *   If a value is set, it returns an Unbose object, otherwise,
      *   it returns the value.
+     *
      */
     data: function(name, val) {
         if (val === undefined) {
@@ -944,10 +954,6 @@ Unbose.prototype = {
      * Returns:
      *
      *   An Unbose object or a string
-     *
-     * See also:
-     *
-     * <_setStyle>, <_getStyle>
      *
      */
     style: function(attr, value) {
@@ -995,7 +1001,7 @@ Unbose.prototype = {
      * Parameters:
      *
      *   prop - The property to set
-     *   value - The property's value
+     *   value - The value of the property to set
      *
      * Returns:
      *
@@ -1111,6 +1117,7 @@ Unbose.prototype = {
      *
      *   An object with properties for top, right, bottom, left, height
      *   and width.
+     *
      */
     _getDimensions: function() {
         var ele = this.elements[0];
