@@ -28,6 +28,12 @@ test("empty()", function() {
     equal(ele.innerHTML, "");
 });
 
+test("name()", function() {
+    var ele = Unbose.eleFromZen("div");
+    equals(Unbose(ele).name(), "div");
+    equals(Unbose(ele).find("bogus").name(), undefined);
+});
+
 test("prev()", function() {
     var tpl = Unbose.eleFromZen("body>div+span+div+span+i#b.c+span");
     var ele = Unbose(tpl).find("span").prev();
@@ -46,6 +52,8 @@ test("next()", function() {
     equal(ele.length, 3);
     ele = Unbose(tpl).find("div").next("i");
     equal(ele.length, 1);
+    ele = Unbose(tpl).find("div").next("i").next().next().next();
+    equal(ele.length, 0);
 });
 
 test("children()", function() {
@@ -407,6 +415,20 @@ test("val()", function() {
     equal(subject.val(), "foo");
     subject.val("bar");
     equal(subject.val(), "bar");
+});
+
+
+test("data()", function() {
+    var ele = Unbose.fromZen("div");
+    ele.data("prop", "value");
+    equals(ele.data("prop"), "value");
+    equals(ele.data("bogus"), undefined);
+    ele.data("prop", "value2");
+    equals(ele.data("prop"), "value2");
+    ele.data("prop", {toString: function(){return "value3"}});
+    equals(ele.data("prop"), "value3");
+    ele.data("prop", {test: "value4"});
+    equals(ele.data("prop").test, "value4");
 });
 
 test("height()", function() {

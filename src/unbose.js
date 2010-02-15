@@ -147,6 +147,13 @@ Unbose.prototype = {
         return this.on(names, cancelCb, capture);
     },
 
+
+    /**
+     * Group: Finding and traversing
+     *
+     * Methods for finding elements and traversing the DOM
+     */
+
     /**
      * Method: filter
      *
@@ -169,13 +176,6 @@ Unbose.prototype = {
         }
         return new Unbose(eles);
     },
-
-
-    /**
-     * Group: Finding and traversing
-     *
-     * Methods for finding elements and traversing the DOM
-     */
 
     /**
      * Method: find
@@ -860,7 +860,7 @@ Unbose.prototype = {
     /**
      * Method: data
      *
-     * Associate data with this element. The value will be converted to a string.
+     * Associate arbitrary data with this element.
      *
      * Parameters:
      *
@@ -875,11 +875,11 @@ Unbose.prototype = {
      */
     data: function(name, val) {
         if (val === undefined) {
-            return (this.elements[0] && this.elements[0].getAttribute("data-unbose-" + name)) || undefined;
+            return this.elements[0] && this.elements[0]["data-unbose-" + name];
         }
 
         this.elements.forEach(function(ele) {
-            ele.setAttribute("data-unbose-" + name, val);
+            ele["data-unbose-" + name] = val;
         });
         return this;
     },
