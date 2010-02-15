@@ -51,6 +51,7 @@ function Unbose(subject, context) {
     // TODO: handle Unbose(window|document)
 
     this.length = this.elements.length;
+    this._firstEle = this.elements[0];
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
@@ -192,7 +193,7 @@ Unbose.prototype = {
      *
      */
     find: function(selector) {
-        return new Unbose(selector, this.elements[0]);
+        return new Unbose(selector, this._firstEle);
     },
 
     /**
@@ -227,7 +228,7 @@ Unbose.prototype = {
 
         function matcher(selector) {
             var parts = selector.split(/([#\.])/);
-            var ele = this.elements[0];
+            var ele = this._firstEle;
             var type, value;
             var eleName = parts.shift().toLowerCase();
 
@@ -257,7 +258,7 @@ Unbose.prototype = {
      *
      */
     name: function() {
-        return this.elements[0] && this.elements[0].nodeName.toLowerCase();
+        return this._firstEle && this._firstEle.nodeName.toLowerCase();
     },
 
     /**
@@ -397,7 +398,7 @@ Unbose.prototype = {
      *
      */
     first: function() {
-        return new Unbose(this.elements[0]);
+        return new Unbose(this._firstEle);
     },
 
     /**
@@ -754,7 +755,7 @@ Unbose.prototype = {
      */
     attr: function(name, val) {
         if (val === undefined) {
-            return (this.elements[0] && this.elements[0].getAttribute(name) || this.elements[0][name]) || undefined;
+            return (this._firstEle && this._firstEle.getAttribute(name) || this._firstEle[name]) || undefined;
         }
         else {
             this.elements.forEach(function(ele) {
@@ -818,7 +819,7 @@ Unbose.prototype = {
      */
     text: function(text) {
         if (text === undefined) {
-            return (this.elements[0] && this.elements[0].textContent) || "";
+            return (this._firstEle && this._firstEle.textContent) || "";
         }
         else {
             this.elements.forEach(function(ele) { ele.textContent = text; });
@@ -849,7 +850,7 @@ Unbose.prototype = {
      */
     val: function(val) {
         if (val === undefined) {
-            return this.elements[0] && this.elements[0].value;
+            return this._firstEle && this._firstEle.value;
         }
         else {
             this.elements.forEach(function(ele) { ele.value = val; });
@@ -875,7 +876,7 @@ Unbose.prototype = {
      */
     data: function(name, prop) {
         if (prop === undefined) {
-            return this.elements[0] && this.elements[0]["unbose-" + name];
+            return this._firstEle && this._firstEle["unbose-" + name];
         }
 
         this.elements.forEach(function(ele) {
@@ -936,7 +937,7 @@ Unbose.prototype = {
      *
      */
     _getStyle: function(prop) {
-        var ele = this.elements[0];
+        var ele = this._firstEle;
         if (!ele) { return undefined; }
         return ele.ownerDocument.defaultView
                                 .getComputedStyle(ele, null)
@@ -1011,7 +1012,7 @@ Unbose.prototype = {
      *
      */
     width: function(value) {
-        var ele = this.elements[0];
+        var ele = this._firstEle;
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
@@ -1042,7 +1043,7 @@ Unbose.prototype = {
      *
      */
     height: function(value) {
-        var ele = this.elements[0];
+        var ele = this._firstEle;
         if (value === undefined) {
             if (!ele) { return 0; }
             var uele = new Unbose(ele);
@@ -1070,7 +1071,7 @@ Unbose.prototype = {
      *
      */
     _getDimensions: function() {
-        var ele = this.elements[0];
+        var ele = this._firstEle;
         var uele = new Unbose(ele);
         var rect = ele.getBoundingClientRect();
         // Elements with display: none has 0 as computed style for width
