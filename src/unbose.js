@@ -325,10 +325,12 @@ Unbose.prototype = {
      *
      */
     ancestor: function(filter) {
-        var ancestor = [];
+        var ancestor;
         this.elements.forEach(function(ele) {
             while ((ele = ele.parentNode)) {
-                if (new Unbose(ele).matchesSelector(filter)) {
+                if (ele.nodeType == Node.ELEMENT_NODE &&
+                    new Unbose(ele).matchesSelector(filter))
+                {
                     ancestor = ele;
                     break;
                 }
