@@ -246,31 +246,6 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: forEach
-     *
-     * Call a function for all elements in the set.
-     *
-     * Parameters:
-     *
-     *   func - The function to call
-     *   context - (optional) context, the value of `this` for the function
-     *             calls
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * TODO:
-     *
-     *   Should we pass ele or Unbose object to args?
-     *
-     */
-    forEach: function(func, context) {
-        this.elements.forEach(func, context || this);
-        return this;
-    },
-
-    /**
      * Method: name
      *
      * Get the element name of the first element in the set.
