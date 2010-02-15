@@ -317,9 +317,10 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: ancestor
+     * Method: closest
      *
-     * Get the closest ancestor matching the given filter.
+     * Get the closest element (current or ancestor) matching the
+     * given filter.
      *
      * Parameters:
      *
@@ -334,19 +335,20 @@ Unbose.prototype = {
      *   <parent>
      *
      */
-    ancestor: function(filter) {
-        var ancestors = [];
+    closest: function(filter) {
+        var elements = [];
         this.elements.forEach(function(ele) {
-            while ((ele = ele.parentNode)) {
+            while (ele) {
                 if (ele.nodeType == Node.ELEMENT_NODE &&
                     new Unbose(ele).matchesSelector(filter))
                 {
-                    ancestors.push(ele)
+                    elements.push(ele)
                     break;
                 }
+                ele = ele.parentNode;
             }
         });
-        return new Unbose(ancestors);
+        return new Unbose(elements);
     },
 
 
@@ -502,28 +504,6 @@ Unbose.prototype = {
             }
         });
         return new Unbose(nexts).filter(filter);
-    },
-
-    /**
-     * Method: closest
-     *
-     * Finds the closest element, ancestor or descendant, that matches the expression.
-     *
-     * Parameters:
-     *
-     *   expr - The expression for which to search for
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * TODO:
-     *
-     *   Not implemented
-     *
-     */
-    closest: function(expr) {
-        return this;
     },
 
     /**

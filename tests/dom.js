@@ -227,24 +227,24 @@ test("parent()", function() {
 });
 
 
-test("ancestor()", function() {
+test("closest()", function() {
     var ele = Unbose(Unbose.eleFromZen("div.foo>div.bar>div.baz"));
     var tip = ele.find(".baz");
 
-    equal(tip.ancestor(".bar").length, 1);
-    equal(tip.ancestor(".bar").elem(0), ele.find(".bar").elem(0));
-    ok(tip.ancestor(".bar").hasClass("bar"));
+    equal(tip.closest(".bar").length, 1);
+    equal(tip.closest(".bar").elem(0), ele.find(".bar").elem(0));
+    ok(tip.closest(".bar").hasClass("bar"));
 
-    equal(tip.ancestor(".foo").length, 1);
-    equal(tip.ancestor(".foo").elem(0), ele.elem(0));
-    ok(tip.ancestor(".foo").hasClass("foo"));
+    equal(tip.closest(".foo").length, 1);
+    equal(tip.closest(".foo").elem(0), ele.elem(0));
+    ok(tip.closest(".foo").hasClass("foo"));
 
-    equal(tip.ancestor("bogus").length, 0);
-    equal(tip.ancestor("").length, 0);
-    equal(Unbose("p").ancestor("bogus").length, 0, "Should not go to the document node");
+    equal(tip.closest("bogus").length, 0);
+    equal(tip.closest("").length, 0);
+    equal(Unbose("p").closest("bogus").length, 0, "Should not go to the document node");
 
     var ele = Unbose(Unbose.eleFromZen("div>(p>i)+(p>i)+i"));
-    equals(ele.find("i").ancestor("p").length, 2);
+    equals(ele.find("i").closest("p").length, 2);
 });
 
 
