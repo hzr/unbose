@@ -415,7 +415,7 @@ Unbose.prototype = {
      *
      */
     last: function() {
-        return new Unbose(this.elements[this.elements.length-1]);
+        return new Unbose(this.elements[this.length-1]);
     },
 
     /**

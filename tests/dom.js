@@ -259,6 +259,22 @@ test("siblings()", function() {
     equal(subject.siblings("i").length, 2);
 });
 
+
+test("first()", function() {
+    var ele = Unbose.eleFromZen("div+p");
+    var subject = Unbose(ele);
+    equal(subject.first().name(), "div");
+});
+
+
+test("last()", function() {
+    var ele = Unbose.eleFromZen("div+p");
+    equal(Unbose(ele).last().name(), "p");
+    ele = Unbose.eleFromZen("div>p");
+    equal(Unbose(ele).last().name(), "div");
+});
+
+
 test("eleFromTpl", function() {
     var tpl = ["div", {id: "testid", "class": "testclass"},
         ["h1", "title1"],
