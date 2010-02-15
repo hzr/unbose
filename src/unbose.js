@@ -865,7 +865,7 @@ Unbose.prototype = {
      * Parameters:
      *
      *   name - The name to get or set
-     *   val - (optional) The value of the attribute to set
+     *   val - (optional) The value of the property to set
      *
      * Returns:
      *
@@ -873,13 +873,13 @@ Unbose.prototype = {
      *   it returns the value.
      *
      */
-    data: function(name, val) {
-        if (val === undefined) {
+    data: function(name, prop) {
+        if (prop === undefined) {
             return this.elements[0] && this.elements[0]["unbose-" + name];
         }
 
         this.elements.forEach(function(ele) {
-            ele["unbose-" + name] = val;
+            ele["unbose-" + name] = prop;
         });
         return this;
     },
