@@ -297,8 +297,8 @@ Unbose.prototype = {
         var parents = [];
         this.elements.forEach(function(ele) {
             var parent = ele.parentNode;
-            if (parent && parents.indexOf(parent) == -1 &&
-                parent.nodeType == Node.ELEMENT_NODE)
+            if (parent && parent.nodeType == Node.ELEMENT_NODE &&
+                parents.indexOf(parent) == -1)
             {
                 parents.push(parent);
             }
