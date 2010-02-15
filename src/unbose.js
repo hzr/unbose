@@ -308,9 +308,7 @@ Unbose.prototype = {
         var elements = [];
         this.elements.forEach(function(ele) {
             while (ele) {
-                if (ele.nodeType == Node.ELEMENT_NODE &&
-                    new Unbose(ele).matchesSelector(filter))
-                {
+                if (ele != document && new Unbose(ele).matchesSelector(filter)) {
                     elements.push(ele)
                     break;
                 }
@@ -342,9 +340,7 @@ Unbose.prototype = {
         var parents = [];
         this.elements.forEach(function(ele) {
             var parent = ele.parentNode;
-            if (parent && parent.nodeType == Node.ELEMENT_NODE &&
-                parents.indexOf(parent) == -1)
-            {
+            if (parent && parent != document && parents.indexOf(parent) == -1) {
                 parents.push(parent);
             }
         });
