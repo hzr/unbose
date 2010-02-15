@@ -335,18 +335,18 @@ Unbose.prototype = {
      *
      */
     ancestor: function(filter) {
-        var ancestor;
+        var ancestors = [];
         this.elements.forEach(function(ele) {
             while ((ele = ele.parentNode)) {
                 if (ele.nodeType == Node.ELEMENT_NODE &&
                     new Unbose(ele).matchesSelector(filter))
                 {
-                    ancestor = ele;
+                    ancestors.push(ele)
                     break;
                 }
             }
         });
-        return new Unbose(ancestor);
+        return new Unbose(ancestors);
     },
 
 

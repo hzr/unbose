@@ -242,6 +242,9 @@ test("ancestor()", function() {
     equal(tip.ancestor("bogus").length, 0);
     equal(tip.ancestor("").length, 0);
     equal(Unbose("p").ancestor("bogus").length, 0, "Should not go to the document node");
+
+    var ele = Unbose(Unbose.eleFromZen("div>(p>i)+(p>i)+i"));
+    equals(ele.find("i").ancestor("p").length, 2);
 });
 
 

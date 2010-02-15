@@ -19,7 +19,7 @@ test("Basic tests", function() {
 });
 
 
-test("Find method", function() {
+test("find()", function() {
     var subject = Unbose("#qunit-header");
     subject = Unbose(document.body);
     equals(subject.length, 1);
