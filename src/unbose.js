@@ -875,11 +875,11 @@ Unbose.prototype = {
      */
     data: function(name, val) {
         if (val === undefined) {
-            return this.elements[0] && this.elements[0]["data-unbose-" + name];
+            return this.elements[0] && this.elements[0]["unbose-" + name];
         }
 
         this.elements.forEach(function(ele) {
-            ele["data-unbose-" + name] = val;
+            ele["unbose-" + name] = val;
         });
         return this;
     },
