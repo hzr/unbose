@@ -243,8 +243,10 @@ test("closest()", function() {
     equal(tip.closest("").length, 0);
     equal(Unbose("p").closest("bogus").length, 0, "Should not go to the document node");
 
-    var ele = Unbose(Unbose.eleFromZen("div>(p>i)+(p>i)+i"));
+    var ele = Unbose(Unbose.eleFromZen("div.a>(p.b>i)+(p>i)+i"));
     equals(ele.find("i").closest("p").length, 2);
+    equals(ele.find("i").closest("p,div").first().elem(0).className, "b", "Multiple selectors");
+    equals(ele.find("i").closest("p,div").last().elem(0).className, "a", "Multiple selectors");
 });
 
 

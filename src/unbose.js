@@ -286,37 +286,6 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: parent
-     *
-     * Get the elements parents.
-     *
-     * Parameters:
-     *
-     *   filter - A selector that filters the results
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * See also:
-     *
-     *   <children>
-     *
-     */
-    parent: function(filter) {
-        var parents = [];
-        this.elements.forEach(function(ele) {
-            var parent = ele.parentNode;
-            if (parent && parent.nodeType == Node.ELEMENT_NODE &&
-                parents.indexOf(parent) == -1)
-            {
-                parents.push(parent);
-            }
-        });
-        return new Unbose(parents).filter(filter);
-    },
-
-    /**
      * Method: closest
      *
      * Get the closest element (current or ancestor) matching the
@@ -351,6 +320,36 @@ Unbose.prototype = {
         return new Unbose(elements);
     },
 
+    /**
+     * Method: parent
+     *
+     * Get the elements parents.
+     *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     *   <children>
+     *
+     */
+    parent: function(filter) {
+        var parents = [];
+        this.elements.forEach(function(ele) {
+            var parent = ele.parentNode;
+            if (parent && parent.nodeType == Node.ELEMENT_NODE &&
+                parents.indexOf(parent) == -1)
+            {
+                parents.push(parent);
+            }
+        });
+        return new Unbose(parents).filter(filter);
+    },
 
     /**
      * Method: children
