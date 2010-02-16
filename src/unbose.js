@@ -526,9 +526,9 @@ Unbose.prototype = {
      *
      *   An HTMLElement or and array of HTMLElements
      *
-     * Fixme:
+     * Note:
      *
-     *   Should the retval with no args be the array or a copy of it?
+     *   Returns the internal array of elements.
      *
      */
     elem: function(index) {
@@ -835,7 +835,7 @@ Unbose.prototype = {
      *
      */
     remove: function(filter) {
-        this.filter(filter).elem().forEach(function(ele) {
+        this.filter(filter).elements.forEach(function(ele) {
             var parent = ele.parentNode;
             if (parent) { parent.removeChild(ele); }
         });
@@ -970,9 +970,8 @@ Unbose.prototype = {
      *
      *   prop - The name of the style attribute
      *
-     * Fixme:
+     * FIXME:
      *
-     *   Should it get from first or all? If all, how?
      *   What if not in dom? Fall back to .style?
      *   Should there be any kind of normalization? colors are hex in
      *   opera and rgb in chrome/ff
@@ -1214,7 +1213,7 @@ Unbose.eleFromTpl = function(tpl) {
     }
 
     var cur;
-    // fixme: what if data has something falsey?
+    // FIXME: what if data has something falsey?
     while ((cur = tpl[index++])) {
         if (typeof cur === "string") {
             ele.appendChild(document.createTextNode(cur));
@@ -1275,7 +1274,7 @@ Unbose.tplFromZen = function(zen) {
         if (chars[0] == "(") {
             chars.shift();
             ret = parse_expr(chars);
-            chars.shift(); // fixme Make sure it's ")"
+            chars.shift(); // FIXME: Make sure it's ")"
         }
         else {
             ret = parse_tag(chars);
@@ -1406,7 +1405,7 @@ Unbose.tplFromZen = function(zen) {
                     break; // presumably whitespace in zen for readability.
                 }
 
-                chars.shift(); // fixme. make sure is always "="
+                chars.shift(); // FIXME; make sure is always "="
                 var value = consume_value(chars);
                 props[name] = value;
             }
