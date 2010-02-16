@@ -743,9 +743,9 @@ Unbose.prototype = {
     /**
      * Method: attr
      *
-     * Set or get an attribute value. If value is given, set it. Of not,
+     * Set or get an attribute value. If value is given, set it. If not,
      * just return current value. On getting, if the attribute does not
-     * exist, return undefined.
+     * exist, returns undefined.
      *
      * Parameters:
      *
@@ -756,10 +756,14 @@ Unbose.prototype = {
      *
      *   An Unbose object or an attribute
      *
+     * See also:
+     *
+     *   <removeAttr>
+     *
      */
     attr: function(name, val) {
         if (val === undefined) {
-            return this._firstEle && this._firstEle.getAttribute(name) || this._firstEle[name];
+            return this._firstEle && this._firstEle.getAttribute(name);
         }
         else {
             this.elements.forEach(function(ele) {
@@ -767,6 +771,29 @@ Unbose.prototype = {
             });
             return this;
         }
+    },
+
+    /**
+     * Method: removeAttr
+     *
+     * Remove an attribute from all the elements in the set.
+     *
+     * Parameters:
+     *
+     *   attr - The name of the attribute to remove
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * See also:
+     *
+     *   <attr>
+     */
+    removeAttr: function(attr) {
+        this.elements.forEach(function(ele) {
+            ele.removeAttribute(attr);
+        });
     },
 
     /**

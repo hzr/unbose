@@ -16,11 +16,19 @@ test("attr()", function() {
     ele.foo = "bar";
     ele.setAttribute("meh", "bleh");
     var subject = Unbose(ele);
-    equal(subject.attr("foo"), "bar");
+    equal(subject.attr("foo"), undefined, "Properties should not be returned");
     equal(subject.attr("meh"), "bleh");
-    equal(subject.attr("foo"), "bar");
     equal(subject.attr("meh"), "bleh");
     equal(subject.attr("bogus"), undefined);
+});
+
+test("removeAttr()", function() {
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    subject.attr("meh", "bleh");
+    equal(subject.attr("meh"), "bleh");
+    subject.removeAttr("meh");
+    equal(subject.attr("meh"), undefined);
 });
 
 test("empty()", function() {
