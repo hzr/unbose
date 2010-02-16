@@ -231,22 +231,24 @@ Unbose.prototype = {
         return selectors.some(matcher, this);
 
         function matcher(selector) {
-            var parts = selector.split(/([#\.])/);
-            var ele = this._firstEle;
-            var type, value;
-            var eleName = parts.shift().toLowerCase();
+            return this.elements.some(function(ele) {
+                var parts = selector.split(/([#\.])/);
+                var uele = new Unbose(ele);
+                var type, value;
+                var eleName = parts.shift().toLowerCase();
 
-            if (!Unbose.trim(selector) || (eleName && eleName != ele.nodeName.toLowerCase())) {
-                return false;
-            }
-            while ((type = parts.shift()) && (value = parts.shift())) {
-                if ((type == "." && !new Unbose(ele).hasClass(value)) ||
-                    (type == "#" && ele.id != value))
-                {
+                if (!Unbose.trim(selector) || (eleName && eleName != uele.name())) {
                     return false;
                 }
-            }
-            return true;
+                while ((type = parts.shift()) && (value = parts.shift())) {
+                    if ((type == "." && !uele.hasClass(value)) ||
+                        (type == "#" && uele.attr("id") != value))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            });
         }
     },
 

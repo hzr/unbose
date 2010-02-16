@@ -59,6 +59,10 @@ test("matchesSelector()", function() {
     ok(ele.matchesSelector("div\t\t ,\tspan"));
     ok(ele.matchesSelector(".foo, .bar"));
 
+    var eles = Unbose(Unbose.eleFromZen("div.a + div.b"));
+    ok(eles.matchesSelector(".a"));
+    ok(eles.matchesSelector(".b"));
+    ok(!eles.matchesSelector(".c"));
 });
 
 
