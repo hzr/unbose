@@ -50,6 +50,10 @@ function Unbose(subject, context) {
 
     // TODO: handle Unbose(window|document)
 
+    for (var i = 0, ele; ele = this.elements[i]; i++) {
+        this[i] = ele;
+    }
+
     this.length = this.elements.length;
     this._firstEle = this.elements[0];
 }
@@ -792,6 +796,7 @@ Unbose.prototype = {
      * TODO:
      *
      *   Support expression arg
+     *
      */
     remove: function() {
         this.elements.forEach(function(ele) {
@@ -1246,7 +1251,7 @@ Unbose.tplFromZen = function(zen) {
         consume_ws(chars);
         var children = parse_children(chars);
 
-        if (ret.length == 2 && children.length) { // a set of sibligns can't have children
+        if (ret.length == 2 && children.length) { // a set of siblings can't have children
             ret.push(children);
         }
 
@@ -1281,7 +1286,6 @@ Unbose.tplFromZen = function(zen) {
     // Parse siblings
     function parse_siblings(chars) {
         var ret = [];
-
         while (chars.length && chars[0] == "+") {
             chars.shift();
             ret.push(parse_expr(chars));
