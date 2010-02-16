@@ -219,12 +219,15 @@ Unbose.prototype = {
      *   This matcher is a lot less sophisticated than a native one would be.
      *   Currently the following selectors are supported:
      *
+     *   - Universal selector (*)
      *   - Element names
      *   - Class names
      *   - IDs
      *   - Chains of the above
      *   - Multiple selectors separated by comma
      *
+     *   Note also that classes ad IDs can only be matched by "." and "#" syntax.
+     *   Attribute selectors ([]) are not supported.
      */
     matchesSelector: function(selector) {
         var selectors = selector.split(/\s*,\s*/);
@@ -237,6 +240,9 @@ Unbose.prototype = {
                 var type, value;
                 var eleName = parts.shift().toLowerCase();
 
+                if (eleName == "*") {
+                    return true;
+                }
                 if (!Unbose.trim(selector) || (eleName && eleName != uele.name())) {
                     return false;
                 }
@@ -289,8 +295,8 @@ Unbose.prototype = {
     closest: function(filter) {
         var elements = [];
         this.elements.forEach(function(ele) {
-            while (ele) {
-                if (ele != document && new Unbose(ele).matchesSelector(filter)) {
+            while (ele && ele != document) {
+                if (new Unbose(ele).matchesSelector(filter)) {
                     elements.push(ele)
                     break;
                 }
@@ -818,18 +824,19 @@ Unbose.prototype = {
      *
      * Remove the set of elements.
      *
+     * Parameters:
+     *
+     *   filter - Only remove elements that matches the selector
+     *
      * Returns:
      *
      *   An Unbose object
      *
-     * TODO:
-     *
-     *   Support expression arg
-     *
      */
-    remove: function() {
-        this.elements.forEach(function(ele) {
-            if (ele.parentNode) { ele.parentNode.removeChild(ele); }
+    remove: function(filter) {
+        this.filter(filter).elem().forEach(function(ele) {
+            var parent = ele.parentNode;
+            if (parent) { parent.removeChild(ele); }
         });
         return this;
     },

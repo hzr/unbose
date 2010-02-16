@@ -73,10 +73,12 @@ test("children()", function() {
 });
 
 test("remove()", function() {
-    var ele = Unbose.eleFromZen("div>span");
-    ele = Unbose(ele).find("span");
-    ele.remove();
-    equal(ele.find("span").length, 0);
+    var ele = Unbose.eleFromZen("div>span.a+span.b");
+    var spans = Unbose(ele).find("span");
+    spans.remove(".b");
+    equal(Unbose(ele).find("span").length, 1);
+    spans.remove();
+    equal(Unbose(ele).find("span").length, 0);
 });
 
 test("hasClass()", function() {

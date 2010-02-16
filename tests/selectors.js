@@ -43,6 +43,7 @@ test("find()", function() {
 
 test("matchesSelector()", function() {
     var ele = Unbose(Unbose.eleFromZen("div#foo.bar.baz"));
+    ok(ele.matchesSelector("*"));
     ok(ele.matchesSelector("div#foo"));
     ok(ele.matchesSelector("#foo"));
     ok(ele.matchesSelector(".bar"));
@@ -58,6 +59,8 @@ test("matchesSelector()", function() {
     ok(ele.matchesSelector("div,span"));
     ok(ele.matchesSelector("div\t\t ,\tspan"));
     ok(ele.matchesSelector(".foo, .bar"));
+    ok(ele.matchesSelector("[class]"));
+    ok(ele.matchesSelector("[id]"));
 
     var eles = Unbose(Unbose.eleFromZen("div.a + div.b"));
     ok(eles.matchesSelector(".a"));
