@@ -711,9 +711,8 @@ Unbose.prototype = {
             return this._insertElem(Unbose.eleFromTpl(Unbose.tplFromZen(thing)), append);
         }
         else {
-            //fixme: return what?
+            return this;
         }
-        return this;
     },
 
     /**
@@ -797,11 +796,13 @@ Unbose.prototype = {
      * See also:
      *
      *   <attr>
+     *
      */
     removeAttr: function(attr) {
         this.elements.forEach(function(ele) {
             ele.removeAttribute(attr);
         });
+        return this;
     },
 
     /**
