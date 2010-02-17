@@ -536,6 +536,39 @@ Unbose.prototype = {
         return (index === undefined) ? this.elements : this.elements[index];
     },
 
+    /**
+     * Method: slice
+     *
+     * Returns a subset of elements, starting with element `start` and upto
+     * but not including element `end`. If the step parameter is provided,
+     * every nth element in the subset will be returned, where n = `step`.
+     * The slice method behaves like the Array.prototype.slice with the
+     * added behavior of steps.
+     *
+     * Parameters:
+     *
+     *   start - The start index
+     *   end - (optional) The end index
+     *   step - (optional) The step between each element (default is 1)
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    slice: function(start, end, step) {
+        // Gecko does not treat `undefined` correctly for the end parameter
+        // in Array.prototpe.slice, so set it explicitly
+        if (end === undefined) { end = this.length; }
+        var eles = Array.prototype.slice.call(this.elements, start, end);
+        if (step) {
+            eles = eles.filter(function(ele, idx) {
+                return !(idx % step);
+            });
+        }
+        return new Unbose(eles);
+    },
+
 
     /**
      * Group: DOM

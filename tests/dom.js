@@ -230,6 +230,23 @@ test("elem()", function() {
     equal(h2s.length, 2);
 });
 
+test("slice()", function() {
+    var eles = Unbose.fromZen("h1 + h2 + h3 + h4");
+    equals(eles.slice(1).length, 3);
+    equals(eles.slice(1,1).length, 0);
+    equals(eles.slice(1,10).length, 3);
+    equals(eles.slice(-1).nth(0).name(), "h4");
+    equals(eles.slice(-3,-1).length, 2);
+    equals(eles.slice(-3,4).length, 3);
+    equals(eles.slice(-4,0).length, 0);
+    equals(eles.slice(0,4,2).length, 2);
+    equals(eles.slice(0,4,5).length, 1);
+    equals(eles.slice(0,4,2).nth(0).name(), "h1");
+    equals(eles.slice(0,4,2).nth(1).name(), "h3");
+    equals(eles.slice(1,4,2).nth(1).name(), "h4");
+    equals(eles.slice(1,4,-2).nth(1).name(), "h4", "Should behave just like positive steps");
+});
+
 test("parent()", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
