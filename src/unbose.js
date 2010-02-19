@@ -168,9 +168,8 @@ Unbose.prototype = {
      *
      *   callback - The function to call. The signature is
      *              callback(unboseElement, index, array). Inside the callback,
-     *              `this` points to the actual element.
-     *   context - (optional) context, the value of `this` for the function
-     *             calls
+     *              `this` points to the DOM element.
+     *   context - (optional) The value of `this` for the function calls
      *
      * Returns:
      *
@@ -178,7 +177,7 @@ Unbose.prototype = {
      *
      * XXX:
      *
-     *   Is it a good idea to let `this` point to the actual element? It's a
+     *   Is it a good idea to let `this` point to the DOM element? It's a
      *   bit inconsistent. It's how jQuery does it though.
      *
      */
