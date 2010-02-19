@@ -200,13 +200,14 @@ test("toggleClass()", function() {
 
 });
 
-test("nth(n)", function() {
+test("nth()", function() {
     var eles = Unbose.fromZen("div.a + div.b + div.c");
     equals(eles.nth(2).attr("class"), "c");
+    equals(eles.nth(3).attr("class"), undefined);
     equals(eles.nth(-4).attr("class"), "c");
 });
 
-test("elem(n)", function() {
+test("elem()", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
     var subject = Unbose(ele);
@@ -220,11 +221,7 @@ test("elem(n)", function() {
     eles = Unbose.fromZen("div.a + div.b + div.c");
     equals(eles.elem(-1).className, "c");
     equals(eles.elem(-4).className, "c");
-});
-
-test("elem()", function() {
     var h2s = Unbose("h2").elem();
-    expect(3);
     ok(h2s);
     ok(h2s.constructor == Array);
     equal(h2s.length, 2);
@@ -243,6 +240,7 @@ test("slice()", function() {
     equals(eles.slice(0,4,5).length, 1);
     equals(eles.slice(0,4,2).nth(0).name(), "h1");
     equals(eles.slice(0,4,2).nth(1).name(), "h3");
+    equals(eles.slice(0,4,2).nth(2).length, 0);
     equals(eles.slice(1,4,2).nth(1).name(), "h4");
     equals(eles.slice(1,4,-2).nth(1).name(), "h4", "Should behave just like positive steps");
 });
