@@ -166,7 +166,9 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   func - The function to call
+     *   callback - The function to call. The signature is
+     *              callback(unboseElement, index, array). Inside the callback,
+     *              `this` points to the actual element.
      *   context - (optional) context, the value of `this` for the function
      *             calls
      *
@@ -174,13 +176,16 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * TODO:
+     * XXX:
      *
-     *   Should we pass ele or Unbose object to args?
+     *   Is it a good idea to let `this` point to the actual element? It's a
+     *   bit inconsistent. It's how jQuery does it though.
      *
      */
-    forEach: function(func, context) {
-        this.elements.forEach(func, context || this);
+    forEach: function(callback, context) {
+        this.elements.forEach(function(ele, idx, array) {
+            callback.call(context || ele, new Unbose(ele), idx, array);
+        });
         return this;
     },
 

@@ -1,5 +1,24 @@
-
 module("DOM");
+
+test("forEach()", function() {
+    var eles = Unbose.fromZen("div + div + div");
+    eles.forEach(function(ele, idx) {
+        ele.text(idx);
+    });
+    equals(eles.nth(0).text(), "0");
+    equals(eles.nth(2).text(), "2");
+
+    eles.forEach(function(ele, idx) {
+        ele.text(idx);
+        this.textContent += "0";
+    });
+    equals(eles.nth(0).text(), "00");
+    equals(eles.nth(2).text(), "20");
+
+    eles.nth(0).forEach(function() {
+        equals(this, window);
+    }, window);
+});
 
 test("text()", function() {
     var subject = Unbose("#qunit-header");
