@@ -544,8 +544,9 @@ Unbose.prototype = {
     /**
      * Method: elem
      *
-     * Gets the HTMLElement for the nth element in the set if the index parameter
-     * is given. Otherwise, gets an array of all HTMLElements in the set.
+     * Returns DOM elements. If the index parameter is given, returns the
+     * nth element in the set. Otherwise, returns an array of all DOM elements
+     * in the set.
      *
      * Parameters:
      *
@@ -553,7 +554,7 @@ Unbose.prototype = {
      *
      * Returns:
      *
-     *   An HTMLElement or and array of HTMLElements
+     *   A DOM element or an array of DOM elements
      *
      * Note:
      *
