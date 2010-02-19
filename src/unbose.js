@@ -9,7 +9,7 @@ function Unbose(subject, context) {
         return new Unbose(subject, context);
     }
 
-    this.elements = [];
+    this._elements = [];
     this.length = 0;
 
     if (!subject) { return this; }
@@ -17,26 +17,26 @@ function Unbose(subject, context) {
     if (typeof subject == "string") {
         var eles = (context || document).querySelectorAll(subject);
         for (var i = 0, ele; ele = eles[i]; i++) {
-            this.elements.push(ele);
+            this._elements.push(ele);
         }
     }
     else if (Unbose.isArray(subject)) {
-        this.elements = subject;
+        this._elements = subject;
     }
     else if (subject.nodeType == Node.ELEMENT_NODE) {
-        this.elements = [subject];
+        this._elements = [subject];
     }
     else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
         var child = subject.firstChild;
         while (child) {
             if (child.nodeType == Node.ELEMENT_NODE) {
-                this.elements.push(child);
+                this._elements.push(child);
             }
             child = child.nextElementSibling;
         }
     }
     else if (subject.toString() == "[object Unbose]") {
-        this.elements = subject.elements;
+        this._elements = subject._elements;
     }
     else if (Unbose.isFunction(subject)) {
         // Fails in Webkit if there's nothing after <head>, so make sure
@@ -50,12 +50,12 @@ function Unbose(subject, context) {
 
     // TODO: handle Unbose(window|document)
 
-    for (var i = 0, ele; ele = this.elements[i]; i++) {
+    for (var i = 0, ele; ele = this._elements[i]; i++) {
         this[i] = ele;
     }
 
-    this.length = this.elements.length;
-    this._firstEle = this.elements[0];
+    this.length = this._elements.length;
+    this._firstEle = this._elements[0];
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
@@ -116,7 +116,7 @@ Unbose.prototype = {
      */
     on: function(names, handler, capture) {
         names.split(" ").forEach(function(name) {
-            this.elements.forEach(function(ele) {
+            this._elements.forEach(function(ele) {
                 ele.addEventListener(name, handler, capture || false);
             });
         }, this);
@@ -182,7 +182,7 @@ Unbose.prototype = {
      *
      */
     forEach: function(callback, context) {
-        this.elements.forEach(function(ele, idx, array) {
+        this._elements.forEach(function(ele, idx, array) {
             callback.call(context || ele, new Unbose(ele), idx, array);
         });
         return this;
@@ -202,7 +202,7 @@ Unbose.prototype = {
      *   An Unbose object
      */
     filter: function(selector) {
-        var eles = this.elements;
+        var eles = this._elements;
         if (selector !== undefined) {
             eles = eles.filter(function(ele) {
                 return new Unbose(ele).matchesSelector(selector);
@@ -263,7 +263,7 @@ Unbose.prototype = {
         return selectors.some(matcher, this);
 
         function matcher(selector) {
-            return this.elements.some(function(ele) {
+            return this._elements.some(function(ele) {
                 var parts = selector.split(/([#\.])/);
                 var uele = new Unbose(ele);
                 var type, value;
@@ -323,7 +323,7 @@ Unbose.prototype = {
      */
     closest: function(filter) {
         var elements = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             while (ele && ele != document) {
                 if (new Unbose(ele).matchesSelector(filter)) {
                     elements.push(ele)
@@ -355,7 +355,7 @@ Unbose.prototype = {
      */
     parent: function(filter) {
         var parents = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var parent = ele.parentNode;
             if (parent && parent != document && parents.indexOf(parent) == -1) {
                 parents.push(parent);
@@ -384,7 +384,7 @@ Unbose.prototype = {
      */
     children: function(filter) {
         var children = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var child = ele.firstElementChild;
             while (child) {
                 if (children.indexOf(child) == -1) {
@@ -412,7 +412,7 @@ Unbose.prototype = {
      */
     siblings: function(filter) {
         var siblings = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var child = ele.parentNode.firstElementChild;
             while (child) {
                 if (child != ele && siblings.indexOf(child) == -1) {
@@ -457,7 +457,7 @@ Unbose.prototype = {
      *
      */
     last: function() {
-        return new Unbose(this.elements[this.length-1]);
+        return new Unbose(this._elements[this.length-1]);
     },
 
     /**
@@ -480,7 +480,7 @@ Unbose.prototype = {
      */
     prev: function(filter) {
         var prevs = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var prev = ele.previousElementSibling;
             if (prev) {
                 prevs.push(prev);
@@ -509,7 +509,7 @@ Unbose.prototype = {
      */
     next: function(filter) {
         var nexts = [];
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var next = ele.nextElementSibling;
             if (next) {
                 nexts.push(next);
@@ -538,7 +538,7 @@ Unbose.prototype = {
      */
     nth: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return new Unbose(this.elements[index]);
+        return new Unbose(this._elements[index]);
     },
 
     /**
@@ -562,7 +562,7 @@ Unbose.prototype = {
      */
     elem: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return (index === undefined) ? this.elements : this.elements[index];
+        return (index === undefined) ? this._elements : this._elements[index];
     },
 
     /**
@@ -589,7 +589,7 @@ Unbose.prototype = {
         // Gecko does not treat `undefined` correctly for the end parameter
         // in Array.prototpe.slice, so set it explicitly
         if (end === undefined) { end = this.length; }
-        var eles = Array.prototype.slice.call(this.elements, start, end);
+        var eles = Array.prototype.slice.call(this._elements, start, end);
         if (step) {
             eles = eles.filter(function(ele, idx) {
                 return !(idx % step);
@@ -624,7 +624,7 @@ Unbose.prototype = {
      *
      */
     hasClass: function(cls) {
-        return this.elements.some(function(ele) {
+        return this._elements.some(function(ele) {
             return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
         }, this);
     },
@@ -648,7 +648,7 @@ Unbose.prototype = {
      *
      */
     addClass: function(cls) {
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             if (!new Unbose(ele).hasClass(cls)) { ele.className += " " + cls; }
         });
         return this;
@@ -674,7 +674,7 @@ Unbose.prototype = {
      */
     delClass: function(cls) {
         var classes = cls.split(Unbose.SPACE_CHARS);
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
                 return classes.indexOf(cls) == -1;
             }).join(" ");
@@ -701,7 +701,7 @@ Unbose.prototype = {
      *
      */
     toggleClass: function(cls) {
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var uele = new Unbose(ele);
             uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
         });
@@ -764,7 +764,7 @@ Unbose.prototype = {
             return this._insertElem(Unbose.eleFromTpl(thing), append);
         }
         else if (thing.toString() == "[object Unbose]") {
-            thing.elements.forEach(function(ele) {
+            thing._elements.forEach(function(ele) {
                 this._insertElem(ele, true);
             }, this);
             return this;
@@ -794,7 +794,7 @@ Unbose.prototype = {
      *
      */
     _insertElem: function(newEle, append) {
-         this.elements.forEach(function(ele) {
+         this._elements.forEach(function(ele) {
              if (!append && ele.firstChild) {
                  this.length > 1 ?
                      ele.insertBefore(newEle.cloneNode(true), ele.firstChild) :
@@ -835,7 +835,7 @@ Unbose.prototype = {
             return this._firstEle && this._firstEle.getAttribute(name);
         }
         else {
-            this.elements.forEach(function(ele) {
+            this._elements.forEach(function(ele) {
                 ele.setAttribute(name, val);
             });
             return this;
@@ -861,7 +861,7 @@ Unbose.prototype = {
      *
      */
     removeAttr: function(attr) {
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             ele.removeAttribute(attr);
         });
         return this;
@@ -878,7 +878,7 @@ Unbose.prototype = {
      *
      */
     empty: function() {
-        this.elements.forEach(function(ele) { ele.textContent = ""; });
+        this._elements.forEach(function(ele) { ele.textContent = ""; });
         return this;
     },
 
@@ -897,7 +897,7 @@ Unbose.prototype = {
      *
      */
     remove: function(filter) {
-        this.filter(filter).elements.forEach(function(ele) {
+        this.filter(filter)._elements.forEach(function(ele) {
             var parent = ele.parentNode;
             if (parent) { parent.removeChild(ele); }
         });
@@ -926,7 +926,7 @@ Unbose.prototype = {
             return (this._firstEle && this._firstEle.textContent) || "";
         }
         else {
-            this.elements.forEach(function(ele) { ele.textContent = text; });
+            this._elements.forEach(function(ele) { ele.textContent = text; });
             return this;
         }
     },
@@ -957,7 +957,7 @@ Unbose.prototype = {
             return this._firstEle && this._firstEle.value;
         }
         else {
-            this.elements.forEach(function(ele) { ele.value = val; });
+            this._elements.forEach(function(ele) { ele.value = val; });
             return this;
         }
     },
@@ -983,7 +983,7 @@ Unbose.prototype = {
             return this._firstEle && this._firstEle["unbose-" + name];
         }
 
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             ele["unbose-" + name] = prop;
         });
         return this;
@@ -1074,7 +1074,7 @@ Unbose.prototype = {
             value = (+value | 0) + "px";
         }
 
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             ele.style[prop] = value;
         });
         return this;
@@ -1215,7 +1215,7 @@ Unbose.prototype = {
     _setDimensions: function(prop, val) {
         if (+val == parseFloat(val)) { val = (+val | 0) + "px"; }
         if (parseInt(val) < 0) { val = 0; }
-        this.elements.forEach(function(ele) { ele.style[prop] = val; });
+        this._elements.forEach(function(ele) { ele.style[prop] = val; });
     },
 
     /**
@@ -1229,7 +1229,7 @@ Unbose.prototype = {
      *
      */
     hide: function() {
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             var uele = new Unbose(ele);
             uele.data("olddisplay", uele.style("display"))
                 .style("display", "none");
@@ -1248,7 +1248,7 @@ Unbose.prototype = {
      *
      */
     show: function() {
-        this.elements.forEach(function(ele) {
+        this._elements.forEach(function(ele) {
             ele.style.display = new Unbose(ele).data("olddisplay") || "";
         });
         return this;

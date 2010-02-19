@@ -10,7 +10,7 @@ test("Basic tests", function() {
     subject = Unbose("#dummy *");
     equals(subject.length, 2);
 
-    equals(Unbose("*").elements[0].nodeName.toLowerCase(),"html");
+    equals(Unbose("*")._elements[0].nodeName.toLowerCase(),"html");
 
     subject = document.createDocumentFragment();
     subject.appendChild(document.createElement("div"));
