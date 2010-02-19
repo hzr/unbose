@@ -621,7 +621,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <delClass>, <addClass>, <toggleClass>
+     *   <removeClass>, <addClass>, <toggleClass>
      *
      */
     hasClass: function(cls) {
@@ -645,7 +645,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <delClass>, <hasClass>, <toggleClass>
+     *   <removeClass>, <hasClass>, <toggleClass>
      *
      */
     addClass: function(cls) {
@@ -656,7 +656,7 @@ Unbose.prototype = {
     },
 
     /**
-     * Method: delClass
+     * Method: removeClass
      *
      * Removes a class from all elements in the set.
      *
@@ -673,7 +673,7 @@ Unbose.prototype = {
      *   <addClass>, <hasClass>, <toggleClass>
      *
      */
-    delClass: function(cls) {
+    removeClass: function(cls) {
         var classes = cls.split(Unbose.SPACE_CHARS);
         this._elements.forEach(function(ele) {
             ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
@@ -698,13 +698,13 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <addClass>, <hasClass>, <delClass>
+     *   <addClass>, <hasClass>, <removeClass>
      *
      */
     toggleClass: function(cls) {
         this._elements.forEach(function(ele) {
             var uele = new Unbose(ele);
-            uele[uele.hasClass(cls) ? "delClass" : "addClass"](cls);
+            uele[uele.hasClass(cls) ? "removeClass" : "addClass"](cls);
         });
         return this;
     },

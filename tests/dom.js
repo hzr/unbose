@@ -175,32 +175,32 @@ test("addClass()", function() {
     equal(subject, subject.addClass("flabaten"));
 });
 
-test("delClass()", function() {
+test("removeClass()", function() {
     var ele = document.createElement("div");
     ele.className = "foo\rbar\nbaz\tmeh\vblah";
     var subject = Unbose(ele);
 
-    subject.delClass("foo");
+    subject.removeClass("foo");
     ok(!subject.hasClass("foo"));
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz"));
     ok(!subject.hasClass("meh"), "Vertical tab (\\v) is not a space character per HTML5");
-    subject.delClass("meh");
+    subject.removeClass("meh");
     ok(!subject.hasClass("meh"));
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz"));
 
-    subject.delClass("bar");
-    subject.delClass("baz");
+    subject.removeClass("bar");
+    subject.removeClass("baz");
 
     ok(!subject.hasClass("bar"));
     ok(!subject.hasClass("baz"));
     ele.className = "asdf";
-    equal(subject, subject.delClass("asdf"));
+    equal(subject, subject.removeClass("asdf"));
 
     ele.className = "";
     subject.addClass("foo bar baz");
-    subject.delClass("baz bar foo");
+    subject.removeClass("baz bar foo");
     ok(!subject.hasClass("foo"));
     ok(!subject.hasClass("bar"));
     ok(!subject.hasClass("baz"));
