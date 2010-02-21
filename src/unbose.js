@@ -163,8 +163,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   selector - The elements to delegate events to
      *   name - Name of the event
+     *   selector - The elements to delegate events to
      *   handler - Function called when the event occurs
      *
      * Returns:
@@ -172,7 +172,7 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    delegate: function(selector, name, handler) {
+    delegate: function(name, selector, handler) {
         this.on(name, function(event) {
             var target = new Unbose(event.target).closest(selector);
             if (target.length) {
