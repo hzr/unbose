@@ -172,6 +172,11 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
+     * FIXME:
+     *
+     *   This should probably be delegated to all elements matching the
+     *   selector, not just the innermost like it is now.
+     *
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
