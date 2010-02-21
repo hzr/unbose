@@ -14,6 +14,8 @@ function Unbose(subject, context) {
 
     if (!subject) { return this; }
 
+    // TODO: optimize for "body"
+
     if (typeof subject == "string") {
         var eles = (context || document).querySelectorAll(subject);
         for (var i = 0, ele; ele = eles[i]; i++) {
@@ -123,6 +125,8 @@ Unbose.prototype = {
         return this;
     },
 
+    // TODO: method to remove events
+
     /**
      * Method: once
      *
@@ -143,15 +147,41 @@ Unbose.prototype = {
      *
      */
     once: function(names, handler, capture) {
-        function cancelCb(evt) {
+        function cancelCb(event) {
             names.split(" ").forEach(function(name) {
                 this.removeEventListener(name, cancelCb, capture);
             }, this);
-            handler.apply(this, arguments);
+            handler.call(this, event);
         };
         return this.on(names, cancelCb, capture);
     },
 
+    /**
+     * Method: delegate
+     *
+     * Delegate events to child elements.
+     *
+     * Parameters:
+     *
+     *   selector - The elements to delegate events to
+     *   name - Name of the event
+     *   handler - Function called when the event occurs
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    delegate: function(selector, name, handler) {
+        this.on(name, function(event) {
+            if (new Unbose(event.target).closest(selector).length) {
+                handler.call(event.target, event);
+            }
+        });
+        return this;
+    },
+
+    // TODO: method to undelegate events
 
     /**
      * Group: Finding and traversing
