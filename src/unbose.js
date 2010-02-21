@@ -173,13 +173,12 @@ Unbose.prototype = {
      *
      */
     delegate: function(type, selector, handler) {
-        this.on(type, function(event) {
+        return this.on(type, function(event) {
             var target = new Unbose(event.target).closest(selector);
             if (target.length) {
                 handler.call(target.elem(0), event);
             }
         });
-        return this;
     },
 
     // TODO: method to undelegate events
