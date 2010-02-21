@@ -181,7 +181,7 @@ Unbose.prototype = {
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
             var targets = new Unbose(event.target).ancestors(selector);
-            targets.elem().unshift(event.target); // FIXME: This is fugly. Implement something that does it.
+            if (new Unbose(event.target).matchesSelector(selector)) { targets.elem().unshift(event.target); } // FIXME: This is fugly. Implement something that does it.
             targets.forEach(function(ele) {
                handler.call(ele.elem(0), event);
             });
