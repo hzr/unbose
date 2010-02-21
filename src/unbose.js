@@ -180,12 +180,14 @@ Unbose.prototype = {
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var target = new Unbose(event.target).closest(selector);
-            if (target.length) {
-                handler.call(target.elem(0), event);
-            }
+            var targets = new Unbose(event.target).ancestors(selector);
+            targets.elem().unshift(event.target); // FIXME: This is fugly. Implement something that does it.
+            targets.forEach(function(ele) {
+               handler.call(ele.elem(0), event);
+            });
         });
     },
+
 
     // TODO: method to undelegate events
 
@@ -369,6 +371,29 @@ Unbose.prototype = {
             }
         });
         return new Unbose(elements);
+    },
+
+    /**
+     * Method: ancestors
+     *
+     * Find all ancestors, matching the given filter, to the elements in the set.
+     *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     */
+    ancestors: function(filter) {
+        var ancestors = [];
+        this._elements.forEach(function(ele) {
+            while ((ele = ele.parentNode) != document) {
+                ancestors.push(ele);
+            }
+        });
+        return new Unbose(ancestors).filter(filter);
     },
 
     /**
