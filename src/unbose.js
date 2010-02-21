@@ -163,7 +163,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   type - Type of the event
+     *   types - Type of the event. To attach multiple event handlers,
+     *           separate them with a space.
      *   selector - The elements to delegate events to
      *   handler - Function called when the event occurs
      *
@@ -172,8 +173,8 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    delegate: function(type, selector, handler) {
-        return this.on(type, function(event) {
+    delegate: function(types, selector, handler) {
+        return this.on(types, function(event) {
             var target = new Unbose(event.target).closest(selector);
             if (target.length) {
                 handler.call(target.elem(0), event);
