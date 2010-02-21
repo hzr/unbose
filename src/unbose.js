@@ -106,8 +106,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   names - Name of the event. To attach multiple event handlers,
-     *           just separate them with a space.
+     *   types - Type of the event. To attach multiple event handlers,
+     *           separate them with a space.
      *   handler - Function called when event occurs
      *   capture - Use capturing
      *
@@ -116,10 +116,10 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    on: function(names, handler, capture) {
-        names.split(" ").forEach(function(name) {
+    on: function(types, handler, capture) {
+        types.split(" ").forEach(function(type) {
             this._elements.forEach(function(ele) {
-                ele.addEventListener(name, handler, capture || false);
+                ele.addEventListener(type, handler, capture || false);
             });
         }, this);
         return this;
@@ -136,8 +136,8 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   names - Name of the event. To attach multiple event handlers,
-     *           just separate them with a space.
+     *   types - Type of the event. To attach multiple event handlers,
+     *           separate them with a space.
      *   handler - Function called when event occurs
      *   capture - Use capturing
      *
@@ -146,14 +146,14 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    once: function(names, handler, capture) {
+    once: function(types, handler, capture) {
         function cancelCb(event) {
-            names.split(" ").forEach(function(name) {
-                this.removeEventListener(name, cancelCb, capture);
+            types.split(" ").forEach(function(type) {
+                this.removeEventListener(type, cancelCb, capture);
             }, this);
             handler.call(this, event);
         };
-        return this.on(names, cancelCb, capture);
+        return this.on(types, cancelCb, capture);
     },
 
     /**
@@ -163,7 +163,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   name - Name of the event
+     *   type - Type of the event
      *   selector - The elements to delegate events to
      *   handler - Function called when the event occurs
      *
@@ -172,8 +172,8 @@ Unbose.prototype = {
      *   An Unbose object
      *
      */
-    delegate: function(name, selector, handler) {
-        this.on(name, function(event) {
+    delegate: function(type, selector, handler) {
+        this.on(type, function(event) {
             var target = new Unbose(event.target).closest(selector);
             if (target.length) {
                 handler.call(target.elem(0), event);
