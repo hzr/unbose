@@ -174,8 +174,9 @@ Unbose.prototype = {
      */
     delegate: function(selector, name, handler) {
         this.on(name, function(event) {
-            if (new Unbose(event.target).closest(selector).length) {
-                handler.call(event.target, event);
+            var target = new Unbose(event.target).closest(selector);
+            if (target.length) {
+                handler.call(target.elem(0), event);
             }
         });
         return this;
