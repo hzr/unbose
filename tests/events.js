@@ -65,6 +65,18 @@ test("once() - childTrigger", function()
     simulateMouseEvent(ele2, "click"); // should not trigger event
 });
 
+test("delegate()", function()
+{
+    expect(2);
+
+    var ele = Unbose.fromZen("div > p + p");
+    Unbose(ele).delegate("click", "p", function(evt) {
+        ok(evt);
+    });
+    simulateMouseEvent(ele.find("p").elem(0), "click");
+    simulateMouseEvent(ele.find("p").elem(1), "click");
+});
+
 function simulateMouseEvent(ele, type) {
     var evt = document.createEvent("MouseEvents");
     evt.initMouseEvent(type, true, true, window,

@@ -157,13 +157,13 @@ Unbose.prototype = {
      *
      */
     once: function(types, handler, capture) {
-        function cancelCb(event) {
+        function runOnce(event) {
             types.split(" ").forEach(function(type) {
-                this.removeEventListener(type, cancelCb, capture);
+                this.removeEventListener(type, runOnce, capture);
             }, this);
             handler.call(this, event);
         };
-        return this.on(types, cancelCb, capture);
+        return this.on(types, runOnce, capture);
     },
 
     /**
@@ -430,7 +430,7 @@ Unbose.prototype = {
     ancestors: function(filter) {
         var ancestors = [];
         this._elements.forEach(function(ele) {
-            while ((ele = ele.parentNode) != document) {
+            while (ele.parentNode && (ele = ele.parentNode) != document) {
                 ancestors.push(ele);
             }
         });
