@@ -185,7 +185,7 @@ Unbose.prototype = {
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var target = new Unbose(event.target).closest(selector).elem(0);
+            var target = new Unbose(event.target).closest(selector)[0];
             if (target) {
                handler.call(target, event);
             }
@@ -558,7 +558,7 @@ Unbose.prototype = {
      *
      */
     last: function() {
-        return new Unbose(this._elements[this.length-1]);
+        return new Unbose(this[this.length-1]);
     },
 
     /**
@@ -639,7 +639,7 @@ Unbose.prototype = {
      */
     nth: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return new Unbose(this._elements[index]);
+        return new Unbose(this[index]);
     },
 
     /**
@@ -664,7 +664,7 @@ Unbose.prototype = {
      */
     elem: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return (index === undefined) ? this._elements : this._elements[index];
+        return (index === undefined) ? this._elements : this[index];
     },
 
     /**
