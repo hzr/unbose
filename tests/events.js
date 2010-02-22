@@ -69,12 +69,12 @@ test("delegate()", function()
 {
     expect(2);
 
-    var ele = Unbose.fromZen("div > p + p");
-    Unbose(ele).delegate("click", "p", function(evt) {
+    var ele = Unbose.fromZen("div.a > div > p.a + p.a");
+    Unbose(ele).delegate("click", ".a", function(evt) {
         ok(evt);
     });
-    simulateMouseEvent(ele.find("p").elem(0), "click");
-    simulateMouseEvent(ele.find("p").elem(1), "click");
+    simulateMouseEvent(ele.find("div").find("p").elem(0), "click");
+    simulateMouseEvent(ele.find("div").find("p").elem(1), "click");
 });
 
 function simulateMouseEvent(ele, type) {

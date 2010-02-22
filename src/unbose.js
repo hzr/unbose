@@ -186,15 +186,17 @@ Unbose.prototype = {
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
             var target = event.target;
-            var eles = new Unbose(event.target).ancestors(selector);
+            var eles = new Unbose();
             if (new Unbose(target).matchesSelector(selector)) {
                 eles.add(target);
             }
+            eles = eles.add(new Unbose(event.target)._ancestorsUntil(selector, this));
             eles.forEach(function(ele) {
                handler.call(this, event);
             });
         });
     },
+
 
     // TODO: method to undelegate events
 
@@ -222,6 +224,8 @@ Unbose.prototype = {
      * TODO:
      *
      *   Should maybe filter out duplicates here, e.g. if body is added twice.
+     *   Should probably also have an index parameter to insert stuff at a
+     *   specific position.
      */
     add: function(eles) {
         if (typeof eles == "string") {
@@ -415,6 +419,32 @@ Unbose.prototype = {
     },
 
     /**
+     * Private method: _ancestorsUntil
+     *
+     * Find all ancestors, matching the given filter, to the elements in the set,
+     * up to but not including `stopEle`.
+     *
+     * Parameters:
+     *
+     *   filter - A selector that filters the results
+     *   ele - The element to stop at
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    _ancestorsUntil: function(filter, stopEle) {
+        var ancestors = [];
+        this._elements.forEach(function(ele) {
+            while (ele.parentNode && (ele = ele.parentNode) != document && ele != stopEle) {
+                ancestors.push(ele);
+            }
+        });
+        return new Unbose(ancestors).filter(filter);
+    },
+
+    /**
      * Method: ancestors
      *
      * Find all ancestors, matching the given filter, to the elements in the set.
@@ -428,13 +458,7 @@ Unbose.prototype = {
      *   An Unbose object
      */
     ancestors: function(filter) {
-        var ancestors = [];
-        this._elements.forEach(function(ele) {
-            while (ele.parentNode && (ele = ele.parentNode) != document) {
-                ancestors.push(ele);
-            }
-        });
-        return new Unbose(ancestors).filter(filter);
+        return this._ancestorsUntil(filter);
     },
 
     /**
