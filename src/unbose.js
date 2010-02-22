@@ -185,15 +185,10 @@ Unbose.prototype = {
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var target = event.target;
-            var eles = new Unbose();
-            if (new Unbose(target).matchesSelector(selector)) {
-                eles.add(target);
+            var target = new Unbose(event.target).closest(selector);
+            if (target.length) {
+               handler.call(event.target, event);
             }
-            eles = eles.add(new Unbose(event.target)._ancestorsUntil(selector, this));
-            eles.forEach(function(ele) {
-               handler.call(this, event);
-            });
         });
     },
 
@@ -419,32 +414,6 @@ Unbose.prototype = {
     },
 
     /**
-     * Private method: _ancestorsUntil
-     *
-     * Find all ancestors, matching the given selector, to the elements in the set,
-     * up to but not including `stopEle`.
-     *
-     * Parameters:
-     *
-     *   selector - A selector that filters the results
-     *   stopEle - The element to stop at
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     */
-    _ancestorsUntil: function(selector, stopEle) {
-        var ancestors = [];
-        this._elements.forEach(function(ele) {
-            while (ele.parentNode && (ele = ele.parentNode) != document && ele != stopEle) {
-                ancestors.push(ele);
-            }
-        });
-        return new Unbose(ancestors).filter(selector);
-    },
-
-    /**
      * Method: ancestors
      *
      * Find all ancestors, matching the given selector, to the elements in the set.
@@ -458,7 +427,13 @@ Unbose.prototype = {
      *   An Unbose object
      */
     ancestors: function(selector) {
-        return this._ancestorsUntil(selector);
+        var ancestors = [];
+        this._elements.forEach(function(ele) {
+            while (ele.parentNode && (ele = ele.parentNode) != document) {
+                ancestors.push(ele);
+            }
+        });
+        return new Unbose(ancestors).filter(selector);
     },
 
     /**

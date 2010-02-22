@@ -67,7 +67,7 @@ test("once() - childTrigger", function()
 
 test("delegate()", function()
 {
-    expect(6);
+    expect(2);
 
     var ele = Unbose.fromZen("div > div.a > p.a + p");
     Unbose(ele).delegate("click", ".a", function(evt) {
@@ -75,12 +75,6 @@ test("delegate()", function()
     });
     simulateMouseEvent(ele.find("p").elem(0), "click");
     simulateMouseEvent(ele.find("p").elem(1), "click");
-
-    ele = Unbose.fromZen("div > div.a > p.b > p.c");
-    Unbose(ele).delegate("click", "*", function(evt) {
-        ok(evt); // .c, .b and .a
-    });
-    simulateMouseEvent(ele.find(".c").elem(0), "click");
 });
 
 function simulateMouseEvent(ele, type) {
