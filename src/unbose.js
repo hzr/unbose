@@ -185,9 +185,9 @@ Unbose.prototype = {
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var target = new Unbose(event.target).closest(selector);
-            if (target.length) {
-               handler.call(event.target, event);
+            var target = new Unbose(event.target).closest(selector).elem(0);
+            if (target) {
+               handler.call(target, event);
             }
         });
     },
