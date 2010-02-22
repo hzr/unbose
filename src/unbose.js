@@ -9,8 +9,13 @@ function Unbose(subject, context) {
         return new Unbose(subject, context);
     }
 
-    this._elements = [];
+    /**
+     * Variable: length
+     *
+     * The number of elements in the Unbose object
+     */
     this.length = 0;
+    this._elements = [];
 
     if (!subject) { return this; }
 
@@ -172,30 +177,61 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * FIXME:
-     *
-     *   This should probably be delegated to all elements matching the
-     *   selector, not just the innermost like it is now.
-     *
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var targets = new Unbose(event.target).ancestors(selector);
-            if (new Unbose(event.target).matchesSelector(selector)) { targets.elem().unshift(event.target); } // FIXME: This is fugly. Implement something that does it.
-            targets.forEach(function(ele) {
+            var eles = new Unbose(event.target).ancestors(selector);
+            var target = event.target;
+            if (new Unbose(target).matchesSelector(selector)) {
+                eles.add(target);
+            }
+            eles.forEach(function(ele) {
                handler.call(ele.elem(0), event);
             });
         });
     },
 
-
     // TODO: method to undelegate events
+
 
     /**
      * Group: Finding and traversing
      *
      * Methods for finding elements and traversing the DOM
      */
+
+    /**
+     * Method: add
+     *
+     * Adds additional elements to the set.
+     *
+     * Parameters:
+     *
+     *   eles - The elements to insert. Can be a selector, an element,
+     *          or an Unbose object
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     * TODO:
+     *
+     *   Should maybe filter out duplicates here, e.g. if body is added twice.
+     */
+    add: function(eles) {
+        if (typeof eles == "string") {
+            eles = new Unbose(eles)._elements;
+        }
+        else if (Unbose.isElement(eles)) {
+            eles = [eles];
+        }
+        else if (eles.toString() == "[object Unbose]") {
+            eles = eles._elements;
+        }
+        this._elements = this._elements.concat(eles);
+        this.length = this._elements.length;
+        return this;
+    },
 
     /**
      * Method: forEach

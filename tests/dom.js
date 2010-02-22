@@ -1,5 +1,18 @@
 module("DOM");
 
+test("add()", function() {
+    var eles = Unbose.fromZen("div + div + div");
+    equals(eles.length, 3);
+    eles.add(document.createElement("div"));
+    equals(eles.length, 4);
+    eles.add("body");
+    equals(eles.length, 5);
+    eles.add(Unbose.fromZen("div + div"));
+    equals(eles.length, 7);
+    eles.add(Unbose.fromZen("div + div")).add("body");
+    equals(eles.length, 10);
+});
+
 test("forEach()", function() {
     var eles = Unbose.fromZen("div + div + div");
     eles.forEach(function(ele, idx) {
