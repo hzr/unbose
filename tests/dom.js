@@ -9,8 +9,15 @@ test("add()", function() {
     equals(eles.length, 5);
     eles.add(Unbose.fromZen("div + div"));
     equals(eles.length, 7);
-    eles.add(Unbose.fromZen("div + div")).add("body");
+    eles.add(Unbose.fromZen("div + div").add(Unbose.fromZen("div")));
     equals(eles.length, 10);
+
+    eles = Unbose();
+    eles.add(Unbose.fromZen("div")).add(Unbose.fromZen("p"));
+    equals(eles.length, 2);
+    eles = Unbose();
+    eles.add(Unbose.fromZen("div").add(Unbose.fromZen("p")));
+    equals(eles.length, 2);
 });
 
 test("forEach()", function() {

@@ -185,13 +185,13 @@ Unbose.prototype = {
      */
     delegate: function(types, selector, handler) {
         return this.on(types, function(event) {
-            var eles = new Unbose(event.target).ancestors(selector);
             var target = event.target;
+            var eles = new Unbose(event.target).ancestors(selector);
             if (new Unbose(target).matchesSelector(selector)) {
                 eles.add(target);
             }
             eles.forEach(function(ele) {
-               handler.call(ele.elem(0), event);
+               handler.call(this, event);
             });
         });
     },
@@ -1174,6 +1174,8 @@ Unbose.prototype = {
         if (prop == "float") { prop = "cssFloat"; }
 
         if (+value === parseFloat(value) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
+            // Gecko returns non-rounded values for getComputedStyle()
+            // so round this before setting it.
             value = (+value | 0) + "px";
         }
 
