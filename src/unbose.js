@@ -393,7 +393,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
@@ -404,11 +404,11 @@ Unbose.prototype = {
      *   <parent>
      *
      */
-    closest: function(filter) {
+    closest: function(selector) {
         var elements = [];
         this._elements.forEach(function(ele) {
             while (ele && ele != document) {
-                if (new Unbose(ele).matchesSelector(filter)) {
+                if (new Unbose(ele).matchesSelector(selector)) {
                     elements.push(ele)
                     break;
                 }
@@ -421,44 +421,44 @@ Unbose.prototype = {
     /**
      * Private method: _ancestorsUntil
      *
-     * Find all ancestors, matching the given filter, to the elements in the set,
+     * Find all ancestors, matching the given selector, to the elements in the set,
      * up to but not including `stopEle`.
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
-     *   ele - The element to stop at
+     *   selector - A selector that filters the results
+     *   stopEle - The element to stop at
      *
      * Returns:
      *
      *   An Unbose object
      *
      */
-    _ancestorsUntil: function(filter, stopEle) {
+    _ancestorsUntil: function(selector, stopEle) {
         var ancestors = [];
         this._elements.forEach(function(ele) {
             while (ele.parentNode && (ele = ele.parentNode) != document && ele != stopEle) {
                 ancestors.push(ele);
             }
         });
-        return new Unbose(ancestors).filter(filter);
+        return new Unbose(ancestors).filter(selector);
     },
 
     /**
      * Method: ancestors
      *
-     * Find all ancestors, matching the given filter, to the elements in the set.
+     * Find all ancestors, matching the given selector, to the elements in the set.
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
      *   An Unbose object
      */
-    ancestors: function(filter) {
-        return this._ancestorsUntil(filter);
+    ancestors: function(selector) {
+        return this._ancestorsUntil(selector);
     },
 
     /**
@@ -468,7 +468,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
@@ -479,7 +479,7 @@ Unbose.prototype = {
      *   <children>
      *
      */
-    parent: function(filter) {
+    parent: function(selector) {
         var parents = [];
         this._elements.forEach(function(ele) {
             var parent = ele.parentNode;
@@ -487,7 +487,7 @@ Unbose.prototype = {
                 parents.push(parent);
             }
         });
-        return new Unbose(parents).filter(filter);
+        return new Unbose(parents).filter(selector);
     },
 
     /**
@@ -497,7 +497,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
@@ -508,7 +508,7 @@ Unbose.prototype = {
      *   <parent>
      *
      */
-    children: function(filter) {
+    children: function(selector) {
         var children = [];
         this._elements.forEach(function(ele) {
             var child = ele.firstElementChild;
@@ -519,7 +519,7 @@ Unbose.prototype = {
                 child = child.nextElementSibling;
             }
         });
-        return new Unbose(children).filter(filter);
+        return new Unbose(children).filter(selector);
     },
 
     /**
@@ -529,14 +529,14 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
      *   An Unbose object
      *
      */
-    siblings: function(filter) {
+    siblings: function(selector) {
         var siblings = [];
         this._elements.forEach(function(ele) {
             var child = ele.parentNode.firstElementChild;
@@ -547,7 +547,7 @@ Unbose.prototype = {
                 child = child.nextElementSibling;
             }
         });
-        return new Unbose(siblings).filter(filter);
+        return new Unbose(siblings).filter(selector);
     },
 
     /**
@@ -597,14 +597,14 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * See also:
      *
      * <next>
      *
      */
-    prev: function(filter) {
+    prev: function(selector) {
         var prevs = [];
         this._elements.forEach(function(ele) {
             var prev = ele.previousElementSibling;
@@ -612,7 +612,7 @@ Unbose.prototype = {
                 prevs.push(prev);
             }
         });
-        return new Unbose(prevs).filter(filter);
+        return new Unbose(prevs).filter(selector);
     },
 
     /**
@@ -622,7 +622,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - A selector that filters the results
+     *   selector - A selector that filters the results
      *
      * Returns:
      *
@@ -633,7 +633,7 @@ Unbose.prototype = {
      * <prev>
      *
      */
-    next: function(filter) {
+    next: function(selector) {
         var nexts = [];
         this._elements.forEach(function(ele) {
             var next = ele.nextElementSibling;
@@ -641,7 +641,7 @@ Unbose.prototype = {
                 nexts.push(next);
             }
         });
-        return new Unbose(nexts).filter(filter);
+        return new Unbose(nexts).filter(selector);
     },
 
     /**
@@ -1016,15 +1016,15 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   filter - Only remove elements that matches the selector
+     *   selector - Only remove elements that matches the selector
      *
      * Returns:
      *
      *   An Unbose object
      *
      */
-    remove: function(filter) {
-        this.filter(filter)._elements.forEach(function(ele) {
+    remove: function(selector) {
+        this.filter(selector)._elements.forEach(function(ele) {
             var parent = ele.parentNode;
             if (parent) { parent.removeChild(ele); }
         });
