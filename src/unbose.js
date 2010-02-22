@@ -67,7 +67,7 @@ function Unbose(subject, context) {
     }
 
     this.length = this._elements.length;
-    this._firstEle = this._elements[0];
+    this._firstEle = this[0];
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
@@ -347,6 +347,7 @@ Unbose.prototype = {
                 var type, value;
                 var eleName = parts.shift().toLowerCase();
 
+                // FIXME: won't work for e.g. *.class or *#id
                 if (eleName == "*") {
                     return true;
                 }
