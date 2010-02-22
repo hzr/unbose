@@ -297,6 +297,7 @@ test("parent()", function() {
 
     ele = Unbose("html");
     equals(ele.parent().length, 0);
+    ok(Unbose.fromZen("div").parent());
 });
 
 

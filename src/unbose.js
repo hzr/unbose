@@ -407,7 +407,7 @@ Unbose.prototype = {
     closest: function(selector) {
         var elements = [];
         this._elements.forEach(function(ele) {
-            while (ele && ele.nodeType == Node.ELEMENT_NODE) {
+            while (ele && ele != document) {
                 if (new Unbose(ele).matchesSelector(selector)) {
                     elements.push(ele)
                     break;
@@ -437,10 +437,8 @@ Unbose.prototype = {
     _ancestorsUntil: function(selector, stopEle) {
         var ancestors = [];
         this._elements.forEach(function(ele) {
-            ele = ele.parentNode;
-            while (ele && ele.nodeType == Node.ELEMENT_NODE && ele != stopEle) {
+            while (ele.parentNode && (ele = ele.parentNode) != document && ele != stopEle) {
                 ancestors.push(ele);
-                ele = ele.parentNode;
             }
         });
         return new Unbose(ancestors).filter(selector);
@@ -485,7 +483,7 @@ Unbose.prototype = {
         var parents = [];
         this._elements.forEach(function(ele) {
             var parent = ele.parentNode;
-            if (parent && parent.nodeType == Node.ELEMENT_NODE && parents.indexOf(parent) == -1) {
+            if (parent && parent != document && parents.indexOf(parent) == -1) {
                 parents.push(parent);
             }
         });
