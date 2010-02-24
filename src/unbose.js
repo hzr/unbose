@@ -35,13 +35,13 @@ function Unbose(subject, context) {
     else if (Unbose.isArray(subject)) {
         this._elements = subject;
     }
-    else if (subject.nodeType == Node.ELEMENT_NODE) {
+    else if (Unbose.isElement(subject)) {
         this._elements = [subject];
     }
     else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
         var child = subject.firstChild;
         while (child) {
-            if (child.nodeType == Node.ELEMENT_NODE) {
+            if (Unbose.isElement(child)) {
                 this._elements.push(child);
             }
             child = child.nextElementSibling;
@@ -225,11 +225,11 @@ Unbose.prototype = {
         if (typeof eles == "string") {
             eles = new Unbose(eles)._elements;
         }
-        else if (Unbose.isElement(eles)) {
-            eles = [eles];
-        }
         else if (eles.toString() == "[object Unbose]") {
             eles = eles._elements;
+        }
+        else if (Unbose.isElement(eles)) {
+            eles = [eles];
         }
         this._elements = this._elements.concat(eles);
         this.length = this._elements.length;
