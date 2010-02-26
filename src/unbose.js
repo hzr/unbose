@@ -1566,7 +1566,7 @@ Unbose.tplFromZen = function(zen) {
                 props["id"] = id;
             }
             else if (chr == " ") {
-                var name = consume_name(chars);
+                var name =  consume_class_or_id(chars);
                 if (!name) { // no valid name found
                     break; // presumably whitespace in zen for readability.
                 }
