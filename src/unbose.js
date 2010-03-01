@@ -1510,7 +1510,7 @@ Unbose.tplFromZen = function(zen) {
      */
     function consume_name(chars) {
         var s = "";
-        while (chars.length && chars[0].match(/[a-zA-Z0-9]/)) {
+        while (chars.length && chars[0].match(/[a-zA-Z0-9-]/)) {
             s += chars.shift();
         }
         return s;
@@ -1566,7 +1566,7 @@ Unbose.tplFromZen = function(zen) {
                 props["id"] = id;
             }
             else if (chr == " ") {
-                var name =  consume_class_or_id(chars);
+                var name = consume_name(chars);
                 if (!name) { // no valid name found
                     break; // presumably whitespace in zen for readability.
                 }
