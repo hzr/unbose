@@ -53,8 +53,8 @@ function Unbose(subject, context) {
     else if (Unbose.isFunction(subject)) {
         // Fails in Webkit if there's nothing after <head>, so make sure
         // there's always something explicit in <body>
-        document.addEventListener("DOMContentLoaded", function ready() {
-            subject();
+        document.addEventListener("DOMContentLoaded", function ready(event) {
+            subject(event);
             // I wonder if this is neccessary. jQuery does it, but shouldn't browser's themselves do it?
             document.removeEventListener("DOMContentLoaded", ready, false);
         }, false);
