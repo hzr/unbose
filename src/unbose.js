@@ -55,18 +55,16 @@ function Unbose(subject, context) {
         // there's always something explicit in <body>
         document.addEventListener("DOMContentLoaded", function ready(event) {
             subject(event);
-            // I wonder if this is neccessary. jQuery does it, but shouldn't browser's themselves do it?
+            // I wonder if this is necessary. jQuery does it, but shouldn't browser's themselves do it?
             document.removeEventListener("DOMContentLoaded", ready, false);
         }, false);
     }
 
     // TODO: handle Unbose(window|document)
 
-    for (var i = 0, ele; ele = this._elements[i]; i++) {
-        this[i] = ele;
-    }
-
-    this.length = this._elements.length;
+    var i = 0;
+    while (this[i] = this._elements[i]) { i++; }
+    this.length = i;
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
