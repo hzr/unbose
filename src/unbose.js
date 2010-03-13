@@ -36,7 +36,9 @@ function Unbose(subject, context) {
         this._elements = subject;
     }
     else if (Unbose.isElement(subject)) {
-        this._elements = [subject];
+        this._elements[0] = this[0] = subject;
+        this.length = 1;
+        return this;
     }
     else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
         var child = subject.firstChild;
@@ -47,7 +49,7 @@ function Unbose(subject, context) {
             child = child.nextElementSibling;
         }
     }
-    else if (subject.toString() == "[object Unbose]") {
+    else if (subject._elements !== undefined) {
         this._elements = subject._elements;
     }
     else if (Unbose.isFunction(subject)) {
@@ -223,7 +225,7 @@ Unbose.prototype = {
         if (typeof eles == "string") {
             eles = new Unbose(eles)._elements;
         }
-        else if (eles.toString() == "[object Unbose]") {
+        else if (eles._elements !== undefined) {
             eles = eles._elements;
         }
         else if (Unbose.isElement(eles)) {
@@ -863,7 +865,7 @@ Unbose.prototype = {
         else if (Unbose.isArray(thing)) {
             return this._insertElem(Unbose.eleFromTpl(thing), append);
         }
-        else if (thing.toString() == "[object Unbose]") {
+        else if (thing._elements !== undefined) {
             thing._elements.forEach(function(ele) {
                 this._insertElem(ele, true);
             }, this);
