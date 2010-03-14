@@ -673,8 +673,8 @@ Unbose.prototype = {
      * Returns a subset of elements, starting with element `start` and upto
      * but not including element `end`. If the step parameter is provided,
      * every nth element in the subset will be returned, where n = `step`.
-     * The slice method behaves like the Array.prototype.slice with the
-     * added behavior of steps.
+     * The slice method behaves like Array.prototype.slice with the added
+     * behavior of steps.
      *
      * Parameters:
      *
@@ -689,7 +689,7 @@ Unbose.prototype = {
      */
     slice: function(start, end, step) {
         // Gecko does not treat `undefined` correctly for the end parameter
-        // in Array.prototpe.slice, so set it explicitly
+        // in Array.prototype.slice, so set it explicitly
         if (end === undefined) { end = this.length; }
         var eles = Array.prototype.slice.call(this._elements, start, end);
         if (step) {
@@ -728,7 +728,7 @@ Unbose.prototype = {
     hasClass: function(cls) {
         return this._elements.some(function(ele) {
             return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
-        }, this);
+        });
     },
 
     /**
@@ -867,7 +867,7 @@ Unbose.prototype = {
         }
         else if (thing._elements !== undefined) {
             thing._elements.forEach(function(ele) {
-                this._insertElem(ele, true);
+                this._insertElem(ele, append);
             }, this);
             return this;
         }
