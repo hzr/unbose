@@ -1532,7 +1532,7 @@ Unbose.tplFromZen = function(zen) {
      */
     function consume_value(chars) {
         var s = "";
-        while (chars.length && chars[0].match(/[a-zA-Z0-9-_#\.]/)) {
+        while (chars.length && chars[0].match(/[a-zA-Z0-9-_#\.\/]/)) {
             s += chars.shift();
         }
         return s;

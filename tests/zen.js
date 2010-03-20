@@ -68,6 +68,7 @@ test("Properties", function() {
     equal(zen("a x=y>b x=y"), "<a x=\"y\"><b x=\"y\"></b></a>");
     equal(zen("a x=y>b x=y+c x=y"), "<a x=\"y\"><b x=\"y\"></b><c x=\"y\"></c></a>");
     equal(zen("a data-foo=bar"), "<a data-foo=\"bar\"></a>");
+    equal(zen("img src=foo/bar.png"), '<img src="foo/bar.png">');
 });
 
 test("Parenthesis", function() {
