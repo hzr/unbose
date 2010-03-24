@@ -404,17 +404,17 @@ Unbose.prototype = {
      *
      */
     closest: function(selector) {
-        var elements = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
             while (ele && ele != document) {
                 if (new Unbose(ele).matchesSelector(selector)) {
-                    elements.push(ele)
+                    eles.push(ele)
                     break;
                 }
                 ele = ele.parentNode;
             }
         });
-        return new Unbose(elements);
+        return new Unbose(eles);
     },
 
     /**
@@ -431,16 +431,16 @@ Unbose.prototype = {
      *   An Unbose object
      */
     ancestors: function(selector) {
-        var ancestors = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
             ele = ele.parentNode;
             while (ele && ele != document) {
-                if (ancestors.indexOf(ele) == -1) {
-                    ancestors.push(ele);
+                if (eles.indexOf(ele) == -1) {
+                    eles.push(ele);
                 }
             }
         });
-        return new Unbose(ancestors).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
@@ -462,14 +462,14 @@ Unbose.prototype = {
      *
      */
     parent: function(selector) {
-        var parents = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
-            var parent = ele.parentNode;
-            if (parent && parent != document && parents.indexOf(parent) == -1) {
-                parents.push(parent);
+            ele = ele.parentNode;
+            if (ele && ele != document && eles.indexOf(ele) == -1) {
+                eles.push(ele);
             }
         });
-        return new Unbose(parents).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
@@ -491,17 +491,17 @@ Unbose.prototype = {
      *
      */
     children: function(selector) {
-        var children = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
-            var child = ele.firstElementChild;
-            while (child) {
-                if (children.indexOf(child) == -1) {
-                    children.push(child);
+            ele = ele.firstElementChild;
+            while (ele) {
+                if (eles.indexOf(ele) == -1) {
+                    eles.push(ele);
                 }
-                child = child.nextElementSibling;
+                ele = ele.nextElementSibling;
             }
         });
-        return new Unbose(children).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
@@ -519,17 +519,17 @@ Unbose.prototype = {
      *
      */
     siblings: function(selector) {
-        var siblings = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
             var child = ele.parentNode.firstElementChild;
             while (child) {
-                if (child != ele && siblings.indexOf(child) == -1) {
-                    siblings.push(child);
+                if (child != ele && eles.indexOf(child) == -1) {
+                    eles.push(child);
                 }
                 child = child.nextElementSibling;
             }
         });
-        return new Unbose(siblings).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
@@ -587,14 +587,12 @@ Unbose.prototype = {
      *
      */
     prev: function(selector) {
-        var prevs = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
-            var prev = ele.previousElementSibling;
-            if (prev) {
-                prevs.push(prev);
-            }
+            ele = ele.previousElementSibling;
+            if (ele) { eles.push(ele); }
         });
-        return new Unbose(prevs).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
@@ -616,14 +614,12 @@ Unbose.prototype = {
      *
      */
     next: function(selector) {
-        var nexts = [];
+        var eles = [];
         this._elements.forEach(function(ele) {
-            var next = ele.nextElementSibling;
-            if (next) {
-                nexts.push(next);
-            }
+            ele = ele.nextElementSibling;
+            if (ele) { eles.push(ele); }
         });
-        return new Unbose(nexts).filter(selector);
+        return new Unbose(eles).filter(selector);
     },
 
     /**
