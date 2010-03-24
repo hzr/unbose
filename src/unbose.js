@@ -303,7 +303,11 @@ Unbose.prototype = {
      *
      */
     find: function(selector) {
-        return new Unbose(selector, this[0]);
+        var eles = [];
+        this._elements.forEach(function(ele) {
+            eles = eles.concat(new Unbose(selector, ele)._elements);
+        });
+        return new Unbose(eles);
     },
 
     /**
