@@ -433,8 +433,11 @@ Unbose.prototype = {
     ancestors: function(selector) {
         var ancestors = [];
         this._elements.forEach(function(ele) {
-            while (ele.parentNode && (ele = ele.parentNode) != document) {
-                ancestors.push(ele);
+            ele = ele.parentNode;
+            while (ele && ele != document) {
+                if (ancestors.indexOf(ele) == -1) {
+                    ancestors.push(ele);
+                }
             }
         });
         return new Unbose(ancestors).filter(selector);
