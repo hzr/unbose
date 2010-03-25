@@ -85,30 +85,6 @@ Unbose.prototype = {
      */
 
     /**
-     * Method: click
-     *
-     * Adds a click event to all elements in the set. Shorthand for
-     * ele.on("click", callback).
-     *
-     * Parameters:
-     *
-     *   handler - Function called when the event occurs
-     *   capturing - Use capturing
-     *
-     * Returns:
-     *
-     *   An Unbose object
-     *
-     * See also:
-     *
-     *   <on>
-     *
-     */
-    click: function(handler, capturing) {
-        return this.on("click", handler, capturing);
-    },
-
-    /**
      * Method: on
      *
      * Add an event listener to all elements in the set.

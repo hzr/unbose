@@ -1,26 +1,16 @@
 module("Events");
 
-
-test("click", function() {
-    expect(1);
-
-    var ele = document.createElement("div");
-    var subject = Unbose(ele);
-    subject.click(function(evt) { ok(evt); });
-    simulateMouseEvent(ele, "click");
-});
-
 test("on", function()
 {
     expect(6);
-    
+
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     subject.on("click", function(evt) { ok(evt);
                                   equal(this, subject.elem(0));
                                 });
     simulateMouseEvent(ele, "click");
-    
+
     var ele2 = document.createElement("div");
     var subject2 = Unbose(ele2);
     subject2.on("click", function(evt) { ok(evt); });
@@ -36,13 +26,13 @@ test("on", function()
 test("once()", function()
 {
     expect(2);
-    
+
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     subject.once("click", function(evt) { ok(evt); });
     simulateMouseEvent(ele, "click");
     simulateMouseEvent(ele, "click"); // should not trigger event
-    
+
     var ele2 = document.createElement("div");
     var subject2 = Unbose(ele2);
     subject2.once("click mouseover", function(evt) { ok(evt); });
@@ -55,7 +45,7 @@ test("once()", function()
 test("once() - childTrigger", function()
 {
     expect(1);
-    
+
     var ele = document.createElement("div");
     var ele2 = document.createElement("div");
     ele.appendChild(ele2);
