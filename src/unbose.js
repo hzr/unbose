@@ -68,7 +68,7 @@ window.Unbose = function Unbose(subject, context) {
     var i = 0;
     while (this[i] = this._elements[i]) { i++; }
     this.length = i;
-}
+};
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
