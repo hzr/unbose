@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, document, undefined) {
 /**
  * Class: Unbose
  *
@@ -1770,5 +1770,5 @@ Unbose.support = {
         return !!ele.classList;
     })()
 };
-})(window, window.document, undefined);
+})(window, window.document);
 
