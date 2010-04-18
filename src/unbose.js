@@ -1752,7 +1752,7 @@ if (!Function.prototype.bind) {
         return function() {
             return method.apply(context, args.concat(slice.call(arguments, 0)));
         }
-    }
+    };
 }
 
 /**
