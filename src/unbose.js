@@ -1,10 +1,11 @@
+(function(window, document) {
 /**
  * Class: Unbose
  *
  * Subject can be a CSS selector (string), array (presumed to be of elements),
  * element, document fragment or an Unbose object.
  */
-function Unbose(subject, context) {
+window.Unbose = function Unbose(subject, context) {
     if (! (this instanceof Unbose)) {
         return new Unbose(subject, context);
     }
@@ -70,7 +71,12 @@ function Unbose(subject, context) {
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
-Unbose.SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
+var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
+
+// Cache some methods
+var toString = Object.prototype.toString;
+var slice = Array.prototype.slice;
+var forEach = Array.prototype.forEach;
 
 Unbose.prototype = {
     toString: function() {
@@ -670,7 +676,7 @@ Unbose.prototype = {
         // Gecko does not treat `undefined` correctly for the end parameter
         // in Array.prototype.slice, so set it explicitly
         if (end === undefined) { end = this.length; }
-        var eles = Array.prototype.slice.call(this._elements, start, end);
+        var eles = slice.call(this._elements, start, end);
         if (step) {
             eles = eles.filter(function(ele, idx) {
                 return !(idx % step);
@@ -706,7 +712,7 @@ Unbose.prototype = {
      */
     hasClass: function(cls) {
         return this._elements.some(function(ele) {
-            return ele.className.split(Unbose.SPACE_CHARS).indexOf(cls) != -1;
+            return ele.className.split(SPACE_CHARS).indexOf(cls) != -1;
         });
     },
 
@@ -754,9 +760,9 @@ Unbose.prototype = {
      *
      */
     removeClass: function(cls) {
-        var classes = cls.split(Unbose.SPACE_CHARS);
+        var classes = cls.split(SPACE_CHARS);
         this._elements.forEach(function(ele) {
-            ele.className = ele.className.split(Unbose.SPACE_CHARS).filter(function(cls) {
+            ele.className = ele.className.split(SPACE_CHARS).filter(function(cls) {
                 return classes.indexOf(cls) == -1;
             }).join(" ");
         });
@@ -1631,7 +1637,7 @@ Unbose.fromZen = function(zen) {
  */
 Unbose.list = function() {
     var ret = [];
-    Array.prototype.forEach.call(arguments, function(arg) {
+    forEach.call(arguments, function(arg) {
         for (var i = 0, len = arg.length; i < len; i++) {
             ret.push(arg[i]);
         }
@@ -1659,7 +1665,7 @@ Unbose.list = function() {
  *
  */
 Unbose.isArray = function(obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
+    return toString.call(obj) === "[object Array]";
 };
 // Use native Array.isArray if available
 if (Array.isArray) {
@@ -1681,7 +1687,7 @@ if (Array.isArray) {
  *
  */
 Unbose.isFunction = function(obj) {
-    return Object.prototype.toString.call(obj) === "[object Function]";
+    return toString.call(obj) === "[object Function]";
 };
 
 /**
@@ -1740,7 +1746,6 @@ Unbose.nop = function() { };
  * Prototype for example does more funky stuff.
  */
 if (!Function.prototype.bind) {
-    var slice = Array.prototype.slice;
     Function.prototype.bind = function(context) {
         var method = this;
         var args = slice.call(arguments, 1);
@@ -1765,5 +1770,5 @@ Unbose.support = {
         return !!ele.classList;
     })()
 };
-
+})(window, window.document, undefined);
 
