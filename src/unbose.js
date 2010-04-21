@@ -1673,7 +1673,7 @@ Unbose.list = list;
 var isArray = (function() {
     return Array.isArray || function isArray(obj) {
         return toString.call(obj) === "[object Array]";
-    }
+    };
 })();
 Unbose.isArray = isArray;
 
@@ -1738,7 +1738,7 @@ var trim = (function() {
 
     return function trim(text) {
         return (text || "").replace(/^\s+|\s+$/g, "");
-    }
+    };
 })();
 Unbose.trim = trim;
 
@@ -1748,7 +1748,7 @@ Unbose.trim = trim;
  * Empty function. Can be useful in cases where a function is required.
  *
  */
-Unbose.nop = function() { };
+Unbose.nop = function() { /* op nop nop */ };
 
 /**
  * Add Function.prototype.bind if it's not available
@@ -1761,7 +1761,7 @@ if (!Function.prototype.bind) {
         var args = slice.call(arguments, 1);
         return function() {
             return method.apply(context, args.concat(slice.call(arguments, 0)));
-        }
+        };
     };
 }
 
