@@ -1670,11 +1670,11 @@ Unbose.list = list;
  *   http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
  *
  */
-function isArray(obj) {
-    return toString.call(obj) === "[object Array]";
-};
-// Use native Array.isArray if available
-if (Array.isArray) { isArray = Array.isArray; }
+var isArray = (function() {
+    return Array.isArray || function isArray(obj) {
+        return toString.call(obj) === "[object Array]";
+    }
+})();
 Unbose.isArray = isArray;
 
 /**
@@ -1729,14 +1729,17 @@ Unbose.isElement = isElement;
  *   The trimmed text
  *
  */
-function trim(text) {
-    return (text || "").replace(/^\s+|\s+$/g, "");
-};
-if (String.prototype.trim) {
-    trim = function(text) {
-        return String.prototype.trim.call(text);
-    };
-}
+var trim = (function() {
+    if (String.prototype.trim) {
+        return function trim(text) {
+            return String.prototype.trim.call(text);
+        };
+    }
+
+    return function trim(text) {
+        return (text || "").replace(/^\s+|\s+$/g, "");
+    }
+})();
 Unbose.trim = trim;
 
 /**
