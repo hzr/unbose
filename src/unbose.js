@@ -5,7 +5,7 @@
  * Subject can be a CSS selector (string), array (presumed to be of elements),
  * element, document fragment or an Unbose object.
  */
-window.Unbose = function Unbose(subject, context) {
+function Unbose(subject, context) {
     if (! (this instanceof Unbose)) {
         return new Unbose(subject, context);
     }
@@ -33,10 +33,10 @@ window.Unbose = function Unbose(subject, context) {
             this._elements.push(ele);
         }
     }
-    else if (Unbose.isArray(subject)) {
+    else if (isArray(subject)) {
         this._elements = subject;
     }
-    else if (Unbose.isElement(subject)) {
+    else if (isElement(subject)) {
         this._elements[0] = this[0] = subject;
         this.length = 1;
         return this;
@@ -44,7 +44,7 @@ window.Unbose = function Unbose(subject, context) {
     else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
         var child = subject.firstChild;
         while (child) {
-            if (Unbose.isElement(child)) {
+            if (isElement(child)) {
                 this._elements.push(child);
             }
             child = child.nextElementSibling;
@@ -53,7 +53,7 @@ window.Unbose = function Unbose(subject, context) {
     else if (subject._elements !== undefined) {
         this._elements = subject._elements;
     }
-    else if (Unbose.isFunction(subject)) {
+    else if (isFunction(subject)) {
         // Fails in Webkit if there's nothing after <head>, so make sure
         // there's always something explicit in <body>
         document.addEventListener("DOMContentLoaded", function ready(event) {
@@ -69,6 +69,8 @@ window.Unbose = function Unbose(subject, context) {
     while (this[i] = this._elements[i]) { i++; }
     this.length = i;
 };
+
+window.Unbose = Unbose;
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
@@ -210,7 +212,7 @@ Unbose.prototype = {
         else if (eles._elements !== undefined) {
             eles = eles._elements;
         }
-        else if (Unbose.isElement(eles)) {
+        else if (isElement(eles)) {
             eles = [eles];
         }
         this._elements = this._elements.concat(eles);
@@ -336,7 +338,7 @@ Unbose.prototype = {
                 if (eleName == "*") {
                     return true;
                 }
-                if (!Unbose.trim(selector) || (eleName && eleName != uele.name())) {
+                if (!trim(selector) || (eleName && eleName != uele.name())) {
                     return false;
                 }
                 while ((type = parts.shift()) && (value = parts.shift())) {
@@ -844,11 +846,11 @@ Unbose.prototype = {
      *
      */
     insert: function(thing, append) {
-        if (Unbose.isElement(thing)) {
+        if (isElement(thing)) {
             return this._insertElem(thing, append);
         }
-        else if (Unbose.isArray(thing)) {
-            return this._insertElem(Unbose.eleFromTpl(thing), append);
+        else if (isArray(thing)) {
+            return this._insertElem(eleFromTpl(thing), append);
         }
         else if (thing._elements !== undefined) {
             thing._elements.forEach(function(ele) {
@@ -857,7 +859,7 @@ Unbose.prototype = {
             return this;
         }
         else if (typeof thing === "string") {
-            return this._insertElem(Unbose.eleFromTpl(Unbose.tplFromZen(thing)), append);
+            return this._insertElem(eleFromTpl(tplFromZen(thing)), append);
         }
         else {
             return this;
@@ -1349,7 +1351,7 @@ Unbose.prototype = {
  *
  * Static Unbose methods
  */
-Unbose.eleFromTpl = function(tpl) {
+function eleFromTpl(tpl) {
     var index = 0;
     var ele = document.createDocumentFragment();
     if (typeof tpl[index] === "string") {
@@ -1370,7 +1372,7 @@ Unbose.eleFromTpl = function(tpl) {
             ele.appendChild(document.createTextNode(cur));
         }
         else {
-            ele.appendChild(Unbose.eleFromTpl(cur));
+            ele.appendChild(eleFromTpl(cur));
         }
     }
 
@@ -1395,13 +1397,14 @@ Unbose.eleFromTpl = function(tpl) {
         return ele;
     }
 };
+Unbose.eleFromTpl = eleFromTpl;
 
 /**
  * Method: Unbose.tplFromZen
  *
  * Converts a template array to an element (NOT to an unbose object atm).
  */
-Unbose.tplFromZen = function(zen) {
+function tplFromZen(zen) {
     return parse_zencode(zen);
 
     // Here's a whole bunch of private functions for doing the actual parsing.
@@ -1568,6 +1571,7 @@ Unbose.tplFromZen = function(zen) {
         return props;
     }
 };
+Unbose.tplFromZen = tplFromZen;
 
 /**
  * Method: Unbose.eleFromZen
@@ -1587,9 +1591,10 @@ Unbose.tplFromZen = function(zen) {
  *   <fromZen>
  *
  */
-Unbose.eleFromZen = function(zen) {
+function eleFromZen(zen) {
     return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
 };
+Unbose.eleFromZen = eleFromZen;
 
 /**
  * Method: Unbose.fromZen
@@ -1609,10 +1614,10 @@ Unbose.eleFromZen = function(zen) {
  *   <eleFromZen>
  *
  */
-Unbose.fromZen = function(zen) {
+function fromZen(zen) {
     return new Unbose(Unbose.eleFromZen(zen));
 };
-
+Unbose.fromZen = fromZen;
 
 /**
  * Group: Static helper methods
@@ -1635,7 +1640,7 @@ Unbose.fromZen = function(zen) {
  *
  *   An array
  */
-Unbose.list = function() {
+function list() {
     var ret = [];
     forEach.call(arguments, function(arg) {
         for (var i = 0, len = arg.length; i < len; i++) {
@@ -1644,6 +1649,7 @@ Unbose.list = function() {
     });
     return ret;
 };
+Unbose.list = list;
 
 /**
  * Method: Unbose.isArray
@@ -1664,13 +1670,12 @@ Unbose.list = function() {
  *   http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
  *
  */
-Unbose.isArray = function(obj) {
+function isArray(obj) {
     return toString.call(obj) === "[object Array]";
 };
 // Use native Array.isArray if available
-if (Array.isArray) {
-    Unbose.isArray = Array.isArray;
-}
+if (Array.isArray) { isArray = Array.isArray; }
+Unbose.isArray = isArray;
 
 /**
  * Method: Unbose.isFunction
@@ -1686,9 +1691,10 @@ if (Array.isArray) {
  *   boolean, true if object is a function. Otherwise false.
  *
  */
-Unbose.isFunction = function(obj) {
+function isFunction(obj) {
     return toString.call(obj) === "[object Function]";
 };
+Unbose.isFunction = isFunction;
 
 /**
  * Method: Unbose.isElement
@@ -1704,9 +1710,10 @@ Unbose.isFunction = function(obj) {
  *   boolean, true if object is an element. Otherwise false.
  *
  */
-Unbose.isElement = function(obj) {
+function isElement(obj) {
     return !!(obj && obj.nodeType == Node.ELEMENT_NODE);
 };
+Unbose.isElement = isElement;
 
 /**
  * Method: Unbose.trim
@@ -1722,15 +1729,15 @@ Unbose.isElement = function(obj) {
  *   The trimmed text
  *
  */
-Unbose.trim = function(text) {
+function trim(text) {
     return (text || "").replace(/^\s+|\s+$/g, "");
 };
-
 if (String.prototype.trim) {
-    Unbose.trim = function(text) {
+    trim = function(text) {
         return String.prototype.trim.call(text);
     };
 }
+Unbose.trim = trim;
 
 /**
  * Method: Unbose.nop
