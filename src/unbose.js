@@ -1666,7 +1666,7 @@ Unbose.list = list;
  *
  * Note:
  *
- *   Copied from:
+ *   Object.prototype.toString technique copied from:
  *   http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
  *
  */
