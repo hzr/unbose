@@ -74,6 +74,7 @@ window.Unbose = Unbose;
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
+var NON_UNIT_PROPERTIES = ["fontWeight", "lineHeight", "opacity", "zIndex"];
 
 // Cache some methods
 var toString = Object.prototype.toString;
@@ -1159,7 +1160,7 @@ Unbose.prototype = {
 
         if (prop == "float") { prop = "cssFloat"; }
 
-        if (+value === parseFloat(value) && ["fontWeight", "lineHeight", "opacity", "zIndex"].indexOf(prop) == -1) {
+        if (+value === parseFloat(value) && NON_UNIT_PROPERTIES.indexOf(prop) == -1) {
             // Gecko returns non-rounded values for getComputedStyle()
             // so round this before setting it.
             value = (+value | 0) + "px";
