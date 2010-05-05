@@ -21,7 +21,7 @@ function Unbose(subject, context) {
     if (!subject) { return this; }
 
     // "body" is common and there's only one, so optimize for it
-    if (subject == "body" && !context) {
+    if (subject == "body" && !context && document.body) {
         this._elements[0] = this[0] = document.body;
         this.length = 1;
         return this;
