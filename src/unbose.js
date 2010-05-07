@@ -1737,8 +1737,14 @@ var trim = (function() {
         };
     }
 
-    return function trim(text) {
-        return (text || "").replace(/^\s+|\s+$/g, "");
+    // Slightly modified version of Steven Levithan's super fast trim function
+    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+    return function trim(str) {
+        str = (str || "").replace(/^\s\s*/, '');
+        var ws = /\s/;
+        var i = str.length;
+        while (ws.test(str.charAt(--i)));
+        return str.slice(0, i + 1);
     };
 })();
 Unbose.trim = trim;
