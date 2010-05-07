@@ -1740,7 +1740,7 @@ var trim = (function() {
     // Slightly modified version of Steven Levithan's super fast trim function
     // http://blog.stevenlevithan.com/archives/faster-trim-javascript
     return function trim(str) {
-        str = (str || "").replace(/^\s\s*/, '');
+        str = (str || "").replace(/^\s\s*/, "");
         var ws = /\s/;
         var i = str.length;
         while (ws.test(str.charAt(--i)));
