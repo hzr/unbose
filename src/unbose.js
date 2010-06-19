@@ -393,7 +393,7 @@ Unbose.prototype = {
         this._elements.forEach(function(ele) {
             while (ele && ele != document) {
                 if (new Unbose(ele).matchesSelector(selector)) {
-                    eles.push(ele)
+                    eles.push(ele);
                     break;
                 }
                 ele = ele.parentNode;
@@ -1334,14 +1334,21 @@ Unbose.prototype = {
      *
      * Shows the elements.
      *
+     * Parameters:
+     *
+     *   mode - (optional) the css display mode to use for the shown state.
+     *
      * Returns:
      *
      *   An Unbose object
      *
+     * fixme: should there me a map with default display modes for
+     * elements? Setting it to blank fails for stuff that has display: none
+     * set in their stylesheet.
      */
-    show: function() {
+    show: function(mode) {
         this._elements.forEach(function(ele) {
-            ele.style.display = new Unbose(ele).data("olddisplay") || "";
+            ele.style.display = new Unbose(ele).data("olddisplay") || mode || "";
         });
         return this;
     }
