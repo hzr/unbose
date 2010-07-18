@@ -418,8 +418,7 @@ Unbose.prototype = {
     ancestors: function(selector) {
         var eles = [];
         this._elements.forEach(function(ele) {
-            ele = ele.parentNode;
-            while (ele && ele != document) {
+            while ((ele = ele.parentNode) && ele != document) {
                 if (eles.indexOf(ele) == -1) {
                     eles.push(ele);
                 }

@@ -284,6 +284,17 @@ test("slice()", function() {
     equals(eles.slice(1,4,-2).nth(1).name(), "h4", "Should behave just like positive steps");
 });
 
+test("ancestors()", function() {
+    var eles = Unbose.eleFromZen("body>div>div>span>div>i.t+b.t");
+    ele = Unbose(eles).find("i");
+    equal(ele.ancestors().length, 6);
+    equal(ele.ancestors("div").length, 3);
+    ele = Unbose(eles).find(".t");
+    equal(ele.length, 2);
+    equal(ele.ancestors().length, 6);
+    equal(ele.ancestors("div").length, 3);
+});
+
 test("parent()", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
