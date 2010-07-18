@@ -1680,7 +1680,7 @@ Unbose.list = list;
  */
 var isArray = (function() {
     return Array.isArray || function isArray(obj) {
-        return toString.call(obj) === "[object Array]";
+        return obj && toString.call(obj) === "[object Array]";
     };
 })();
 Unbose.isArray = isArray;
@@ -1700,7 +1700,7 @@ Unbose.isArray = isArray;
  *
  */
 function isFunction(obj) {
-    return toString.call(obj) === "[object Function]";
+    return obj && toString.call(obj) === "[object Function]";
 };
 Unbose.isFunction = isFunction;
 
