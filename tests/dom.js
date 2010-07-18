@@ -244,6 +244,7 @@ test("nth()", function() {
     equals(eles.nth(2).attr("class"), "c");
     equals(eles.nth(3).attr("class"), undefined);
     equals(eles.nth(-4).attr("class"), "c");
+    equals(eles.nth().length, 3);
 });
 
 test("elem()", function() {
