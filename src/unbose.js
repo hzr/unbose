@@ -95,7 +95,7 @@ Unbose.prototype = {
 
     _debug: function() {
         var ret = [];
-        new Unbose(this._elements).forEach(function(el) {
+        this.forEach(function(el) {
             ret.push(
                 el.name() +
                 (el.attr("id") ? "#" + el.attr("id") : "") +
@@ -805,7 +805,7 @@ Unbose.prototype = {
      *
      */
     toggleClass: function(cls) {
-        new Unbose(this._elements).forEach(function(ele) {
+        this.forEach(function(ele) {
             ele[ele.hasClass(cls) ? "removeClass" : "addClass"](cls);
         });
         return this;
@@ -1334,7 +1334,7 @@ Unbose.prototype = {
      *
      */
     hide: function() {
-        new Unbose(this._elements).forEach(function(ele) {
+        this.forEach(function(ele) {
             ele.data("olddisplay", ele.style("display"))
                .style("display", "none");
         });
