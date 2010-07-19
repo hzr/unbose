@@ -52,8 +52,10 @@ test("setStyle()", function() {
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     document.body.appendChild(ele);
-    subject.style("float", "right"); // float maps to cssFloat
-    equal(subject.style("float"), "right");
+    subject.style("display", "inline");
+    equal(subject.style("display"), "inline");
+    subject.style("display", null);
+    equal(subject.style("display"), "block");
     subject.style("padding-right", "1px"); // handle properties with dash
     equal(subject.style("padding-right"), "1px");
     subject.style("padding-right", 2); // handle properties without unit

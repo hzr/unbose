@@ -1173,7 +1173,12 @@ Unbose.prototype = {
         }
 
         this._elements.forEach(function(ele) {
-            ele.style.setProperty(prop, value, null);
+            if (value != null) {
+                ele.style.setProperty(prop, value, "important");
+            }
+            else {
+                ele.style.removeProperty(prop);
+            }
         });
         return this;
     },
