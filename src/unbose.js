@@ -171,7 +171,7 @@ Unbose.prototype = {
         return this.on(types, function(event) {
             var target = new Unbose(event.target).closest(selector)[0];
             if (target) {
-               handler.call(target, event);
+                handler.call(target, event);
             }
         });
     },
@@ -391,7 +391,7 @@ Unbose.prototype = {
     closest: function(selector) {
         var eles = [];
         this._elements.forEach(function(ele) {
-            while (ele && ele != document) {
+            while (ele && ele != document && eles.indexOf(ele) == -1) {
                 if (new Unbose(ele).matchesSelector(selector)) {
                     eles.push(ele);
                     break;
