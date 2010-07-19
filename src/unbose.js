@@ -337,8 +337,8 @@ Unbose.prototype = {
 
         function matcher(selector) {
             return this._elements.some(function(ele) {
+                ele = new Unbose(ele);
                 var parts = selector.split(/([#\.])/);
-                var uele = new Unbose(ele);
                 var type, value;
                 var eleName = parts.shift().toLowerCase();
 
@@ -346,12 +346,12 @@ Unbose.prototype = {
                 if (eleName == "*") {
                     return true;
                 }
-                if (!trim(selector) || (eleName && eleName != uele.name())) {
+                if (!trim(selector) || (eleName && eleName != ele.name())) {
                     return false;
                 }
                 while ((type = parts.shift()) && (value = parts.shift())) {
-                    if ((type == "." && !uele.hasClass(value)) ||
-                        (type == "#" && uele.attr("id") != value))
+                    if ((type == "." && !ele.hasClass(value)) ||
+                        (type == "#" && ele.attr("id") != value))
                     {
                         return false;
                     }
@@ -792,9 +792,8 @@ Unbose.prototype = {
      *
      */
     toggleClass: function(cls) {
-        this._elements.forEach(function(ele) {
-            var uele = new Unbose(ele);
-            uele[uele.hasClass(cls) ? "removeClass" : "addClass"](cls);
+        new Unbose(this._elements).forEach(function(ele) {
+            ele[ele.hasClass(cls) ? "removeClass" : "addClass"](cls);
         });
         return this;
     },
@@ -1211,12 +1210,12 @@ Unbose.prototype = {
         var ele = this[0];
         if (value === undefined) {
             if (!ele) { return 0; }
-            var uele = new Unbose(ele);
+            ele = new Unbose(ele);
             return this._getDimensions().width -
-                   parseInt(uele._getStyle("border-left-width")) -
-                   parseInt(uele._getStyle("border-right-width")) -
-                   parseInt(uele._getStyle("padding-left")) -
-                   parseInt(uele._getStyle("padding-right"));
+                   parseInt(ele._getStyle("border-left-width")) -
+                   parseInt(ele._getStyle("border-right-width")) -
+                   parseInt(ele._getStyle("padding-left")) -
+                   parseInt(ele._getStyle("padding-right"));
         }
         else if (ele) {
             this._setDimensions("width", value);
@@ -1242,12 +1241,12 @@ Unbose.prototype = {
         var ele = this[0];
         if (value === undefined) {
             if (!ele) { return 0; }
-            var uele = new Unbose(ele);
+            ele = new Unbose(ele);
             return this._getDimensions().height -
-                   parseInt(uele._getStyle("border-top-width")) -
-                   parseInt(uele._getStyle("border-bottom-width")) -
-                   parseInt(uele._getStyle("padding-top")) -
-                   parseInt(uele._getStyle("padding-bottom"));
+                   parseInt(ele._getStyle("border-top-width")) -
+                   parseInt(ele._getStyle("border-bottom-width")) -
+                   parseInt(ele._getStyle("padding-top")) -
+                   parseInt(ele._getStyle("padding-bottom"));
         }
         else if (ele) {
             this._setDimensions("height", value);
@@ -1322,10 +1321,9 @@ Unbose.prototype = {
      *
      */
     hide: function() {
-        this._elements.forEach(function(ele) {
-            var uele = new Unbose(ele);
-            uele.data("olddisplay", uele.style("display"))
-                .style("display", "none");
+        new Unbose(this._elements).forEach(function(ele) {
+            ele.data("olddisplay", ele.style("display"))
+               .style("display", "none");
         });
         return this;
     },
