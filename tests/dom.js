@@ -40,6 +40,11 @@ test("forEach()", function() {
     }, window);
 });
 
+test("find()", function() {
+    var eles = Unbose.fromZen("div > p.a > b.a > i");
+    equals(eles.find(".a").find("i").length, 1);
+});
+
 test("text()", function() {
     var subject = Unbose("#qunit-header");
 

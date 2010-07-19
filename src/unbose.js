@@ -65,9 +65,16 @@ function Unbose(subject, context) {
 
     // TODO: handle Unbose(window|document)
 
-    var i = 0;
-    while (this[i] = this._elements[i]) { i++; }
-    this.length = i;
+    var eles = [];
+    var len = 0;
+    for (var i = 0, ele; ele = this._elements[i]; i++) {
+        if (eles.indexOf(ele) == -1) { // Filter duplicates
+            eles.push(ele);
+            this[len++] = ele;
+        }
+    }
+    this._elements = eles;
+    this.length = len;
 };
 
 window.Unbose = Unbose;
@@ -391,7 +398,7 @@ Unbose.prototype = {
     closest: function(selector) {
         var eles = [];
         this._elements.forEach(function(ele) {
-            while (ele && ele != document && eles.indexOf(ele) == -1) {
+            while (ele && ele != document) {
                 if (new Unbose(ele).matchesSelector(selector)) {
                     eles.push(ele);
                     break;
@@ -419,9 +426,7 @@ Unbose.prototype = {
         var eles = [];
         this._elements.forEach(function(ele) {
             while ((ele = ele.parentNode) && ele != document) {
-                if (eles.indexOf(ele) == -1) {
-                    eles.push(ele);
-                }
+                eles.push(ele);
             }
         });
         return new Unbose(eles).filter(selector);
@@ -449,7 +454,7 @@ Unbose.prototype = {
         var eles = [];
         this._elements.forEach(function(ele) {
             ele = ele.parentNode;
-            if (ele && ele != document && eles.indexOf(ele) == -1) {
+            if (ele && ele != document) {
                 eles.push(ele);
             }
         });
@@ -479,9 +484,7 @@ Unbose.prototype = {
         this._elements.forEach(function(ele) {
             ele = ele.firstElementChild;
             while (ele) {
-                if (eles.indexOf(ele) == -1) {
-                    eles.push(ele);
-                }
+                eles.push(ele);
                 ele = ele.nextElementSibling;
             }
         });
@@ -507,7 +510,7 @@ Unbose.prototype = {
         this._elements.forEach(function(ele) {
             var child = ele.parentNode.firstElementChild;
             while (child) {
-                if (child != ele && eles.indexOf(child) == -1) {
+                if (child != ele) {
                     eles.push(child);
                 }
                 child = child.nextElementSibling;
