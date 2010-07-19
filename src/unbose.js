@@ -93,6 +93,19 @@ Unbose.prototype = {
         return "[object Unbose]";
     },
 
+    _debug: function() {
+        var ret = [];
+        new Unbose(this._elements).forEach(function(el) {
+            ret.push(
+                el.name() +
+                (el.attr("id") ? "#" + el.attr("id") : "") +
+                (el.attr("class") ? "." + el.attr("class").replace(/ /g, ".") : "")
+            );
+        });
+        return "Length: " + this.length + "\n" +
+               "Elements: " + ret.join(", ");
+    },
+
 
     /**
      * Group: Events
