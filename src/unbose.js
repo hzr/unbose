@@ -36,12 +36,12 @@ function Unbose(subject, context) {
     else if (isArray(subject)) {
         this._elements = subject;
     }
-    else if (isElement(subject)) {
+    else if (isElement(subject) || subject.nodeType == 9 /*DOCUMENT_NODE*/) {
         this._elements[0] = this[0] = subject;
         this.length = 1;
         return this;
     }
-    else if (subject.nodeType == Node.DOCUMENT_FRAGMENT_NODE) {
+    else if (subject.nodeType == 11 /*DOCUMENT_FRAGMENT_NODE*/) {
         var child = subject.firstChild;
         while (child) {
             if (isElement(child)) {
@@ -63,7 +63,7 @@ function Unbose(subject, context) {
         }, false);
     }
 
-    // TODO: handle Unbose(window|document)
+    // TODO: do something sane with Unbose(window). It should at least support width()/height()
 
     var eles = [];
     var len = 0;
@@ -1384,7 +1384,7 @@ function eleFromTpl(tpl) {
     }
 
     // flatten unneeded DocumentFragments
-    if (ele.nodeType == Node.DOCUMENT_FRAGMENT_NODE && ele.childNodes.length == 1) {
+    if (ele.nodeType == 11 /*DOCUMENT_FRAGMENT_NODE*/ && ele.childNodes.length == 1) {
         ele = ele.firstChild;
     }
     return ele;
@@ -1718,7 +1718,7 @@ Unbose.isFunction = isFunction;
  *
  */
 function isElement(obj) {
-    return !!(obj && obj.nodeType == Node.ELEMENT_NODE);
+    return !!(obj && obj.nodeType == 1 /*ELEMENT_NODE*/);
 };
 Unbose.isElement = isElement;
 
