@@ -36,17 +36,16 @@ function Unbose(subject, context) {
     else if (isArray(subject)) {
         this._elements = subject;
     }
-    else if (isElement(subject) || subject.nodeType == 9 /*DOCUMENT_NODE*/) {
+    else if (subject.nodeType == 1 /*ELEMENT*/ || subject.nodeType == 9 /*DOCUMENT_NODE*/) {
         this._elements[0] = this[0] = subject;
         this.length = 1;
         return this;
     }
     else if (subject.nodeType == 11 /*DOCUMENT_FRAGMENT_NODE*/) {
         var child = subject.firstChild;
+        if (child.nodeType != 1 /*ELEMENT*/) { child = child.nextElementSibling; }
         while (child) {
-            if (isElement(child)) {
-                this._elements.push(child);
-            }
+            this._elements.push(child);
             child = child.nextElementSibling;
         }
     }
@@ -132,8 +131,8 @@ Unbose.prototype = {
      */
     on: function(types, handler, capture) {
         types.split(" ").forEach(function(type) {
-            this._elements.forEach(function(ele) {
-                ele.addEventListener(type, handler, capture || false);
+            this.forEach(function() {
+                this.addEventListener(type, handler, capture || false);
             });
         }, this);
         return this;
@@ -257,11 +256,6 @@ Unbose.prototype = {
      *
      *   An Unbose object
      *
-     * XXX:
-     *
-     *   Is it a good idea to let `this` point to the DOM element? It's a
-     *   bit inconsistent. It's how jQuery does it though.
-     *
      */
     forEach: function(callback, context) {
         this._elements.forEach(function(ele, idx, array) {
@@ -309,8 +303,8 @@ Unbose.prototype = {
      */
     find: function(selector) {
         var eles = [];
-        this._elements.forEach(function(ele) {
-            eles = eles.concat(new Unbose(selector, ele)._elements);
+        this.forEach(function() {
+            eles = eles.concat(new Unbose(selector, this)._elements);
         });
         return new Unbose(eles);
     },
@@ -693,7 +687,7 @@ Unbose.prototype = {
         // Gecko does not treat `undefined` correctly for the end parameter
         // in Array.prototype.slice, so set it explicitly
         if (end === undefined) { end = this.length; }
-        var eles = slice.call(this._elements, start, end);
+        var eles = this._elements.slice(start, end);
         if (step) {
             eles = eles.filter(function(ele, idx) {
                 return !(idx % step);
@@ -752,10 +746,9 @@ Unbose.prototype = {
      *
      */
     addClass: function(cls) {
-        this._elements.forEach(function(ele) {
-            if (!new Unbose(ele).hasClass(cls)) { ele.className += " " + cls; }
+        return this.forEach(function(ele) {
+            if (!ele.hasClass(cls)) { this.className += " " + cls; }
         });
-        return this;
     },
 
     /**
@@ -805,10 +798,9 @@ Unbose.prototype = {
      *
      */
     toggleClass: function(cls) {
-        this.forEach(function(ele) {
+        return this.forEach(function(ele) {
             ele[ele.hasClass(cls) ? "removeClass" : "addClass"](cls);
         });
-        return this;
     },
 
     /**
@@ -867,10 +859,9 @@ Unbose.prototype = {
             return this._insertElem(eleFromTpl(thing), append);
         }
         else if (thing._elements !== undefined) {
-            thing._elements.forEach(function(ele) {
-                this._insertElem(ele, append);
-            }, this);
-            return this;
+            return thing.forEach(function() {
+                this._insertElem(this, append);
+            });
         }
         else if (typeof thing === "string") {
             return this._insertElem(eleFromTpl(tplFromZen(thing)), append);
@@ -938,10 +929,9 @@ Unbose.prototype = {
             return this[0] && this[0].getAttribute(name);
         }
         else {
-            this._elements.forEach(function(ele) {
-                ele.setAttribute(name, val);
+            return this.forEach(function() {
+                this.setAttribute(name, val);
             });
-            return this;
         }
     },
 
@@ -964,10 +954,9 @@ Unbose.prototype = {
      *
      */
     removeAttr: function(attr) {
-        this._elements.forEach(function(ele) {
-            ele.removeAttribute(attr);
+        return this.forEach(function() {
+            this.removeAttribute(attr);
         });
-        return this;
     },
 
     /**
@@ -981,8 +970,7 @@ Unbose.prototype = {
      *
      */
     empty: function() {
-        this._elements.forEach(function(ele) { ele.textContent = ""; });
-        return this;
+        return this.forEach(function() { this.textContent = ""; });
     },
 
     /**
@@ -1000,11 +988,10 @@ Unbose.prototype = {
      *
      */
     remove: function(selector) {
-        this.filter(selector)._elements.forEach(function(ele) {
-            var parent = ele.parentNode;
-            if (parent) { parent.removeChild(ele); }
+        return this.filter(selector).forEach(function() {
+            var parent = this.parentNode;
+            if (parent) { parent.removeChild(this); }
         });
-        return this;
     },
 
     /**
@@ -1029,8 +1016,7 @@ Unbose.prototype = {
             return (this[0] && this[0].textContent) || "";
         }
         else {
-            this._elements.forEach(function(ele) { ele.textContent = text; });
-            return this;
+            return this.forEach(function() { this.textContent = text; });
         }
     },
 
@@ -1060,8 +1046,7 @@ Unbose.prototype = {
             return this[0] && this[0].value;
         }
         else {
-            this._elements.forEach(function(ele) { ele.value = val; });
-            return this;
+            return this.forEach(function() { this.value = val; });
         }
     },
 
@@ -1086,10 +1071,9 @@ Unbose.prototype = {
             return this[0] && this[0]["unbose-" + name];
         }
 
-        this._elements.forEach(function(ele) {
-            ele["unbose-" + name] = prop;
+        return this.forEach(function() {
+            this["unbose-" + name] = prop;
         });
-        return this;
     },
 
 
@@ -1172,15 +1156,14 @@ Unbose.prototype = {
             value = (+value | 0) + "px";
         }
 
-        this._elements.forEach(function(ele) {
+        return this.forEach(function(ele) {
             if (value != null) {
-                ele.style.setProperty(prop, value, "important");
+                this.style.setProperty(prop, value, "important");
             }
             else {
-                ele.style.removeProperty(prop);
+                this.style.removeProperty(prop);
             }
         });
-        return this;
     },
 
     /**
@@ -1229,9 +1212,8 @@ Unbose.prototype = {
                    parseInt(ele._getStyle("padding-right"));
         }
         else if (ele) {
-            this._setDimensions("width", value);
+            return this._setDimensions("width", value);
         }
-        return this;
     },
 
     /**
@@ -1260,9 +1242,8 @@ Unbose.prototype = {
                    parseInt(ele._getStyle("padding-bottom"));
         }
         else if (ele) {
-            this._setDimensions("height", value);
+            return this._setDimensions("height", value);
         }
-        return this;
     },
 
     /**
@@ -1318,7 +1299,7 @@ Unbose.prototype = {
     _setDimensions: function(prop, val) {
         if (+val == parseFloat(val)) { val = (+val | 0) + "px"; }
         if (parseInt(val) < 0) { val = 0; }
-        this._elements.forEach(function(ele) { ele.style[prop] = val; });
+        this._setStyle(prop, val);
     },
 
     /**
@@ -1332,11 +1313,10 @@ Unbose.prototype = {
      *
      */
     hide: function() {
-        this.forEach(function(ele) {
-            ele.data("olddisplay", ele.style("display"))
-               .style("display", "none");
+        return this.forEach(function(ele) {
+            ele.data("olddisplay", ele._getStyle("display"))
+               ._setStyle("display", "none");
         });
-        return this;
     },
 
     /**
@@ -1346,7 +1326,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   mode - (optional) the css display mode to use for the shown state.
+     *   mode - (optional) the value for the CSS display property
      *
      * Returns:
      *
@@ -1357,10 +1337,9 @@ Unbose.prototype = {
      * set in their stylesheet.
      */
     show: function(mode) {
-        this._elements.forEach(function(ele) {
-            ele.style.display = new Unbose(ele).data("olddisplay") || mode || "";
-        });
-        return this;
+        return this.forEach(function(ele) {
+            this._setStyle("display", mode || ele.data("olddisplay") || "");
+        }, this);
     }
 };
 
