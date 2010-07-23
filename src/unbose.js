@@ -119,7 +119,7 @@ Unbose.prototype = {
      *
      * Parameters:
      *
-     *   types - Type of the event. To attach multiple event handlers,
+     *   types - Type of the event. To add multiple event handlers,
      *           separate them with a space.
      *   handler - Function called when event occurs
      *   capture - Use capturing
@@ -799,7 +799,9 @@ Unbose.prototype = {
      */
     toggleClass: function(cls) {
         return this.forEach(function(ele) {
-            ele[ele.hasClass(cls) ? "removeClass" : "addClass"](cls);
+            cls.split(SPACE_CHARS).forEach(function(cls) {
+                ele[ele.hasClass(cls) ? "removeClass" : "addClass"](cls);
+            });
         });
     },
 
