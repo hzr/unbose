@@ -1336,8 +1336,8 @@ Unbose.prototype = {
      */
     show: function(mode) {
         return this.forEach(function(ele) {
-            this._setStyle("display", mode || ele.data("olddisplay") || "");
-        }, this);
+            ele._setStyle("display", mode || ele.data("olddisplay") || "");
+        });
     }
 };
 
