@@ -1201,15 +1201,13 @@ Unbose.prototype = {
      *
      */
     width: function(value) {
-        var ele = this[0];
         if (value === undefined) {
-            if (!ele) { return 0; }
-            ele = new Unbose(ele);
+            if (!this[0]) { return 0; }
             return this._getDimensions().width -
-                   parseInt(ele._getStyle("border-left-width")) -
-                   parseInt(ele._getStyle("border-right-width")) -
-                   parseInt(ele._getStyle("padding-left")) -
-                   parseInt(ele._getStyle("padding-right"));
+                   parseInt(this._getStyle("border-left-width")) -
+                   parseInt(this._getStyle("border-right-width")) -
+                   parseInt(this._getStyle("padding-left")) -
+                   parseInt(this._getStyle("padding-right"));
         }
         else if (ele) {
             return this._setDimensions("width", value);
@@ -1231,15 +1229,13 @@ Unbose.prototype = {
      *
      */
     height: function(value) {
-        var ele = this[0];
         if (value === undefined) {
-            if (!ele) { return 0; }
-            ele = new Unbose(ele);
+            if (!this[0]) { return 0; }
             return this._getDimensions().height -
-                   parseInt(ele._getStyle("border-top-width")) -
-                   parseInt(ele._getStyle("border-bottom-width")) -
-                   parseInt(ele._getStyle("padding-top")) -
-                   parseInt(ele._getStyle("padding-bottom"));
+                   parseInt(this._getStyle("border-top-width")) -
+                   parseInt(this._getStyle("border-bottom-width")) -
+                   parseInt(this._getStyle("padding-top")) -
+                   parseInt(this._getStyle("padding-bottom"));
         }
         else if (ele) {
             return this._setDimensions("height", value);
@@ -1271,7 +1267,7 @@ Unbose.prototype = {
             // TODO: check if this is enough. Otherwise, position it outside the viewport
             uele._setStyles({"position": "absolute", "visbility": "hidden"}).show();
             rect = ele.getBoundingClientRect();
-            uele._setStyles({"position": oldpos, "visibility": oldvis}).hide();
+            uele._setStyles({"position": oldpos, "visibility": oldvis, "display": "none"});
         }
         // XXX: Gecko seems to have a rounding error for top and bottom (at least).
         // Consider rounding these values.
@@ -1299,7 +1295,7 @@ Unbose.prototype = {
     _setDimensions: function(prop, val) {
         if (+val == parseFloat(val)) { val = (+val | 0) + "px"; }
         if (parseInt(val) < 0) { val = 0; }
-        this._setStyle(prop, val);
+        return this._setStyle(prop, val);
     },
 
     /**
