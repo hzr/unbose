@@ -1,9 +1,10 @@
-(function(window, document, undefined) {
+(function(window, document) {
 /**
  * Class: Unbose
  *
  * Subject can be a CSS selector (string), array (presumed to be of elements),
  * element, document fragment or an Unbose object.
+ *
  */
 function Unbose(subject, context) {
     if (! (this instanceof Unbose)) {
@@ -1206,10 +1207,10 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!this[0]) { return 0; }
             return this._getDimensions().width -
-                   parseInt(this._getStyle("border-left-width")) -
-                   parseInt(this._getStyle("border-right-width")) -
-                   parseInt(this._getStyle("padding-left")) -
-                   parseInt(this._getStyle("padding-right"));
+                parseInt(this._getStyle("border-left-width"), 10) -
+                parseInt(this._getStyle("border-right-width"), 10) -
+                parseInt(this._getStyle("padding-left"), 10) -
+                parseInt(this._getStyle("padding-right"), 10);
         }
         else if (ele) {
             return this._setDimensions("width", value);
@@ -1234,10 +1235,10 @@ Unbose.prototype = {
         if (value === undefined) {
             if (!this[0]) { return 0; }
             return this._getDimensions().height -
-                   parseInt(this._getStyle("border-top-width")) -
-                   parseInt(this._getStyle("border-bottom-width")) -
-                   parseInt(this._getStyle("padding-top")) -
-                   parseInt(this._getStyle("padding-bottom"));
+                parseInt(this._getStyle("border-top-width"), 10) -
+                parseInt(this._getStyle("border-bottom-width"), 10) -
+                parseInt(this._getStyle("padding-top"), 10) -
+                parseInt(this._getStyle("padding-bottom"), 10);
         }
         else if (ele) {
             return this._setDimensions("height", value);
@@ -1296,7 +1297,7 @@ Unbose.prototype = {
      */
     _setDimensions: function(prop, val) {
         if (+val == parseFloat(val)) { val = (+val | 0) + "px"; }
-        if (parseInt(val) < 0) { val = 0; }
+        if (parseInt(val, 10) < 0) { val = 0; }
         return this._setStyle(prop, val);
     },
 
@@ -1737,7 +1738,7 @@ var trim = (function() {
         str = (str || "").replace(/^\s\s*/, "");
         var ws = /\s/;
         var i = str.length;
-        while (ws.test(str.charAt(--i)));
+        while (ws.test(str.charAt(--i))){}
         return str.slice(0, i + 1);
     };
 })();
@@ -1782,4 +1783,3 @@ Unbose.support = {
     })()
 };
 })(window, window.document);
-
