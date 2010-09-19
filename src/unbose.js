@@ -864,7 +864,7 @@ Unbose.prototype = {
         else if (thing._elements !== undefined) {
             return thing.forEach(function() {
                 this._insertElem(this, append);
-            });
+            }, this);
         }
         else if (typeof thing === "string") {
             return this._insertElem(eleFromTpl(tplFromZen(thing)), append);
