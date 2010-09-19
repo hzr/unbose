@@ -495,6 +495,13 @@ test("insert()", function() {
     Unbose(ele).insert("strong");
     equal(ele.childNodes.length, 2);
     equal(ele.firstChild.nodeName.toLowerCase(), "strong");
+
+    ele = document.createElement("div");
+    var child = Unbose.fromZen("strong");
+    Unbose(ele).insert(child);
+    equal(ele.childNodes.length, 1);
+    equal(ele.firstChild.nodeName.toLowerCase(), "strong");
+
 });
 
 
