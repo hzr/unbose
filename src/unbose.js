@@ -861,9 +861,9 @@ Unbose.prototype = {
         else if (isArray(thing)) {
             return this._insertElem(eleFromTpl(thing), append);
         }
-        else if (thing._elements !== undefined) {
-            return thing.forEach(function() {
-                this._insertElem(this, append);
+        else if (thing._elements !== undefined) { // thing is an unbose object
+            return thing._elements.forEach(function(e) {
+                this._insertElem(e, append);
             }, this);
         }
         else if (typeof thing === "string") {
