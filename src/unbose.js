@@ -166,7 +166,7 @@ Unbose.prototype = {
                 this.removeEventListener(type, runOnce, capture);
             }, this);
             handler.call(this, event);
-        };
+        }
         return this.on(types, runOnce, capture);
     },
 
@@ -1268,9 +1268,9 @@ Unbose.prototype = {
             var oldpos = uele.style("position");
             var oldvis = uele.style("visibility");
             // TODO: check if this is enough. Otherwise, position it outside the viewport
-            uele._setStyles({"position": "absolute", "visbility": "hidden"}).show();
+            uele._setStyles({"position": "absolute", "visibility": "hidden"}).show();
             rect = ele.getBoundingClientRect();
-            uele._setStyles({"position": oldpos, "visibility": oldvis, "display": "none"});
+            uele._setStyles({"display": "none", "position": oldpos, "visibility": oldvis});
         }
         // XXX: Gecko seems to have a rounding error for top and bottom (at least).
         // Consider rounding these values.
@@ -1279,8 +1279,8 @@ Unbose.prototype = {
             right: rect.right + window.scrollX,
             bottom: rect.bottom + window.scrollY,
             left: rect.left + window.scrollX,
-            height: rect.bottom - rect.top,
-            width: rect.right - rect.left
+            height: rect.height,
+            width: rect.width
         };
     },
 
