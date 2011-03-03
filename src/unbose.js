@@ -1321,8 +1321,10 @@ Unbose.prototype = {
     hide: function() {
         return this.forEach(function(ele) {
             var olddisplay = ele._getStyle("display");
-            if (olddisplay != "none") { ele.data("olddisplay", olddisplay); }
-            ele._setStyle("display", "none");
+            if (olddisplay != "none") {
+              ele.data("olddisplay", olddisplay)
+                 ._setStyle("display", "none");
+            }
         });
     },
 
