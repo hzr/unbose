@@ -1219,7 +1219,7 @@ Unbose.prototype = {
                 parseInt(this._getStyle("padding-left"), 10) -
                 parseInt(this._getStyle("padding-right"), 10);
         }
-        else if (ele) {
+        else {
             return this._setDimensions("width", value);
         }
     },
@@ -1247,7 +1247,7 @@ Unbose.prototype = {
                 parseInt(this._getStyle("padding-top"), 10) -
                 parseInt(this._getStyle("padding-bottom"), 10);
         }
-        else if (ele) {
+        else {
             return this._setDimensions("height", value);
         }
     },
