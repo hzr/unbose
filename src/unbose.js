@@ -154,7 +154,7 @@ Unbose.prototype = {
     /**
      * Method: on
      *
-     * Add an event listener to all elements in the set.
+     * Add event listeners to all elements in the set.
      *
      * Parameters:
      *
@@ -177,7 +177,31 @@ Unbose.prototype = {
         return this;
     },
 
-    // TODO: method to remove events
+    /**
+     * Method: unbind
+     *
+     * Remove event listeners for all elements in the set.
+     *
+     * Parameters:
+     *
+     *   types - Type of the event. To add multiple event handlers,
+     *           separate them with a space.
+     *   handler - Function called when event occurs
+     *   capture - Use capturing
+     *
+     * Returns:
+     *
+     *   An Unbose object
+     *
+     */
+    unbind: function(types, handler, capture) {
+        types.split(" ").forEach(function(type) {
+            this._elements.forEach(function(ele) {
+                ele.removeEventListener(type, handler, capture || false);
+            });
+        }, this);
+        return this;
+    },
 
     /**
      * Method: once

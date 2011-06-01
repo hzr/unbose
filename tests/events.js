@@ -1,6 +1,6 @@
 module("Events");
 
-test("on", function()
+test("on()", function()
 {
     expect(6);
 
@@ -23,6 +23,31 @@ test("on", function()
     simulateMouseEvent(ele3, "click");
     simulateMouseEvent(ele3, "mouseover");
 });
+
+test("unbind()", function()
+{
+    expect(6);
+
+    var ele = document.createElement("div");
+    var subject = Unbose(ele);
+    var func = function(evt) {
+        ok(evt);
+        equal(this, subject.elem(0));
+    };
+    subject.on("click", func);
+    simulateMouseEvent(ele, "click");
+    subject.unbind("click", func)
+    simulateMouseEvent(ele, "click");
+
+    subject.on("click mouseover", func);
+    simulateMouseEvent(ele, "click");
+    simulateMouseEvent(ele, "mouseover");
+    subject.unbind("click", func)
+    subject.unbind("mouseover", func)
+    simulateMouseEvent(ele, "click");
+    simulateMouseEvent(ele, "mouseover");
+});
+
 test("once()", function()
 {
     expect(2);
