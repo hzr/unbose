@@ -94,8 +94,6 @@ test("prev()", function() {
     equal(ele.length, 3);
     ele = Unbose(tpl).find("span").prev("i#b.c");
     equal(ele.length, 1);
-    ele = Unbose(tpl).find("span").prev(""); // Filter everything
-    equal(ele.length, 0);
 });
 
 test("next()", function() {
@@ -334,7 +332,6 @@ test("closest()", function() {
     ok(tip.closest(".foo").hasClass("foo"));
 
     equal(tip.closest("bogus").length, 0);
-    equal(tip.closest("").length, 0);
     equal(Unbose("p").closest("bogus").length, 0, "Should not go to the document node");
 
     ele = Unbose(Unbose.eleFromZen("div.a>(p.b>i)+(p>i)+i"));

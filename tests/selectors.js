@@ -64,8 +64,7 @@ test("matchesSelector()", function() {
 
     var eles = Unbose(Unbose.eleFromZen("div.a + div.b"));
     ok(eles.matchesSelector(".a"));
-    ok(eles.matchesSelector(".b"));
-    ok(!eles.matchesSelector(".c"));
+    ok(!eles.matchesSelector(".b"));
 });
 
 

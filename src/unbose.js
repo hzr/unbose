@@ -82,11 +82,50 @@ window.Unbose = Unbose;
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
 var UNITLESS_PROPERTIES = ["font-weight", "line-height", "opacity", "z-index"];
+var METHOD_PREFIXES = ["moz", "ms", "o", "webkit"];
 
 // Cache some methods
 var toString = Object.prototype.toString;
 var slice = Array.prototype.slice;
 var forEach = Array.prototype.forEach;
+
+/**
+ * Group: Helpers
+ *
+ */
+Unbose.helpers = {
+    /**
+     * Method: expandName
+     *
+     * Parameters:
+     *
+     *   name - The event name
+     *
+     * Expands an event name for use with on():
+     * "transitionEnd" -> "transitionEnd mozTransitionEnd msTransitionEnd oTransitionEnd webkitTransitionEnd"
+     */
+    expandName: function(name) {
+        return METHOD_PREFIXES.reduce(function(prev, next) {
+            return prev + " " + next + name[0].toUpperCase() + name.slice(1);
+        }, [name]);
+    }
+};
+
+/**
+ * Group: Support
+ *
+ */
+Unbose.support = {
+    /**
+     * Boolean: classList
+     *
+     * Whether or not the user-agent support classList for elements
+     */
+    classList: (function() {
+        var ele = document.createElement("div");
+        return !!ele.classList;
+    })()
+};
 
 Unbose.prototype = {
     toString: function() {
@@ -324,49 +363,9 @@ Unbose.prototype = {
      *
      *   True if the element matches the selector, false otherwise
      *
-     * Caveats:
-     *
-     *   This matcher is a lot less sophisticated than a native one would be.
-     *   Currently the following selectors are supported:
-     *
-     *   - Universal selector (*)
-     *   - Element names
-     *   - Class names
-     *   - IDs
-     *   - Chains of the above
-     *   - Multiple selectors separated by comma
-     *
-     *   Note also that classes ad IDs can only be matched by "." and "#" syntax.
-     *   Attribute selectors ([]) are not supported.
      */
     matchesSelector: function(selector) {
-        var selectors = selector.split(/\s*,\s*/);
-        return selectors.some(matcher, this);
-
-        function matcher(selector) {
-            return this._elements.some(function(ele) {
-                ele = new Unbose(ele);
-                var parts = selector.split(/([#\.])/);
-                var type, value;
-                var eleName = parts.shift().toLowerCase();
-
-                // FIXME: won't work for e.g. *.class or *#id
-                if (eleName == "*") {
-                    return true;
-                }
-                if (!trim(selector) || (eleName && eleName != ele.name())) {
-                    return false;
-                }
-                while ((type = parts.shift()) && (value = parts.shift())) {
-                    if ((type == "." && !ele.hasClass(value)) ||
-                        (type == "#" && ele.attr("id") != value))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        }
+        return this[0].matchesSelector(selector);
     },
 
     /**
@@ -1767,19 +1766,26 @@ if (!Function.prototype.bind) {
     };
 }
 
-/**
- * Group: Support
- *
- */
-Unbose.support = {
-    /**
-     * Boolean: classList
-     *
-     * Whether or not the user-agent support classList for elements
-     */
-    classList: (function() {
-        var ele = document.createElement("div");
-        return !!ele.classList;
-    })()
-};
+// TODO: allow plugging in some selector engine here
+if (!Element.prototype.matchesSelector) {
+    Element.prototype.matchesSelector = (function() {
+        var method = null;
+        METHOD_PREFIXES.some(function(prefix) {
+            var expandedMethod = Element.prototype[prefix + "MatchesSelector"];
+            if (expandedMethod) {
+                method = expandedMethod;
+                return true;
+            }
+        });
+
+        if (method) {
+            return method;
+        }
+        else {
+            // TODO: actually support selector engines easily
+            throw "Unbose error: No matchesSelector support. Use a selector " +
+                  "engine instead (currently has to be done manually).";
+        }
+    })();
+}
 })(window, window.document);
