@@ -122,8 +122,7 @@ Unbose.support = {
      * Whether or not the user-agent support classList for elements
      */
     classList: (function() {
-        var ele = document.createElement("div");
-        return !!ele.classList;
+        return !!document.createElement("a").classList;
     })()
 };
 
