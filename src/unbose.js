@@ -170,8 +170,8 @@ Unbose.prototype = {
      */
     on: function(types, handler, capture) {
         types.split(" ").forEach(function(type) {
-            this.forEach(function() {
-                this.addEventListener(type, handler, capture || false);
+            this._elements.forEach(function(ele) {
+                ele.addEventListener(type, handler, capture || false);
             });
         }, this);
         return this;
@@ -937,8 +937,8 @@ Unbose.prototype = {
             return this[0] && this[0].getAttribute(name);
         }
         else {
-            return this.forEach(function() {
-                this.setAttribute(name, val);
+            return this._elements.forEach(function(ele) {
+                ele.setAttribute(name, val);
             });
         }
     },
@@ -962,8 +962,8 @@ Unbose.prototype = {
      *
      */
     removeAttr: function(attr) {
-        return this.forEach(function() {
-            this.removeAttribute(attr);
+        return this._elements.forEach(function(ele) {
+            ele.removeAttribute(attr);
         });
     },
 
@@ -978,7 +978,9 @@ Unbose.prototype = {
      *
      */
     empty: function() {
-        return this.forEach(function() { this.textContent = ""; });
+        return this._elements.forEach(function(ele) {
+            ele.textContent = "";
+        });
     },
 
     /**
@@ -996,9 +998,11 @@ Unbose.prototype = {
      *
      */
     remove: function(selector) {
-        return this.filter(selector).forEach(function() {
-            var parent = this.parentNode;
-            if (parent) { parent.removeChild(this); }
+        return this.filter(selector)._elements.forEach(function(ele) {
+            var parent = ele.parentNode;
+            if (parent) {
+                parent.removeChild(ele);
+            }
         });
     },
 
@@ -1024,7 +1028,9 @@ Unbose.prototype = {
             return (this[0] && this[0].textContent) || "";
         }
         else {
-            return this.forEach(function() { this.textContent = text; });
+            return this._elements.forEach(function(ele) {
+                ele.textContent = text;
+            });
         }
     },
 
@@ -1054,7 +1060,9 @@ Unbose.prototype = {
             return this[0] && this[0].value;
         }
         else {
-            return this.forEach(function() { this.value = val; });
+            return this._elements.forEach(function(ele) {
+                ele.value = val;
+            });
         }
     },
 
@@ -1164,12 +1172,12 @@ Unbose.prototype = {
             value = (+value | 0) + "px";
         }
 
-        return this.forEach(function(ele) {
+        return this._elements.forEach(function(ele) {
             if (value != null) {
-                this.style.setProperty(prop, value, "important");
+                ele.style.setProperty(prop, value, "important");
             }
             else {
-                this.style.removeProperty(prop);
+                ele.style.removeProperty(prop);
             }
         });
     },
