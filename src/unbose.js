@@ -419,7 +419,8 @@ Unbose.prototype = {
     /**
      * Method: ancestors
      *
-     * Find all ancestors, matching the given selector, to the elements in the set.
+     * Find all ancestors, parent, grandparent and so on, matching the 
+     * given selector, to the elements in the set.
      *
      * Parameters:
      *
@@ -428,6 +429,11 @@ Unbose.prototype = {
      * Returns:
      *
      *   An Unbose object
+     *
+     * See also:
+     *
+     *   <parent>, <closest>
+     *
      */
     ancestors: function(selector) {
         var eles = [];
@@ -442,7 +448,8 @@ Unbose.prototype = {
     /**
      * Method: parent
      *
-     * Get the elements parents.
+     * Get the elements parents. This applies to immediate parents, as
+     * opposed to <ancestors>
      *
      * Parameters:
      *
@@ -454,7 +461,7 @@ Unbose.prototype = {
      *
      * See also:
      *
-     *   <children>
+     *   <children>, <ancestors>
      *
      */
     parent: function(selector) {
@@ -1211,7 +1218,7 @@ Unbose.prototype = {
                 parseInt(this._getStyle("padding-left"), 10) -
                 parseInt(this._getStyle("padding-right"), 10);
         }
-        else if (ele) {
+        else {
             return this._setDimensions("width", value);
         }
     },
@@ -1239,7 +1246,7 @@ Unbose.prototype = {
                 parseInt(this._getStyle("padding-top"), 10) -
                 parseInt(this._getStyle("padding-bottom"), 10);
         }
-        else if (ele) {
+        else {
             return this._setDimensions("height", value);
         }
     },
@@ -1312,8 +1319,11 @@ Unbose.prototype = {
      */
     hide: function() {
         return this.forEach(function(ele) {
-            ele.data("olddisplay", ele._getStyle("display"))
-               ._setStyle("display", "none");
+            var olddisplay = ele._getStyle("display");
+            if (olddisplay != "none") {
+              ele.data("olddisplay", olddisplay)
+                 ._setStyle("display", "none");
+            }
         });
     },
 

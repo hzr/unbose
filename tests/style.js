@@ -25,6 +25,10 @@ test("show()", function() {
     subject.hide();
     subject.show();
     equal(subject.style("display"), "inline-block");
+    subject.hide();
+    subject.hide();
+    subject.show();
+    equal(ele.style.display, "inline-block");
 });
 
 test("style()", function() {
