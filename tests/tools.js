@@ -10,16 +10,6 @@ test("isFunction()", function() {
     equal(Unbose.isFunction(document.createElement("div")), false);
 });
 
-test("isArray()", function() {
-    expect(6);
-    equal(Unbose.isArray([]), true);
-    equal(Unbose.isArray(function() {}), false);
-    equal(Unbose.isArray(), false);
-    equal(Unbose.isArray(null), false);
-    equal(Unbose.isArray(1234), false);
-    equal(Unbose.isArray(document.createElement("div")), false);
-});
-
 test("isElement()", function() {
     expect(6);
     equal(Unbose.isElement(document.createElement("div")), true);
@@ -28,10 +18,6 @@ test("isElement()", function() {
     equal(Unbose.isElement(), false);
     equal(Unbose.isElement(null), false);
     equal(Unbose.isElement(1234), false);
-});
-
-test("trim()", function() {
-    equal(Unbose.trim(" \v\t t e s t \f\r\n "), "t e s t");
 });
 
 test("list()", function() {

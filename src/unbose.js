@@ -34,7 +34,7 @@ function Unbose(subject, context) {
             this._elements.push(ele);
         }
     }
-    else if (isArray(subject)) {
+    else if (Array.isArray(subject)) {
         this._elements = subject;
     }
     else if (subject.nodeType == 1 /*ELEMENT*/ || subject.nodeType == 9 /*DOCUMENT_NODE*/) {
@@ -887,7 +887,7 @@ Unbose.prototype = {
         if (isElement(thing)) {
             return this._insertElem(thing, append);
         }
-        else if (isArray(thing)) {
+        else if (Array.isArray(thing)) {
             return this._insertElem(eleFromTpl(thing), append);
         }
         else if (thing._elements !== undefined) { // thing is an unbose object
@@ -1688,32 +1688,6 @@ function list() {
 Unbose.list = list;
 
 /**
- * Method: Unbose.isArray
- *
- * Check if an object is an array.
- *
- * Parameters:
- *
- *   obj - the object to check
- *
- * Returns:
- *
- *   boolean, true if object is an array. Otherwise false.
- *
- * Note:
- *
- *   Object.prototype.toString technique copied from:
- *   http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
- *
- */
-var isArray = (function() {
-    return Array.isArray || function isArray(obj) {
-        return !!(obj && toString.call(obj) === "[object Array]");
-    };
-})();
-Unbose.isArray = isArray;
-
-/**
  * Method: Unbose.isFunction
  *
  * Check if an object is a function.
@@ -1750,39 +1724,6 @@ function isElement(obj) {
     return !!(obj && obj.nodeType == 1 /*ELEMENT_NODE*/);
 };
 Unbose.isElement = isElement;
-
-/**
- * Method: Unbose.trim
- *
- * Trim leading and trailing whitespace in a string.
- *
- * Parameters:
- *
- *   text - The text to be trimmed
- *
- * Returns:
- *
- *   The trimmed text
- *
- */
-var trim = (function() {
-    if (String.prototype.trim) {
-        return function trim(text) {
-            return String.prototype.trim.call(text);
-        };
-    }
-
-    // Slightly modified version of Steven Levithan's super fast trim function
-    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-    return function trim(str) {
-        str = (str || "").replace(/^\s\s*/, "");
-        var ws = /\s/;
-        var i = str.length;
-        while (ws.test(str.charAt(--i))){}
-        return str.slice(0, i + 1);
-    };
-})();
-Unbose.trim = trim;
 
 /**
  * Method: Unbose.nop

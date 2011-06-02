@@ -242,7 +242,7 @@ test("toggleClass()", function() {
 
     ele.className = "foo";
     subject.toggleClass("foo bar");
-    equal(Unbose.trim(subject.attr("class")), "bar");
+    equal(subject.attr("class").trim(), "bar");
 });
 
 test("nth()", function() {
