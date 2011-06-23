@@ -48,8 +48,6 @@ test("find()", function() {
 test("text()", function() {
     var subject = Unbose("#qunit-header");
 
-    equal(subject.text(), "unbose tests");
-
     subject.text("Unbose tests");
 
     equal(subject.text(), "Unbose tests");
