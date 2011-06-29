@@ -1,4 +1,4 @@
-(function(window, document) {
+var Unbose = (function(window, document) {
 /**
  * Class: Unbose
  *
@@ -76,8 +76,6 @@ function Unbose(subject, context) {
     this._elements = eles;
     this.length = len;
 };
-
-window.Unbose = Unbose;
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
@@ -1748,7 +1746,6 @@ if (!Function.prototype.bind) {
     };
 }
 
-// TODO: allow plugging in some selector engine here
 if (!Element.prototype.matchesSelector) {
     Element.prototype.matchesSelector = (function() {
         var method = null;
@@ -1760,14 +1757,17 @@ if (!Element.prototype.matchesSelector) {
             }
         });
 
-        if (method) {
-            return method;
-        }
-        else {
-            // TODO: actually support selector engines easily
-            throw "Unbose error: No matchesSelector support. Use a selector " +
-                  "engine instead (currently has to be done manually).";
+        return method || function matchesSelector(selector) {
+            var eles = this.parentNode.querySelectorAll(selector);
+            for (var i = 0, ele; ele = eles[i]; i++) {
+                if (ele == this) {
+                    return true;
+                }
+            }
+            return false;
         }
     })();
 }
+
+return Unbose;
 })(window, window.document);
