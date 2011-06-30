@@ -79,6 +79,7 @@ function Unbose(subject, context) {
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
+// TODO: there are more of these properties, find them all
 var UNITLESS_PROPERTIES = ["font-weight", "line-height", "opacity", "z-index"];
 var METHOD_PREFIXES = ["moz", "ms", "o", "webkit"];
 
@@ -1748,16 +1749,13 @@ if (!Function.prototype.bind) {
 
 if (!Element.prototype.matchesSelector) {
     Element.prototype.matchesSelector = (function() {
-        var method = null;
-        METHOD_PREFIXES.some(function(prefix) {
-            var expandedMethod = Element.prototype[prefix + "MatchesSelector"];
-            if (expandedMethod) {
-                method = expandedMethod;
-                return true;
-            }
-        });
+        var method = METHOD_PREFIXES.map(function(prefix) {
+                return Element.prototype[prefix + "MatchesSelector"];
+            }).filter(function(method) {
+                return method;
+            })[0];
 
-        return method || function matchesSelector(selector) {
+        return method || function(selector) {
             var eles = this.parentNode.querySelectorAll(selector);
             for (var i = 0, ele; ele = eles[i]; i++) {
                 if (ele == this) {
@@ -1765,7 +1763,7 @@ if (!Element.prototype.matchesSelector) {
                 }
             }
             return false;
-        }
+        };
     })();
 }
 
