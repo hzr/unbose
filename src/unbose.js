@@ -29,10 +29,7 @@ function Unbose(subject, context) {
     }
 
     if (typeof subject == "string") {
-        var eles = (context || document).querySelectorAll(subject);
-        for (var i = 0, ele; ele = eles[i]; i++) {
-            this._elements.push(ele);
-        }
+        this._elements = slice.call((context || document).querySelectorAll(subject));
     }
     else if (Array.isArray(subject)) {
         this._elements = subject;
@@ -63,30 +60,26 @@ function Unbose(subject, context) {
         // there's always something explicit in <body>
         document.addEventListener("DOMContentLoaded", function ready(event) {
             subject(event);
-            // I wonder if this is necessary. jQuery does it, but shouldn't browser's themselves do it?
-            document.removeEventListener("DOMContentLoaded", ready, false);
         }, false);
     }
 
     // TODO: do something sane with Unbose(window). It should at least support width()/height()
 
     var eles = [];
-    var len = 0;
-    for (var i = 0, ele; ele = this._elements[i]; i++) {
+    this._elements.forEach(function(ele) {
         if (eles.indexOf(ele) == -1) { // Filter duplicates
-            eles.push(ele);
-            this[len++] = ele;
+            eles[eles.length] = this[eles.length] = ele;
         }
-    }
+    }, this);
     this._elements = eles;
-    this.length = len;
+    this.length = eles.length;
 };
 
 // http://www.whatwg.org/specs/web-apps/current-work/#space-character
 var SPACE_CHARS = /[\x20\x09\x0A\x0C\x0D]+/g;
 // TODO: there are more of these properties, find them all
 var UNITLESS_PROPERTIES = ["font-weight", "line-height", "opacity", "z-index"];
-var METHOD_PREFIXES = ["moz", "ms", "o", "webkit"];
+var VENDOR_PREFIXES = ["moz", "ms", "o", "webkit"];
 
 // Cache some methods
 var toString = Object.prototype.toString;
@@ -109,7 +102,7 @@ Unbose.helpers = {
      * "transitionEnd" -> "transitionEnd mozTransitionEnd msTransitionEnd oTransitionEnd webkitTransitionEnd"
      */
     expandName: function(name) {
-        return METHOD_PREFIXES.reduce(function(prev, next) {
+        return VENDOR_PREFIXES.reduce(function(prev, next) {
             return prev + " " + next + name[0].toUpperCase() + name.slice(1);
         }, [name]);
     }
@@ -293,16 +286,7 @@ Unbose.prototype = {
      *   specific position.
      */
     add: function(eles) {
-        if (typeof eles == "string") {
-            eles = new Unbose(eles)._elements;
-        }
-        else if (eles._elements !== undefined) {
-            eles = eles._elements;
-        }
-        else if (isElement(eles)) {
-            eles = [eles];
-        }
-        this._elements = this._elements.concat(eles);
+        this._elements = this._elements.concat(new Unbose(eles)._elements);
         this.length = this._elements.length;
         return this;
     },
@@ -1754,7 +1738,7 @@ if (!Function.prototype.bind) {
 
 if (!Element.prototype.matchesSelector) {
     Element.prototype.matchesSelector = (function() {
-        var method = METHOD_PREFIXES.map(function(prefix) {
+        var method = VENDOR_PREFIXES.map(function(prefix) {
                 return Element.prototype[prefix + "MatchesSelector"];
             }).filter(function(method) {
                 return method;
