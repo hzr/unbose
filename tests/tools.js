@@ -26,3 +26,25 @@ test("list()", function() {
     equal(Unbose.list([],[0],[1,2],[3,4]).join('-'), '0-1-2-3-4');
     equal(Unbose.list("list").join('-'), 'l-i-s-t');
 });
+
+test("Adding functions to prototype", function() {
+    var htmlfun = function(html) {
+        if (html === undefined) {
+            return (this[0] && this[0].innerHTML) || "";
+        }
+        else {
+            return this._elements.forEach(function(ele) {
+                ele.innerHTML = html;
+            });
+        }
+    }
+    Unbose.prototype.html = htmlfun;
+
+    html = '<a href="#"><strong>link</strong></a>';
+    var ele = Unbose.fromZen("div");
+    equal(ele.html(), "");
+    ele.html(html);
+    equal(ele.html(), html);
+
+
+});

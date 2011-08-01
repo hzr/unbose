@@ -42,7 +42,7 @@ function Unbose(subject, context) {
         this.length = 1;
         return this;
     }
-    else if (subject.nodeType == 3 /* TEXT_NODE */) {
+    else if (subject.nodeType == 3 /*TEXT_NODE*/) {
         this._elements[0] = this[0] = subject.parentNode;
         this.length = 1;
         return this;
