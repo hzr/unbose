@@ -7,7 +7,7 @@ test("on()", function()
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     subject.on("click", function(evt) { ok(evt);
-                                  equal(this, subject.elem(0));
+                                  equals(this, subject.elem(0));
                                 });
     simulateMouseEvent(ele, "click");
 
@@ -32,7 +32,7 @@ test("unbind()", function()
     var subject = Unbose(ele);
     var func = function(evt) {
         ok(evt);
-        equal(this, subject.elem(0));
+        equals(this, subject.elem(0));
     };
     subject.on("click", func);
     simulateMouseEvent(ele, "click");

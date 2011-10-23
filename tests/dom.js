@@ -50,7 +50,7 @@ test("text()", function() {
 
     subject.text("Unbose tests");
 
-    equal(subject.text(), "Unbose tests");
+    equals(subject.text(), "Unbose tests");
 });
 
 test("attr()", function() {
@@ -58,25 +58,25 @@ test("attr()", function() {
     ele.foo = "bar";
     ele.setAttribute("meh", "bleh");
     var subject = Unbose(ele);
-    equal(subject.attr("foo"), undefined, "Properties should not be returned");
-    equal(subject.attr("meh"), "bleh");
-    equal(subject.attr("meh"), "bleh");
-    equal(subject.attr("bogus"), undefined);
+    equals(subject.attr("foo"), undefined, "Properties should not be returned");
+    equals(subject.attr("meh"), "bleh");
+    equals(subject.attr("meh"), "bleh");
+    equals(subject.attr("bogus"), undefined);
 });
 
 test("removeAttr()", function() {
     var ele = document.createElement("div");
     var subject = Unbose(ele);
     subject.attr("meh", "bleh");
-    equal(subject.attr("meh"), "bleh");
+    equals(subject.attr("meh"), "bleh");
     subject.removeAttr("meh");
-    equal(subject.attr("meh"), undefined);
+    equals(subject.attr("meh"), undefined);
 });
 
 test("empty()", function() {
     var ele = Unbose.eleFromZen("body>i+p+div>i+i+span");
     Unbose(ele).empty();
-    equal(ele.innerHTML, "");
+    equals(ele.innerHTML, "");
 });
 
 test("name()", function() {
@@ -88,37 +88,37 @@ test("name()", function() {
 test("prev()", function() {
     var tpl = Unbose.eleFromZen("body>div+span+div+span+i#b.c+span");
     var ele = Unbose(tpl).find("span").prev();
-    equal(ele.nth(0).name(), "div");
-    equal(ele.length, 3);
+    equals(ele.nth(0).name(), "div");
+    equals(ele.length, 3);
     ele = Unbose(tpl).find("span").prev("i#b.c");
-    equal(ele.length, 1);
+    equals(ele.length, 1);
 });
 
 test("next()", function() {
     var tpl = Unbose.eleFromZen("body>div+span+div+span+div+i");
     var ele = Unbose(tpl).find("div").next();
-    equal(ele.nth(0).name(), "span");
-    equal(ele.length, 3);
+    equals(ele.nth(0).name(), "span");
+    equals(ele.length, 3);
     ele = Unbose(tpl).find("div").next("i");
-    equal(ele.length, 1);
+    equals(ele.length, 1);
     ele = Unbose(tpl).find("div").next("i").next().next().next();
-    equal(ele.length, 0);
+    equals(ele.length, 0);
 });
 
 test("children()", function() {
     var ele = Unbose.eleFromZen("body>div+span+div+span");
     ele = Unbose(ele);
-    equal(ele.children().length, 4);
-    equal(ele.children("span").length, 2);
+    equals(ele.children().length, 4);
+    equals(ele.children("span").length, 2);
 });
 
 test("remove()", function() {
     var ele = Unbose.eleFromZen("div>span.a+span.b");
     var spans = Unbose(ele).find("span");
     spans.remove(".b");
-    equal(Unbose(ele).find("span").length, 1);
+    equals(Unbose(ele).find("span").length, 1);
     spans.remove();
-    equal(Unbose(ele).find("span").length, 0);
+    equals(Unbose(ele).find("span").length, 0);
 });
 
 test("hasClass()", function() {
@@ -193,7 +193,7 @@ test("addClass()", function() {
     ok(subject.hasClass("bar"));
     ok(subject.hasClass("baz-meh"));
 
-    equal(subject, subject.addClass("flabaten"));
+    equals(subject, subject.addClass("flabaten"));
 });
 
 test("removeClass()", function() {
@@ -217,7 +217,7 @@ test("removeClass()", function() {
     ok(!subject.hasClass("bar"));
     ok(!subject.hasClass("baz"));
     ele.className = "asdf";
-    equal(subject, subject.removeClass("asdf"));
+    equals(subject, subject.removeClass("asdf"));
 
     ele.className = "";
     subject.addClass("foo bar baz");
@@ -240,7 +240,7 @@ test("toggleClass()", function() {
 
     ele.className = "foo";
     subject.toggleClass("foo bar");
-    equal(subject.attr("class").trim(), "bar");
+    equals(subject.attr("class").trim(), "bar");
 });
 
 test("nth()", function() {
@@ -256,11 +256,11 @@ test("elem()", function() {
     document.body.appendChild(ele);
     var subject = Unbose(ele);
 
-    equal(ele, subject.elem(0));
+    equals(ele, subject.elem(0));
     var h2s = Unbose("h2");
-    equal(h2s.length, 2);
-    equal(h2s.elem(0), document.getElementsByTagName("h2")[0]);
-    equal(h2s.elem(1), document.getElementsByTagName("h2")[1]);
+    equals(h2s.length, 2);
+    equals(h2s.elem(0), document.getElementsByTagName("h2")[0]);
+    equals(h2s.elem(1), document.getElementsByTagName("h2")[1]);
 
     eles = Unbose.fromZen("div.a + div.b + div.c");
     equals(eles.elem(-1).className, "c");
@@ -268,7 +268,7 @@ test("elem()", function() {
     var h2s = Unbose("h2").elem();
     ok(h2s);
     ok(h2s.constructor == Array);
-    equal(h2s.length, 2);
+    equals(h2s.length, 2);
 });
 
 test("slice()", function() {
@@ -292,24 +292,24 @@ test("slice()", function() {
 test("ancestors()", function() {
     var eles = Unbose.eleFromZen("body>div>div>span>div>i.t+b.t");
     ele = Unbose(eles).find("i");
-    equal(ele.ancestors().length, 6);
-    equal(ele.ancestors("div").length, 3);
+    equals(ele.ancestors().length, 6);
+    equals(ele.ancestors("div").length, 3);
     ele = Unbose(eles).find(".t");
-    equal(ele.length, 2);
-    equal(ele.ancestors().length, 6);
-    equal(ele.ancestors("div").length, 3);
+    equals(ele.length, 2);
+    equals(ele.ancestors().length, 6);
+    equals(ele.ancestors("div").length, 3);
 });
 
 test("parent()", function() {
     var ele = document.createElement("div");
     document.body.appendChild(ele);
     var subject = Unbose(ele);
-    equal(subject.parent().elem(0), document.body);
+    equals(subject.parent().elem(0), document.body);
     document.body.removeChild(ele);
 
     ele = Unbose.eleFromZen("body>div+span+div+span");
     ele = Unbose(ele).find("div");
-    equal(ele.parent().length, 1);
+    equals(ele.parent().length, 1);
 
     ele = Unbose("html");
     equals(ele.parent().length, 0);
@@ -321,16 +321,16 @@ test("closest()", function() {
     var ele = Unbose(Unbose.eleFromZen("div.foo>div.bar>div.baz"));
     var tip = ele.find(".baz");
 
-    equal(tip.closest(".bar").length, 1);
-    equal(tip.closest(".bar").elem(0), ele.find(".bar").elem(0));
+    equals(tip.closest(".bar").length, 1);
+    equals(tip.closest(".bar").elem(0), ele.find(".bar").elem(0));
     ok(tip.closest(".bar").hasClass("bar"));
 
-    equal(tip.closest(".foo").length, 1);
-    equal(tip.closest(".foo").elem(0), ele.elem(0));
+    equals(tip.closest(".foo").length, 1);
+    equals(tip.closest(".foo").elem(0), ele.elem(0));
     ok(tip.closest(".foo").hasClass("foo"));
 
-    equal(tip.closest("bogus").length, 0);
-    equal(Unbose("p").closest("bogus").length, 0, "Should not go to the document node");
+    equals(tip.closest("bogus").length, 0);
+    equals(Unbose("p").closest("bogus").length, 0, "Should not go to the document node");
 
     ele = Unbose(Unbose.eleFromZen("div.a>(p.b>i)+(p>i)+i"));
     equals(ele.find("i").closest("p").length, 2);
@@ -345,25 +345,25 @@ test("closest()", function() {
 test("siblings()", function() {
     var ele = Unbose.eleFromZen("body>i+p+div>i+i+span");
     var subject = Unbose(ele).find("p");
-    equal(subject.siblings().length, 2);
+    equals(subject.siblings().length, 2);
     subject = Unbose(ele).find("i");
-    equal(subject.siblings().length, 5);
-    equal(subject.siblings("i").length, 2);
+    equals(subject.siblings().length, 5);
+    equals(subject.siblings("i").length, 2);
 });
 
 
 test("first()", function() {
     var ele = Unbose.eleFromZen("div+p");
     var subject = Unbose(ele);
-    equal(subject.first().name(), "div");
+    equals(subject.first().name(), "div");
 });
 
 
 test("last()", function() {
     var ele = Unbose.eleFromZen("div+p");
-    equal(Unbose(ele).last().name(), "p");
+    equals(Unbose(ele).last().name(), "p");
     ele = Unbose.eleFromZen("div>p");
-    equal(Unbose(ele).last().name(), "div");
+    equals(Unbose(ele).last().name(), "div");
 });
 
 
@@ -379,14 +379,14 @@ test("eleFromTpl", function() {
     ok(ele);
     ele = Unbose(ele);
     ok(ele);
-    equal(ele.length, 1);
-    equal(ele.find("a").attr("href"), "testlink");
-    equal(ele.find("h1").length, 2);
-    equal(ele.find("h1").nth(0).text(), "title1");
-    equal(ele.find("h1").nth(1).text(), "title2");
-    equal(ele.find("div>p>a").length, 1);
-    equal(ele.find("h1").nth(1).attr("id"), "id");
-    equal(ele.find("span").attr("id"), "id2");
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "testlink");
+    equals(ele.find("h1").length, 2);
+    equals(ele.find("h1").nth(0).text(), "title1");
+    equals(ele.find("h1").nth(1).text(), "title2");
+    equals(ele.find("div>p>a").length, 1);
+    equals(ele.find("h1").nth(1).attr("id"), "id");
+    equals(ele.find("span").attr("id"), "id2");
     ok(ele.find("h1").nth(1).hasClass("class1"));
 });
 
@@ -396,8 +396,8 @@ test("eleFromTpl class/id parsing", function() {
     ok(ele);
     ele = Unbose(ele);
     ok(ele);
-    equal(ele.length, 1);
-    equal(ele.attr("id"), "baz");
+    equals(ele.length, 1);
+    equals(ele.attr("id"), "baz");
     ok(ele.hasClass("bar"));
 });
 
@@ -409,10 +409,10 @@ test("eleFromZen", function() {
     ok(Unbose.eleFromZen("div+div"), "Elem generated");
     ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
-    equal(ele.length, 1);
-    equal(ele.find("a").attr("href"), "testlink");
-    equal(ele.find("h1").length, 2);
-    equal(ele.find("div>p>a").length, 1);
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "testlink");
+    equals(ele.find("h1").length, 2);
+    equals(ele.find("div>p>a").length, 1);
 });
 
 
@@ -420,14 +420,14 @@ test("append()", function() {
     // test zen
     var ele = Unbose(document.createElement("div"));
     ele.append("div.first+div.last");
-    equal(ele.find("div").length, 2);
+    equals(ele.find("div").length, 2);
     ok(ele.find("div").nth(0).hasClass("first"));
     ok(ele.find("div").nth(1).hasClass("last"));
 
     // test tpl
     var ele = Unbose(document.createElement("div"));
     ele.append([["div", {class: "first"}], ["div", {class: "last"}]]);
-    equal(ele.find("div").length, 2);
+    equals(ele.find("div").length, 2);
     ok(ele.find("div").nth(0).hasClass("first"));
     ok(ele.find("div").nth(1).hasClass("last"));
 
@@ -440,7 +440,7 @@ test("append()", function() {
 
     ele.append(ele2);
     ele.append(ele3);
-    equal(ele.find("div").length, 2);
+    equals(ele.find("div").length, 2);
     ok(ele.find("div").nth(0).hasClass("first"));
     ok(ele.find("div").nth(1).hasClass("last"));
 
@@ -461,12 +461,12 @@ test("appendTpl", function() {
     ok(ele);
     ele.append(tpl);
     ok(ele);
-    equal(ele.length, 1);
-    equal(ele.find("a").attr("href"), "testlink");
-    equal(ele.find("h1").length, 2);
-    equal(ele.find("h1").nth(0).text(), "title1");
-    equal(ele.find("h1").nth(1).text(), "title2");
-    equal(ele.find("div>div>p>a").length, 1);
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "testlink");
+    equals(ele.find("h1").length, 2);
+    equals(ele.find("h1").nth(0).text(), "title1");
+    equals(ele.find("h1").nth(1).text(), "title2");
+    equals(ele.find("div>div>p>a").length, 1);
 });
 
 test("appendZen", function() {
@@ -476,10 +476,10 @@ test("appendZen", function() {
     ele = Unbose(ele);
     ok(ele, "Unbose wraps zen elem");
     ele.append(zen);
-    equal(ele.length, 1);
-    equal(ele.find("a").attr("href"), "testlink");
-    equal(ele.find("h1").length, 2);
-    equal(ele.find("div>div>p>a").length, 1);
+    equals(ele.length, 1);
+    equals(ele.find("a").attr("href"), "testlink");
+    equals(ele.find("h1").length, 2);
+    equals(ele.find("div>div>p>a").length, 1);
 });
 
 
@@ -488,14 +488,14 @@ test("insert()", function() {
     var ele = document.createElement("div");
     Unbose(ele).append("span");
     Unbose(ele).insert("strong");
-    equal(ele.childNodes.length, 2);
-    equal(ele.firstChild.nodeName.toLowerCase(), "strong");
+    equals(ele.childNodes.length, 2);
+    equals(ele.firstChild.nodeName.toLowerCase(), "strong");
 
     ele = document.createElement("div");
     var child = Unbose.fromZen("strong");
     Unbose(ele).insert(child);
-    equal(ele.childNodes.length, 1);
-    equal(ele.firstChild.nodeName.toLowerCase(), "strong");
+    equals(ele.childNodes.length, 1);
+    equals(ele.firstChild.nodeName.toLowerCase(), "strong");
 
 });
 
@@ -503,9 +503,9 @@ test("insert()", function() {
 test("val()", function() {
     var ele = Unbose.eleFromZen("div>form>input#text type=text value=foo");
     var subject = Unbose(ele).find("input");
-    equal(subject.val(), "foo");
+    equals(subject.val(), "foo");
     subject.val("bar");
-    equal(subject.val(), "bar");
+    equals(subject.val(), "bar");
 });
 
 
@@ -526,36 +526,36 @@ test("height()", function() {
     var ele = document.createElement("div");
     ele.style.cssText = "width: 100px; height: 120px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
     document.body.appendChild(ele);
-    equal(Unbose(ele).height(), 120);
+    equals(Unbose(ele).height(), 120);
     ele.style.height = "100px"; // Remove borders and padding
-    equal(Unbose(ele).height(), 100);
+    equals(Unbose(ele).height(), 100);
     Unbose(ele).height(80);
-    equal(Unbose(ele).height(), 80);
+    equals(Unbose(ele).height(), 80);
     Unbose(ele).height("0x10");
-    equal(Unbose(ele).height(), 80);
+    equals(Unbose(ele).height(), 80);
     Unbose(ele).height("-1px");
-    equal(Unbose(ele).height(), 0);
+    equals(Unbose(ele).height(), 0);
     Unbose(ele).height(80);
     Unbose(ele).height("bogus"); // should not set anything
-    equal(Unbose(ele).height(), 80);
+    equals(Unbose(ele).height(), 80);
     Unbose(ele).hide();
-    equal(Unbose(ele).height(), 80, "Element with display: none");
+    equals(Unbose(ele).height(), 80, "Element with display: none");
 });
 
 test("width()", function() {
     var ele = document.createElement("div");
     ele.style.cssText = "width: 120px; height: 100px; padding: 2px 4px; border: 3px solid; margin: 5px; position: absolute; visibility: hidden;";
     document.body.appendChild(ele);
-    equal(Unbose(ele).width(), 120);
+    equals(Unbose(ele).width(), 120);
     ele.style.width = "100px"; // Remove borders and padding
-    equal(Unbose(ele).width(), 100);
+    equals(Unbose(ele).width(), 100);
     Unbose(ele).width(80);
-    equal(Unbose(ele).width(), 80);
+    equals(Unbose(ele).width(), 80);
     Unbose(ele).width(-1);
-    equal(Unbose(ele).width(), 0);
+    equals(Unbose(ele).width(), 0);
     Unbose(ele).width(80);
     Unbose(ele).width("bogus"); // should not set anything
-    equal(Unbose(ele).width(), 80);
+    equals(Unbose(ele).width(), 80);
     Unbose(ele).hide();
-    equal(Unbose(ele).width(), 80, "Element with display: none");
+    equals(Unbose(ele).width(), 80, "Element with display: none");
 });
