@@ -46,11 +46,12 @@ test("find()", function() {
 });
 
 test("text()", function() {
-    var subject = Unbose("#qunit-header");
-
-    subject.text("Unbose tests");
-
-    equals(subject.text(), "Unbose tests");
+    var ele = document.createElement("div");
+    ele.id = "subject";
+    document.body.appendChild(ele);
+    var subject = Unbose("#subject");
+    subject.text("foo");
+    equals(subject.text(), "foo");
 });
 
 test("attr()", function() {
@@ -58,6 +59,8 @@ test("attr()", function() {
     ele.foo = "bar";
     ele.setAttribute("meh", "bleh");
     var subject = Unbose(ele);
+
+
     equals(subject.attr("foo"), undefined, "Properties should not be returned");
     equals(subject.attr("meh"), "bleh");
     equals(subject.attr("meh"), "bleh");
@@ -257,6 +260,8 @@ test("elem()", function() {
     var subject = Unbose(ele);
 
     equals(ele, subject.elem(0));
+
+    Unbose(document.body).insert("h2+h2");
     var h2s = Unbose("h2");
     equals(h2s.length, 2);
     equals(h2s.elem(0), document.getElementsByTagName("h2")[0]);
@@ -519,6 +524,7 @@ test("data()", function() {
     ele.data("prop", {toString: function(){return "value3"}});
     equals(ele.data("prop"), "value3");
     ele.data("prop", {test: "value4"});
+
     equals(ele.data("prop").test, "value4");
 });
 
