@@ -1,0 +1,1 @@
+expandName,toString,on,unbind,once,delegate,add,forEach,filter,find,matchesSelector,name,closest,ancestors,parent,children,siblings,first,last,prev,next,nth,elem,slice,hasClass,addClass,removeClass,toggleClass,append,insert,attr,removeAttr,empty,remove,text,val,data,style,width,height,hide,show,eleFromTpl,tplFromZen,eleFromZen,fromZen,list,isFunction,isElement,nop
