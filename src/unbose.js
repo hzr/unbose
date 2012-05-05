@@ -52,7 +52,7 @@ function Unbose(subject, context) {
             child = child.nextElementSibling;
         }
     }
-    else if (subject._elements !== undefined) {
+    else if (subject._elements != null) {
         this._elements = subject._elements;
     }
     else if (isFunction(subject)) {
@@ -286,6 +286,7 @@ Unbose.prototype = {
      *   specific position.
      */
     add: function(eles) {
+        // FIXME: this is wrong, send it through Unbose instead
         this._elements = this._elements.concat(new Unbose(eles)._elements);
         this.length = this._elements.length;
         return this;
@@ -330,7 +331,7 @@ Unbose.prototype = {
      */
     filter: function(selector) {
         var eles = this._elements;
-        if (selector !== undefined) {
+        if (selector != null) {
             eles = eles.filter(function(ele) {
                 return new Unbose(ele).matchesSelector(selector);
             });
@@ -678,7 +679,7 @@ Unbose.prototype = {
      */
     elem: function(index) {
         if (index < 0) { index = (index % this.length) + this.length; }
-        return (index === undefined) ? this._elements : this[index];
+        return (index == null) ? this._elements : this[index];
     },
 
     /**
@@ -702,9 +703,6 @@ Unbose.prototype = {
      *
      */
     slice: function(start, end, step) {
-        // Gecko does not treat `undefined` correctly for the end parameter
-        // in Array.prototype.slice, so set it explicitly
-        if (end === undefined) { end = this.length; }
         var eles = this._elements.slice(start, end);
         if (step) {
             eles = eles.filter(function(ele, idx) {
@@ -878,7 +876,7 @@ Unbose.prototype = {
         else if (Array.isArray(thing)) {
             return this._insertElem(eleFromTpl(thing), append);
         }
-        else if (thing._elements !== undefined) { // thing is an unbose object
+        else if (thing._elements != null) { // thing is an unbose object
             return thing._elements.forEach(function(e) {
                 this._insertElem(e, append);
             }, this);
@@ -945,7 +943,7 @@ Unbose.prototype = {
      *
      */
     attr: function(name, val) {
-        if (val === undefined) {
+        if (val == null) {
             return this[0] && this[0].getAttribute(name);
         }
         else {
@@ -990,9 +988,7 @@ Unbose.prototype = {
      *
      */
     empty: function() {
-        return this._elements.forEach(function(ele) {
-            ele.textContent = "";
-        });
+        return this.text("");
     },
 
     /**
@@ -1036,7 +1032,7 @@ Unbose.prototype = {
      *
      */
     text: function(text) {
-        if (text === undefined) {
+        if (text == null) {
             return (this[0] && this[0].textContent) || "";
         }
         else {
@@ -1068,7 +1064,7 @@ Unbose.prototype = {
      *
      */
     val: function(val) {
-        if (val === undefined) {
+        if (val == null) {
             return this[0] && this[0].value;
         }
         else {
@@ -1095,7 +1091,7 @@ Unbose.prototype = {
      *
      */
     data: function(name, prop) {
-        if (prop === undefined) {
+        if (prop == null) {
             return this[0] && this[0]["unbose-" + name];
         }
 
@@ -1229,7 +1225,7 @@ Unbose.prototype = {
      *
      */
     width: function(value) {
-        if (value === undefined) {
+        if (value == null) {
             if (!this[0]) { return 0; }
             return this._getDimensions().width -
                 parseInt(this._getStyle("border-left-width"), 10) -
@@ -1257,7 +1253,7 @@ Unbose.prototype = {
      *
      */
     height: function(value) {
-        if (value === undefined) {
+        if (value == null) {
             if (!this[0]) { return 0; }
             return this._getDimensions().height -
                 parseInt(this._getStyle("border-top-width"), 10) -
