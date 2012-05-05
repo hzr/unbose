@@ -46,10 +46,11 @@ function Unbose(subject, context) {
     }
     else if (subject.nodeType == 11 /*DOCUMENT_FRAGMENT_NODE*/) {
         var child = subject.firstChild;
-        if (child.nodeType != 1 /*ELEMENT*/) { child = child.nextElementSibling; }
         while (child) {
-            this._elements.push(child);
-            child = child.nextElementSibling;
+            if (child.nodeType == 1 /*ELEMENT*/) {
+                this._elements.push(child);
+            }
+            child = child.nextSibling;
         }
     }
     else if (subject._elements != null) {

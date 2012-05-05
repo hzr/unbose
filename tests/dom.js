@@ -1,5 +1,15 @@
 module("DOM");
 
+test("Unbose constructor", function() {
+  var frag = document.createDocumentFragment();
+  var comment = document.createComment("");
+  var ele = document.createElement("div");
+  frag.appendChild(comment);
+  frag.appendChild(ele);
+  var eles = Unbose(frag);
+  equals(eles.length, 1);
+});
+
 test("add()", function() {
     var eles = Unbose.fromZen("div + div + div");
     equals(eles.length, 3);
