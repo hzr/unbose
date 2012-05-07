@@ -825,8 +825,8 @@ Unbose.prototype = {
     /**
      * Method: append
      *
-     * Append an element, an Unbose object, a template or a zen
-     * string. Append adds the element after the last child element.
+     * Append an element, an Unbose object or a template.
+     * Append adds the element after the last child element.
      * append(thing) is a cleaner shorthand for insert(thing, true)
      *
      * Note that when appending an element to several elements, event
@@ -852,8 +852,8 @@ Unbose.prototype = {
     /**
      * Method: insert
      *
-     * Insert an element, an Unbose object, a template or a zen
-     * string. By default, add it as the first child of the parent. If the
+     * Insert an element, an Unbose object or a template.
+     * By default, add it as the first child of the parent. If the
      * append argument is true, the element is appended as the last child
      * element instead.
      *
@@ -881,9 +881,6 @@ Unbose.prototype = {
             return thing._elements.forEach(function(e) {
                 this._insertElem(e, append);
             }, this);
-        }
-        else if (typeof thing === "string") {
-            return this._insertElem(eleFromTpl(tplFromZen(thing)), append);
         }
         else {
             return this;
@@ -1419,226 +1416,6 @@ function eleFromTpl(tpl) {
     }
 };
 Unbose.eleFromTpl = eleFromTpl;
-
-/**
- * Method: Unbose.tplFromZen
- *
- * Converts a template array to an element (NOT to an unbose object atm).
- */
-function tplFromZen(zen) {
-    return parse_zencode(zen);
-
-    // Here's a whole bunch of private functions for doing the actual parsing.
-    // fimxe: do whitespace cleanup at first instead of inside parser?
-
-    // Main parsing entrypoint
-    function parse_zencode(str) {
-        var chars = str.replace("\n").split("");
-        var ret = [];
-        var n = 10;
-        while (chars.length && --n) {
-            ret = ret.concat((parse_expr(chars)));
-        }
-        return ret;
-    }
-
-    // Expression is top level zen element. tag or parens
-    function parse_expr(chars) {
-        consume_ws(chars);
-        var ret;
-        if (chars[0] == "(") {
-            chars.shift();
-            ret = parse_expr(chars);
-            chars.shift(); // FIXME: Make sure it's ")"
-        }
-        else {
-            ret = parse_tag(chars);
-        }
-
-        consume_ws(chars);
-        var multiplier = get_multiplier(chars);
-        consume_ws(chars);
-        var siblings = parse_siblings(chars);
-        consume_ws(chars);
-        var children = parse_children(chars);
-
-        if (ret.length == 2 && children.length) { // a set of siblings can't have children
-            ret.push(children);
-        }
-
-        while (multiplier--) {
-            siblings.unshift(ret);
-        }
-
-        return siblings.length ? siblings : ret;
-    }
-
-    // Parses a tag, obviously..
-    function parse_tag(chars) {
-        var name = consume_name(chars);
-        var props = parse_props(chars);
-        var current = [name, props];
-        return current;
-    }
-
-    // Consume and return the multiplier if there is one
-    function get_multiplier(chars) {
-        var charsNum = "";
-        if (chars.length && chars[0] == "*") {
-            chars.shift();
-        }
-
-        while (chars.length && chars[0].match(/\d/)) {
-            charsNum += chars.shift();
-        }
-        return parseInt(charsNum, 10) || 1;
-    }
-
-    // Parse siblings
-    function parse_siblings(chars) {
-        var ret = [];
-        while (chars.length && chars[0] == "+") {
-            chars.shift();
-            ret.push(parse_expr(chars));
-        }
-        return ret;
-    }
-
-    // Parse children
-    function parse_children(chars) {
-        var ret = [];
-        if (chars.length && chars[0] == ">") {
-            chars.shift();
-            ret = parse_expr(chars);
-        }
-        return ret;
-    }
-
-    /**
-     * Consume and return anything alphanumeric, a-z,0-9
-     */
-    function consume_name(chars) {
-        var s = "";
-        while (chars.length && chars[0].match(/[a-zA-Z0-9-]/)) {
-            s += chars.shift();
-        }
-        return s;
-    }
-
-    /**
-     * Class names and IDs
-     */
-    function consume_class_or_id(chars) {
-        var s = "";
-        while (chars.length && chars[0].match(/[a-zA-Z0-9-_]/)) {
-            s += chars.shift();
-        }
-        return s;
-    }
-
-    /**
-     * Property values
-     */
-    function consume_value(chars) {
-        var s = "";
-        while (chars.length && chars[0].match(/[a-zA-Z0-9-_#\.\/]/)) {
-            s += chars.shift();
-        }
-        return s;
-    }
-
-    /**
-     * White space
-     */
-    function consume_ws(chars) {
-        var s = "";
-        while (chars.length && chars[0].match(/\s/)) {
-            s += chars.shift();
-        }
-        return s;
-    }
-
-    // consume IDs, classnames and properties
-    function parse_props(chars) {
-        var props = {};
-
-        while (chars.length) {
-            var chr = chars.shift();
-            if (chr == ".") {
-                var className = consume_class_or_id(chars);
-                props["class"] = props["class"] ?
-                    props["class"] + " " + className :
-                    className;
-            }
-            else if (chr == "#") {
-                var id = consume_class_or_id(chars);
-                props["id"] = id;
-            }
-            else if (chr == " ") {
-                var name = consume_name(chars);
-                if (!name) { // no valid name found
-                    break; // presumably whitespace in zen for readability.
-                }
-
-                chars.shift(); // FIXME; make sure is always "="
-                var value = consume_value(chars);
-                props[name] = value;
-            }
-            else {
-                chars.unshift(chr);
-                break;
-            }
-        }
-        return props;
-    }
-};
-Unbose.tplFromZen = tplFromZen;
-
-/**
- * Method: Unbose.eleFromZen
- *
- * Create an HTML element from a zencode string.
- *
- * Parameters:
- *
- *   zen - the string of zencode
- *
- * Returns:
- *
- *   HTMLElement
- *
- * See also:
- *
- *   <fromZen>
- *
- */
-function eleFromZen(zen) {
-    return Unbose.eleFromTpl(Unbose.tplFromZen(zen));
-};
-Unbose.eleFromZen = eleFromZen;
-
-/**
- * Method: Unbose.fromZen
- *
- * Create an Unbose object from a zencode string.
- *
- * Parameters:
- *
- *   zen - the string of zencode
- *
- * Returns:
- *
- *   Unbose element of zencode
- *
- * See also:
- *
- *   <eleFromZen>
- *
- */
-function fromZen(zen) {
-    return new Unbose(Unbose.eleFromZen(zen));
-};
-Unbose.fromZen = fromZen;
 
 /**
  * Group: Static helper methods
