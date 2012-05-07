@@ -1,29 +1,30 @@
 var assert = buster.assertions.assert;
+var equals = assert.equals;
 
 buster.testCase("Tools", {
     "isFunction()": function () {
-        assert.equals(Unbose.isFunction(function() {}), true);
-        assert.equals(Unbose.isFunction([]), false);
-        assert.equals(Unbose.isFunction(), false);
-        assert.equals(Unbose.isFunction(null), false);
-        assert.equals(Unbose.isFunction(1234), false);
-        assert.equals(Unbose.isFunction(document.createElement("div")), false);
+        equals(Unbose.isFunction(function() {}), true);
+        equals(Unbose.isFunction([]), false);
+        equals(Unbose.isFunction(), false);
+        equals(Unbose.isFunction(null), false);
+        equals(Unbose.isFunction(1234), false);
+        equals(Unbose.isFunction(document.createElement("div")), false);
     },
 
     "isElement()": function() {
-        assert.equals(Unbose.isElement(document.createElement("div")), true);
-        assert.equals(Unbose.isElement(function() {}), false);
-        assert.equals(Unbose.isElement([]), false);
-        assert.equals(Unbose.isElement(), false);
-        assert.equals(Unbose.isElement(null), false);
-        assert.equals(Unbose.isElement(1234), false);
+        equals(Unbose.isElement(document.createElement("div")), true);
+        equals(Unbose.isElement(function() {}), false);
+        equals(Unbose.isElement([]), false);
+        equals(Unbose.isElement(), false);
+        equals(Unbose.isElement(null), false);
+        equals(Unbose.isElement(1234), false);
     },
 
     "list()": function() {
-        assert.equals(Unbose.list([0,1,2]).join('-'), '0-1-2');
-        assert.equals(Unbose.list([0],[1],[2]).join('-'), '0-1-2');
-        assert.equals(Unbose.list([],[0],[1,2],[3,4]).join('-'), '0-1-2-3-4');
-        assert.equals(Unbose.list("list").join('-'), 'l-i-s-t');
+        equals(Unbose.list([0,1,2]).join('-'), '0-1-2');
+        equals(Unbose.list([0],[1],[2]).join('-'), '0-1-2');
+        equals(Unbose.list([],[0],[1,2],[3,4]).join('-'), '0-1-2-3-4');
+        equals(Unbose.list("list").join('-'), 'l-i-s-t');
     },
 
     "Adding functions to prototype": function() {
@@ -41,8 +42,8 @@ buster.testCase("Tools", {
 
         html = '<a href="#"><strong>link</strong></a>';
         var ele = Unbose(document.createElement("div"));
-        assert.equals(ele.html(), "");
+        equals(ele.html(), "");
         ele.html(html);
-        assert.equals(ele.html(), html);
+        equals(ele.html(), html);
     }
 });
